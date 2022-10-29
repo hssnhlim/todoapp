@@ -16,12 +16,7 @@ class AuthProvider extends ChangeNotifier {
   static AuthProvider get instance => AuthProvider();
 
   Future<void> login(String email, String password) async {
-    try {
-      await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: email, password: password);
-    } on FirebaseAuthException catch (e) {
-      print(e);
-    }
-    ;
+    await FirebaseAuth.instance
+        .signInWithEmailAndPassword(email: email, password: password);
   }
 }
