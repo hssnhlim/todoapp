@@ -19,4 +19,10 @@ class AuthProvider extends ChangeNotifier {
     await FirebaseAuth.instance
         .signInWithEmailAndPassword(email: email, password: password);
   }
+
+  Future<void> register(
+      String name, String email, String phone, String password) async {
+    await FirebaseAuth.instance
+        .createUserWithEmailAndPassword(email: email, password: password);
+  }
 }
