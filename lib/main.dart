@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:todoapp/Views/homepage.dart';
 import 'package:todoapp/Views/onboardpage.dart';
 import 'package:todoapp/authentication/auth.provider.dart';
 import 'package:todoapp/authentication/login.dart';
@@ -31,6 +32,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
         theme: ThemeData(
+          scaffoldBackgroundColor: Color(0xffF3F3F3),
           useMaterial3: true,
           primarySwatch: Colors.blue,
         ),

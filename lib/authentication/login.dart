@@ -2,6 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todoapp/authentication/auth.provider.dart';
+import 'package:todoapp/authentication/register.dart';
+
+import '../Views/homepage.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -18,10 +21,6 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xffF3F3F3),
-      // appBar: AppBar(
-      //   title: const Text('Log In'),
-      // ),
       body: CustomScrollView(
         slivers: [
           SliverFillRemaining(
@@ -60,6 +59,11 @@ class _LoginPageState extends State<LoginPage> {
                           height: 40,
                         ),
                         TextFormField(
+                          style: TextStyle(
+                              fontFamily: 'poppins',
+                              fontWeight: FontWeight.w400,
+                              fontSize: 15,
+                              color: Colors.black),
                           // The validator receives the text that the user has entered.
                           decoration: InputDecoration(
                             prefixIcon:
@@ -101,6 +105,12 @@ class _LoginPageState extends State<LoginPage> {
                           height: 20,
                         ),
                         TextFormField(
+                          obscureText: true,
+                          style: TextStyle(
+                              fontFamily: 'poppins',
+                              fontWeight: FontWeight.w400,
+                              fontSize: 15,
+                              color: Colors.black),
                           // The validator receives the text that the user has entered.
                           decoration: InputDecoration(
                               prefixIcon: Icon(
@@ -169,9 +179,54 @@ class _LoginPageState extends State<LoginPage> {
                                       .login(emailController.text,
                                           passwordController.text);
                                 } on FirebaseAuthException catch (e) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(content: Text(e.message!)),
-                                  );
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) => AlertDialog(
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(10)),
+                                            contentTextStyle: TextStyle(
+                                                color: Colors.black,
+                                                fontFamily: 'poppins',
+                                                fontWeight: FontWeight.w400,
+                                                fontSize: 15),
+                                            actionsPadding:
+                                                const EdgeInsets.fromLTRB(
+                                                    0, 0, 20, 10),
+                                            contentPadding:
+                                                const EdgeInsets.all(20),
+                                            content: Text(
+                                              e.message!,
+                                            ),
+                                            actions: [
+                                              TextButton(
+                                                  style: ButtonStyle(
+                                                      shape: MaterialStateProperty.all(
+                                                          RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          10))),
+                                                      backgroundColor:
+                                                          MaterialStateProperty
+                                                              .all(Colors
+                                                                  .black)),
+                                                  onPressed: () =>
+                                                      Navigator.pop(context),
+                                                  child: Text(
+                                                    'Okay',
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontFamily: 'poppins',
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                        fontSize: 15),
+                                                  ))
+                                            ],
+                                          ));
+                                  // ScaffoldMessenger.of(context).showSnackBar(
+                                  //   SnackBar(content: Text(e.message!)),
+                                  // );
                                 }
                               }
                             },
@@ -208,7 +263,14 @@ class _LoginPageState extends State<LoginPage> {
                                   fontSize: 13,
                                 )),
                             GestureDetector(
-                              onTap: () {},
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const RegisterPage()),
+                                );
+                              },
                               child: Text(' Sign Up',
                                   style: TextStyle(
                                     fontFamily: 'poopins',
