@@ -1,4 +1,5 @@
-
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -17,12 +18,10 @@ class _LandingPageState extends State<LandingPage> {
   @override
   Widget build(BuildContext context) {
     var user = Provider.of<AuthProvider>(context).user;
-    if(user==null){
+    if (user == null) {
       return LoginPage();
-    }else
-      {
-        return HomePage();
-      }
-    return Container();
+    } else {
+      return HomePage();
+    }
   }
 }

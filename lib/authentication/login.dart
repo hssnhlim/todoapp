@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todoapp/authentication/auth.provider.dart';
+import 'package:todoapp/authentication/landing.dart';
 import 'package:todoapp/authentication/register.dart';
 
 import '../Views/homepage.dart';
@@ -17,6 +18,18 @@ class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -224,11 +237,9 @@ class _LoginPageState extends State<LoginPage> {
                                                   ))
                                             ],
                                           ));
-                                  // ScaffoldMessenger.of(context).showSnackBar(
-                                  //   SnackBar(content: Text(e.message!)),
-                                  // );
                                 }
                               }
+                              // return HomePage();
                             },
                             child: const Text(
                               'Sign In',

@@ -21,14 +21,17 @@ class _RegisterPageState extends State<RegisterPage> {
   final nameController = TextEditingController();
   final passwordController = TextEditingController();
 
-  Future addUserDetails(
-      String name, String email, String phone, String password) async {
-    await FirebaseFirestore.instance.collection('users').add({
-      'name': name,
-      'email': email,
-      'phone': phone,
-      'password': password,
-    });
+  // Future<void> addUserDetails(String name, String email, String phone) async {
+  //   await FirebaseFirestore.instance.collection('users').add({
+  //     'name': name,
+  //     'email': email,
+  //     'phone': phone,
+  //   });
+  // }
+
+  @override
+  void initState() {
+    super.initState();
   }
 
   @override
@@ -300,6 +303,10 @@ class _RegisterPageState extends State<RegisterPage> {
                         ),
                         ElevatedButton(
                             onPressed: () async {
+                              // addUserDetails(
+                              //     nameController.text.trim(),
+                              //     emailController.text.trim(),
+                              //     phoneController.text.trim());
                               // Validate returns true if the form is valid, or false otherwise.
                               if (_formKey.currentState!.validate()) {
                                 try {
@@ -357,12 +364,8 @@ class _RegisterPageState extends State<RegisterPage> {
                                             ],
                                           ));
                                 }
-                              } // nak navigate next page kalau takde error
-                              addUserDetails(
-                                  nameController.text.trim(),
-                                  emailController.text.trim(),
-                                  passwordController.text.trim(),
-                                  phoneController.text.trim());
+                              }
+                              return;
                             },
                             child: const Text(
                               'Sign Up',
