@@ -21,13 +21,13 @@ class _RegisterPageState extends State<RegisterPage> {
   final nameController = TextEditingController();
   final passwordController = TextEditingController();
 
-  // Future<void> addUserDetails(String name, String email, String phone) async {
-  //   await FirebaseFirestore.instance.collection('users').add({
-  //     'name': name,
-  //     'email': email,
-  //     'phone': phone,
-  //   });
-  // }
+  Future addUserDetails(String name, String email, String phone) async {
+    await FirebaseFirestore.instance.collection('users').add({
+      'name': name,
+      'email': email,
+      'phone': phone,
+    });
+  }
 
   @override
   void initState() {
@@ -303,20 +303,28 @@ class _RegisterPageState extends State<RegisterPage> {
                         ),
                         ElevatedButton(
                             onPressed: () async {
-                              // addUserDetails(
-                              //     nameController.text.trim(),
-                              //     emailController.text.trim(),
-                              //     phoneController.text.trim());
                               // Validate returns true if the form is valid, or false otherwise.
                               if (_formKey.currentState!.validate()) {
                                 try {
                                   await Provider.of<AuthProvider>(context,
                                           listen: false)
                                       .register(
-                                          nameController.text.trim(),
-                                          emailController.text.trim(),
-                                          passwordController.text.trim(),
-                                          phoneController.text.trim());
+                                    nameController.text.trim(),
+                                    emailController.text.trim(),
+                                    phoneController.text.trim(),
+                                    passwordController.text.trim(),
+                                  );
+
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => const HomePage()),
+                                  );
+
+                                  addUserDetails(
+                                      nameController.text.trim(),
+                                      emailController.text.trim(),
+                                      phoneController.text.trim());
                                 } on FirebaseAuthException catch (e) {
                                   showDialog(
                                       context: context,
@@ -365,7 +373,6 @@ class _RegisterPageState extends State<RegisterPage> {
                                           ));
                                 }
                               }
-                              return;
                             },
                             child: const Text(
                               'Sign Up',

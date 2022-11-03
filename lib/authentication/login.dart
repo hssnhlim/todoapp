@@ -5,6 +5,7 @@ import 'package:todoapp/authentication/auth.provider.dart';
 import 'package:todoapp/authentication/landing.dart';
 import 'package:todoapp/authentication/register.dart';
 
+import '../Views/forgotpasswordpage.dart';
 import '../Views/homepage.dart';
 
 class LoginPage extends StatefulWidget {
@@ -168,7 +169,14 @@ class _LoginPageState extends State<LoginPage> {
                         Align(
                           alignment: Alignment.centerRight,
                           child: GestureDetector(
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const ForgotPasswordPage()),
+                              );
+                            },
                             child: Text(
                               'Forgot Password?',
                               style: TextStyle(
@@ -189,8 +197,13 @@ class _LoginPageState extends State<LoginPage> {
                                 try {
                                   await Provider.of<AuthProvider>(context,
                                           listen: false)
-                                      .login(emailController.text,
-                                          passwordController.text);
+                                      .login(emailController.text.trim(),
+                                          passwordController.text.trim());
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => const HomePage()),
+                                  );
                                 } on FirebaseAuthException catch (e) {
                                   showDialog(
                                       context: context,
@@ -239,7 +252,6 @@ class _LoginPageState extends State<LoginPage> {
                                           ));
                                 }
                               }
-                              // return HomePage();
                             },
                             child: const Text(
                               'Sign In',

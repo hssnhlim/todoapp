@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:todoapp/Views/forgotpasswordpage.dart';
 import 'package:todoapp/Views/homepage.dart';
 import 'package:todoapp/Views/onboardpage.dart';
 import 'package:todoapp/authentication/auth.provider.dart';
@@ -46,7 +47,7 @@ class MyApp extends StatelessWidget {
           useMaterial3: true,
           primarySwatch: Colors.blue,
         ),
-        home: const HomePage(),
+        home: const OnboardPage(),
       ),
     );
   }

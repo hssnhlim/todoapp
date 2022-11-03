@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:todoapp/Views/widget/dialogbox.dart';
 import 'package:todoapp/Views/widget/todotileFolder.dart';
+import 'package:todoapp/authentication/login.dart';
 import 'package:todoapp/data/localDatabase.dart';
 
 class HomePage extends StatefulWidget {
@@ -92,7 +93,7 @@ class _HomePageState extends State<HomePage> {
                         deleteFunction: (context) => _deleteFolder(index),
                       );
                     }),
-              )
+              ),
             ],
           ),
         ),
