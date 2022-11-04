@@ -1,5 +1,11 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:hive/hive.dart';
+import 'package:todoapp/Views/homePageContent.dart';
+import 'package:todoapp/Views/profilePage.dart';
+import 'package:todoapp/Views/timelinePage.dart';
 import 'package:todoapp/Views/widget/dialogbox.dart';
 import 'package:todoapp/Views/widget/todotileFolder.dart';
 import 'package:todoapp/authentication/login.dart';
@@ -13,98 +19,61 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-// reference the hive box
-  final myBox = Hive.box('ToDoDatabase');
+  int selectedIndex = 0;
 
-  ToDoDatabase db = ToDoDatabase();
-
-  // List folderList = [];
-
-  final _controller = TextEditingController();
-
-  @override
-  void initState() {
-    // if this is the first time opening the app
-    // then create the default data
-    if (myBox.isEmpty) {
-      db.createInitialData();
-    } else {
-      // there already exist data
-      db.loadData();
-    }
-    super.initState();
-  }
-
-  void saveNewFolder() {
+  void navigateBtmNavBar(int index) {
     setState(() {
-      db.folderList.add(_controller.text);
-      _controller.clear();
+      selectedIndex = index;
     });
-    Navigator.of(context).pop();
-    db.updateDatabase();
   }
 
-  void _deleteFolder(int index) {
-    setState(() {
-      db.folderList.removeAt(index);
-    });
-    db.updateDatabase();
-  }
-
-  void createNewFolder() {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return DialogBox(
-            addNewFolderController: _controller,
-            onSave: saveNewFolder,
-            onCancel: () => Navigator.of(context).pop(),
-          );
-        });
-  }
+// List of pages for nav bar
+  final tabs = [HomePageContent(), TimeLinePage(), ProfilePage()];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-          child: Column(
-            children: [
-              Align(
-                alignment: Alignment.topLeft,
-                child: Text(
-                  'Tasks',
-                  style: TextStyle(
-                    fontFamily: 'poppins',
-                    fontWeight: FontWeight.w600,
-                    fontSize: 35,
-                    color: Colors.black,
-                  ),
-                ),
-              ),
-              Expanded(
-                child: ListView.builder(
-                    padding: EdgeInsets.only(top: 20, bottom: 20),
-                    itemCount: db.folderList.length,
-                    itemBuilder: (context, index) {
-                      return ToDoTile(
-                        folderName: db.folderList[index],
-                        deleteFunction: (context) => _deleteFolder(index),
-                      );
-                    }),
-              ),
+      body: tabs[selectedIndex],
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                  color: Colors.grey.withOpacity(.8),
+                  blurRadius: 7,
+                  offset: Offset(0, 3),
+                  spreadRadius: 5)
             ],
-          ),
+            borderRadius: BorderRadius.only(
+                topRight: Radius.circular(20), topLeft: Radius.circular(20))),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15),
+          child: GNav(
+              color: Colors.grey,
+              activeColor: Colors.black,
+              backgroundColor: Colors.white,
+              tabBackgroundColor: Colors
+                  .primaries[Random().nextInt(Colors.primaries.length)]
+                  .shade100,
+              gap: 10,
+              padding: EdgeInsets.all(15),
+              onTabChange: navigateBtmNavBar,
+              curve: Curves.easeInCubic,
+              tabs: [
+                GButton(
+                  icon: Icons.home,
+                  text: 'Home',
+                ),
+                GButton(
+                  icon: Icons.calendar_month,
+                  text: 'Timeline',
+                ),
+                GButton(
+                  icon: Icons.person,
+                  text: 'Profile',
+                )
+              ]),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
-        backgroundColor: Colors.black,
-        onPressed: () {
-          createNewFolder();
-        },
-        child: Icon(Icons.add),
       ),
     );
   }

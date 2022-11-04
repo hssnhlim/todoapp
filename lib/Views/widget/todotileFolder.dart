@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:hive/hive.dart';
@@ -37,7 +39,10 @@ class ToDoTile extends StatelessWidget {
             width: double.maxFinite,
             height: 79,
             decoration: BoxDecoration(
-                color: Colors.white, borderRadius: BorderRadius.circular(8)),
+                color: Colors
+                    .primaries[Random().nextInt(Colors.primaries.length)]
+                    .shade200,
+                borderRadius: BorderRadius.circular(8)),
             child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
