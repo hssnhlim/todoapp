@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:todoapp/Views/widget/todotileFolder.dart';
+import 'package:todoapp/authentication/auth.provider.dart';
 
 import '../data/localDatabase.dart';
+import '../models/folder.task.model.dart';
 import 'widget/dialogbox.dart';
 
 class HomePageContent extends StatefulWidget {
@@ -24,20 +26,20 @@ class _HomePageContentState extends State<HomePageContent> {
 
   @override
   void initState() {
-    // if this is the first time opening the app
-    // then create the default data
-    if (myBox.isEmpty) {
+    //must execute to check foldertask empty or not
+    db.loadData();
+    //if folder exist, this task will be ignore
+    if (db.folderTask.isEmpty) {
+      // if this is the first time opening the app
+      // then create the default data
       db.createInitialData();
-    } else {
-      // there already exist data
-      db.loadData();
     }
     super.initState();
   }
 
   void saveNewFolder() {
     setState(() {
-      db.folderList.add(_controller.text);
+      db.folderTask.add(FolderTask(name: _controller.text, task: []));
       _controller.clear();
     });
     Navigator.of(context).pop();
@@ -46,7 +48,7 @@ class _HomePageContentState extends State<HomePageContent> {
 
   void _deleteFolder(int index) {
     setState(() {
-      db.folderList.removeAt(index);
+      db.folderTask.removeAt(index);
     });
     db.updateDatabase();
   }
@@ -61,6 +63,11 @@ class _HomePageContentState extends State<HomePageContent> {
             onCancel: () => Navigator.of(context).pop(),
           );
         });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
@@ -83,13 +90,30 @@ class _HomePageContentState extends State<HomePageContent> {
                     ),
                   ),
                 ),
+                Align(
+                  alignment: Alignment.topRight,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      AuthProvider.instance.signOut(context);
+                    },
+                    child: Text(
+                      'Logout',
+                      style: TextStyle(
+                        fontFamily: 'poppins',
+                        fontWeight: FontWeight.w600,
+                        fontSize: 20,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
+                ),
                 Expanded(
                   child: ListView.builder(
-                      padding: EdgeInsets.only(top: 20, bottom: 20),
-                      itemCount: db.folderList.length,
+                      padding: const EdgeInsets.only(top: 20, bottom: 20),
+                      itemCount: db.folderTask.length,
                       itemBuilder: (context, index) {
                         return ToDoTile(
-                          folderName: db.folderList[index],
+                          folderName: db.folderTask[index].name!,
                           deleteFunction: (context) => _deleteFolder(index),
                         );
                       }),

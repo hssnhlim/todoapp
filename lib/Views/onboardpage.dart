@@ -15,21 +15,21 @@ class OnboardPage extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset('assets/images/Vector.png'),
-              SizedBox(
+              Flexible(child: Image.asset('assets/images/Vector.png')),
+              const SizedBox(
                 height: 60,
               ),
-              Text(
+              const Text(
                 'To Do App',
                 style: TextStyle(
                     fontFamily: 'poppins',
                     fontWeight: FontWeight.w600,
                     fontSize: 25),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
-              Text(
+              const Text(
                 'List all your important tasks without missing it.',
                 style: TextStyle(
                     fontFamily: 'poppins',
@@ -37,7 +37,7 @@ class OnboardPage extends StatelessWidget {
                     fontSize: 20),
                 textAlign: TextAlign.center,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 122,
               ),
               ElevatedButton(
@@ -48,6 +48,12 @@ class OnboardPage extends StatelessWidget {
                           builder: (context) => const RegisterPage()),
                     );
                   },
+                  style: ButtonStyle(
+                      elevation: MaterialStateProperty.all(0),
+                      backgroundColor: MaterialStateProperty.all(Colors.black),
+                      fixedSize: MaterialStateProperty.all(Size(335, 54)),
+                      shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10)))),
                   child: const Text(
                     'Get Started',
                     style: TextStyle(
@@ -56,13 +62,7 @@ class OnboardPage extends StatelessWidget {
                         fontWeight: FontWeight.w400,
                         fontSize: 20,
                         letterSpacing: 1),
-                  ),
-                  style: ButtonStyle(
-                      elevation: MaterialStateProperty.all(0),
-                      backgroundColor: MaterialStateProperty.all(Colors.black),
-                      fixedSize: MaterialStateProperty.all(Size(335, 54)),
-                      shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10)))))
+                  ))
             ],
           ),
         ),

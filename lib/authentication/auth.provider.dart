@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:todoapp/authentication/landing.dart';
 
 class AuthProvider extends ChangeNotifier {
   //listen user exist or not
@@ -27,5 +28,13 @@ class AuthProvider extends ChangeNotifier {
         .createUserWithEmailAndPassword(email: email, password: password)
         .then((value) =>
             {FirebaseAuth.instance.currentUser!.updateDisplayName(name)});
+  }
+
+  Future<void> signOut(BuildContext context) async {
+    await FirebaseAuth.instance.signOut();
+    Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => LandingPage()),
+        (route) => false);
   }
 }
