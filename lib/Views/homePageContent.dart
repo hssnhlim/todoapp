@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:todoapp/Views/folderPage.dart';
 import 'package:todoapp/Views/widget/todotileFolder.dart';
 import 'package:todoapp/authentication/auth.provider.dart';
 
@@ -39,8 +40,12 @@ class _HomePageContentState extends State<HomePageContent> {
 
   void saveNewFolder() {
     setState(() {
-      db.folderTask.add(FolderTask(name: _controller.text, task: []));
-      _controller.clear();
+      if (_controller.text.isNotEmpty) {
+        db.folderTask.add(FolderTask(name: _controller.text, task: []));
+        _controller.clear();
+      } else {
+        () => Navigator.of(context).pop();
+      }
     });
     Navigator.of(context).pop();
     db.updateDatabase();
@@ -58,10 +63,12 @@ class _HomePageContentState extends State<HomePageContent> {
         context: context,
         builder: (context) {
           return DialogBox(
-            addNewFolderController: _controller,
-            onSave: saveNewFolder,
-            onCancel: () => Navigator.of(context).pop(),
-          );
+              addNewFolderController: _controller,
+              onSave: saveNewFolder,
+              onCancel: () {
+                Navigator.of(context).pop();
+                _controller.clear();
+              });
         });
   }
 
@@ -75,7 +82,8 @@ class _HomePageContentState extends State<HomePageContent> {
     return Scaffold(
         body: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+            padding:
+                const EdgeInsets.only(left: 30, right: 30, top: 20, bottom: 0),
             child: Column(
               children: [
                 Align(
@@ -112,9 +120,20 @@ class _HomePageContentState extends State<HomePageContent> {
                       padding: const EdgeInsets.only(top: 20, bottom: 20),
                       itemCount: db.folderTask.length,
                       itemBuilder: (context, index) {
-                        return ToDoTile(
-                          folderName: db.folderTask[index].name!,
-                          deleteFunction: (context) => _deleteFolder(index),
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => FolderPage(
+                                        foldertask: db.folderTask[index],
+                                      )),
+                            );
+                          },
+                          child: ToDoTile(
+                            folderName: db.folderTask[index].name!,
+                            deleteFunction: (context) => _deleteFolder(index),
+                          ),
                         );
                       }),
                 ),

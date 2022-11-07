@@ -20,6 +20,8 @@ class _LoginPageState extends State<LoginPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
+  bool obscureText = true;
+
   @override
   void initState() {
     super.initState();
@@ -119,7 +121,7 @@ class _LoginPageState extends State<LoginPage> {
                           height: 20,
                         ),
                         TextFormField(
-                          obscureText: true,
+                          obscureText: obscureText,
                           style: TextStyle(
                               fontFamily: 'poppins',
                               fontWeight: FontWeight.w400,
@@ -127,6 +129,18 @@ class _LoginPageState extends State<LoginPage> {
                               color: Colors.black),
                           // The validator receives the text that the user has entered.
                           decoration: InputDecoration(
+                              suffixIcon: GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      obscureText = !obscureText;
+                                    });
+                                  },
+                                  child: Icon(
+                                    obscureText
+                                        ? Icons.visibility_off_outlined
+                                        : Icons.visibility_outlined,
+                                    color: Colors.black,
+                                  )),
                               prefixIcon: Icon(
                                 Icons.password_outlined,
                                 color: Colors.black,

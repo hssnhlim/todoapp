@@ -4,21 +4,22 @@ class Task {
   bool? reminder;
   String? dateTime;
   String? path;
+  bool? isChecked = false;
 
   Task(
       {required this.name,
       required this.note,
       required this.reminder,
       required this.dateTime,
-      required this.path});
+      required this.path,
+      this.isChecked});
   factory Task.fromJson(json) {
     return Task(
-        name: json['name'],
-        note: json['note'],
-        reminder: json['reminder'],
-        dateTime: json['dateTime'],
-        path: json['path']);
+      name: json['name'],
+      note: json['note'],
+      reminder: json['reminder'],
+      dateTime: json['dateTime'],
+      path: json['path'],
+    );
   }
 }
-
-

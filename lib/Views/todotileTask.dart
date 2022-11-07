@@ -2,18 +2,15 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:hive/hive.dart';
-import 'package:todoapp/models/folder.task.model.dart';
 
-import '../folderPage.dart';
-
-class ToDoTile extends StatelessWidget {
-  ToDoTile({super.key, required this.folderName, required this.deleteFunction});
-
-  final String folderName;
+class ToDoTileTask extends StatelessWidget {
+  ToDoTileTask(
+      {super.key, required this.taskName, required this.deleteFunction});
 
   Function(BuildContext)? deleteFunction;
-  // final FolderTask folderTask;
+
+  final String taskName;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -41,7 +38,7 @@ class ToDoTile extends StatelessWidget {
           child:
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             Text(
-              folderName,
+              taskName,
               style: TextStyle(
                   fontFamily: 'poppins',
                   fontWeight: FontWeight.w400,
@@ -52,5 +49,6 @@ class ToDoTile extends StatelessWidget {
         ),
       ),
     );
+    ;
   }
 }

@@ -30,6 +30,7 @@ class DialogBox extends StatelessWidget {
           children: [
             TextButton(
                 style: ButtonStyle(
+                    side: MaterialStateProperty.all(BorderSide(width: 1)),
                     shape: MaterialStateProperty.all(RoundedRectangleBorder(
                         side: BorderSide(color: Colors.black, width: 2),
                         borderRadius: BorderRadius.circular(10))),
@@ -48,6 +49,7 @@ class DialogBox extends StatelessWidget {
             ),
             TextButton(
                 style: ButtonStyle(
+                    side: MaterialStateProperty.all(BorderSide(width: 0)),
                     shape: MaterialStateProperty.all(RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10))),
                     backgroundColor: MaterialStateProperty.all(Colors.black)),
@@ -73,18 +75,20 @@ class DialogBox extends StatelessWidget {
             color: Colors.black),
         // The validator receives the text that the user has entered.
         decoration: InputDecoration(
-          filled: true,
-          fillColor: Colors.white,
-          hintText: 'Enter your folder name',
+          prefixIcon: Icon(
+            Icons.create_new_folder_outlined,
+            color: Colors.black,
+          ),
+          hintText: 'Folder name',
           hintStyle: TextStyle(
               fontFamily: 'poppins',
               fontWeight: FontWeight.w400,
               fontSize: 15,
               color: Color(0xff929292)),
-          focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.black, width: 2.5)),
-          enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.black, width: 2.5)),
+          focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: Colors.black, width: 1)),
+          enabledBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: Colors.black, width: 1)),
         ),
         controller: addNewFolderController!,
       ),

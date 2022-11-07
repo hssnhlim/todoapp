@@ -21,6 +21,8 @@ class _RegisterPageState extends State<RegisterPage> {
   final nameController = TextEditingController();
   final passwordController = TextEditingController();
 
+  bool obscureText = true;
+
   Future addUserDetails(String name, String email, String phone) async {
     await FirebaseFirestore.instance.collection('users').add({
       'name': name,
@@ -244,7 +246,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           height: 20,
                         ),
                         TextFormField(
-                          obscureText: true,
+                          obscureText: obscureText,
                           style: TextStyle(
                               fontFamily: 'poppins',
                               fontWeight: FontWeight.w400,
@@ -252,6 +254,18 @@ class _RegisterPageState extends State<RegisterPage> {
                               color: Colors.black),
                           // The validator receives the text that the user has entered.
                           decoration: InputDecoration(
+                              suffixIcon: GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      obscureText = !obscureText;
+                                    });
+                                  },
+                                  child: Icon(
+                                    obscureText
+                                        ? Icons.visibility_off_outlined
+                                        : Icons.visibility_outlined,
+                                    color: Colors.black,
+                                  )),
                               errorStyle: TextStyle(
                                   fontFamily: 'poppins',
                                   fontWeight: FontWeight.w400,
