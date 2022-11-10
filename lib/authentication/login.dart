@@ -49,7 +49,7 @@ class _LoginPageState extends State<LoginPage> {
                         horizontal: 30, vertical: 20),
                     child: Column(
                       children: [
-                        Align(
+                        const Align(
                           alignment: Alignment.topLeft,
                           child: Text(
                             'Sign In',
@@ -61,8 +61,8 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ),
                         ),
-                        SizedBox(height: 20),
-                        Text(
+                        const SizedBox(height: 20),
+                        const Text(
                           'Sign in now to list all your important tasks',
                           style: TextStyle(
                             fontFamily: 'poppins',
@@ -71,17 +71,17 @@ class _LoginPageState extends State<LoginPage> {
                             color: Colors.black,
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 40,
                         ),
                         TextFormField(
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontFamily: 'poppins',
                               fontWeight: FontWeight.w400,
                               fontSize: 15,
                               color: Colors.black),
                           // The validator receives the text that the user has entered.
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             prefixIcon:
                                 Icon(Icons.email_outlined, color: Colors.black),
                             filled: true,
@@ -117,12 +117,12 @@ class _LoginPageState extends State<LoginPage> {
                             return null;
                           },
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
                         TextFormField(
                           obscureText: obscureText,
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontFamily: 'poppins',
                               fontWeight: FontWeight.w400,
                               fontSize: 15,
@@ -141,30 +141,30 @@ class _LoginPageState extends State<LoginPage> {
                                         : Icons.visibility_outlined,
                                     color: Colors.black,
                                   )),
-                              prefixIcon: Icon(
+                              prefixIcon: const Icon(
                                 Icons.password_outlined,
                                 color: Colors.black,
                               ),
                               filled: true,
                               fillColor: Colors.white,
                               hintText: 'Enter Password',
-                              hintStyle: TextStyle(
+                              hintStyle: const TextStyle(
                                   fontFamily: 'poppins',
                                   fontWeight: FontWeight.w400,
                                   fontSize: 15,
                                   color: Color(0xff929292)),
-                              focusedBorder: OutlineInputBorder(
+                              focusedBorder: const OutlineInputBorder(
                                   borderSide: BorderSide(
                                       color: Colors.black, width: 2.5)),
-                              enabledBorder: OutlineInputBorder(
+                              enabledBorder: const OutlineInputBorder(
                                   borderSide: BorderSide(
                                       color: Colors.black, width: 2.5)),
-                              errorBorder: OutlineInputBorder(
+                              errorBorder: const OutlineInputBorder(
                                   borderSide: BorderSide(
                                       color: Colors.red,
                                       style: BorderStyle.solid,
                                       width: 2.5)),
-                              focusedErrorBorder: OutlineInputBorder(
+                              focusedErrorBorder: const OutlineInputBorder(
                                   borderSide: BorderSide(
                                       color: Colors.red,
                                       style: BorderStyle.solid,
@@ -177,7 +177,7 @@ class _LoginPageState extends State<LoginPage> {
                             return null;
                           },
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                         Align(
@@ -191,7 +191,7 @@ class _LoginPageState extends State<LoginPage> {
                                         const ForgotPasswordPage()),
                               );
                             },
-                            child: Text(
+                            child: const Text(
                               'Forgot Password?',
                               style: TextStyle(
                                   fontFamily: 'poopins',
@@ -201,99 +201,113 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 43,
                         ),
-                        ElevatedButton(
-                            onPressed: () async {
-                              // Validate returns true if the form is valid, or false otherwise.
-                              if (_formKey.currentState!.validate()) {
-                                try {
-                                  await Provider.of<AuthProvider>(context,
-                                          listen: false)
-                                      .login(emailController.text.trim(),
-                                          passwordController.text.trim());
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => const HomePage()),
-                                  );
-                                } on FirebaseAuthException catch (e) {
-                                  showDialog(
-                                      context: context,
-                                      builder: (context) => AlertDialog(
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(10)),
-                                            contentTextStyle: TextStyle(
-                                                color: Colors.black,
-                                                fontFamily: 'poppins',
-                                                fontWeight: FontWeight.w400,
-                                                fontSize: 15),
-                                            actionsPadding:
-                                                const EdgeInsets.fromLTRB(
-                                                    0, 0, 20, 10),
-                                            contentPadding:
-                                                const EdgeInsets.all(20),
-                                            content: Text(
-                                              e.message!,
-                                            ),
-                                            actions: [
-                                              TextButton(
-                                                  style: ButtonStyle(
-                                                      shape: MaterialStateProperty.all(
-                                                          RoundedRectangleBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          10))),
-                                                      backgroundColor:
-                                                          MaterialStateProperty
-                                                              .all(Colors
-                                                                  .black)),
-                                                  onPressed: () =>
-                                                      Navigator.pop(context),
-                                                  child: Text(
-                                                    'Okay',
-                                                    style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontFamily: 'poppins',
-                                                        fontWeight:
-                                                            FontWeight.w400,
-                                                        fontSize: 15),
-                                                  ))
-                                            ],
-                                          ));
-                                }
-                              }
-                            },
-                            child: const Text(
-                              'Sign In',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontFamily: 'poppins',
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 20,
-                                  letterSpacing: 1),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: ElevatedButton(
+                                  onPressed: () async {
+                                    // Validate returns true if the form is valid, or false otherwise.
+                                    if (_formKey.currentState!.validate()) {
+                                      try {
+                                        await Provider.of<AuthProvider>(context,
+                                                listen: false)
+                                            .login(emailController.text.trim(),
+                                                passwordController.text.trim());
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const HomePage()),
+                                        );
+                                      } on FirebaseAuthException catch (e) {
+                                        showDialog(
+                                            context: context,
+                                            builder: (context) => AlertDialog(
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10)),
+                                                  contentTextStyle:
+                                                      const TextStyle(
+                                                          color: Colors.black,
+                                                          fontFamily: 'poppins',
+                                                          fontWeight:
+                                                              FontWeight.w400,
+                                                          fontSize: 15),
+                                                  actionsPadding:
+                                                      const EdgeInsets.fromLTRB(
+                                                          0, 0, 20, 10),
+                                                  contentPadding:
+                                                      const EdgeInsets.all(20),
+                                                  content: Text(
+                                                    e.message!,
+                                                  ),
+                                                  actions: [
+                                                    TextButton(
+                                                        style: ButtonStyle(
+                                                            shape: MaterialStateProperty.all(
+                                                                RoundedRectangleBorder(
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            10))),
+                                                            backgroundColor:
+                                                                MaterialStateProperty
+                                                                    .all(Colors
+                                                                        .black)),
+                                                        onPressed: () =>
+                                                            Navigator.pop(
+                                                                context),
+                                                        child: const Text(
+                                                          'Okay',
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.white,
+                                                              fontFamily:
+                                                                  'poppins',
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w400,
+                                                              fontSize: 15),
+                                                        ))
+                                                  ],
+                                                ));
+                                      }
+                                    }
+                                  },
+                                  child: Text(
+                                    'Sign In',
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontFamily: 'poppins',
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 20,
+                                        letterSpacing: 1),
+                                  ),
+                                  style: ButtonStyle(
+                                      elevation: MaterialStateProperty.all(0),
+                                      backgroundColor:
+                                          MaterialStateProperty.all(
+                                              Colors.black),
+                                      fixedSize: MaterialStateProperty.all(
+                                          const Size(0, 54)),
+                                      shape: MaterialStateProperty.all(
+                                          RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10))))),
                             ),
-                            style: ButtonStyle(
-                                elevation: MaterialStateProperty.all(0),
-                                backgroundColor:
-                                    MaterialStateProperty.all(Colors.black),
-                                fixedSize:
-                                    MaterialStateProperty.all(Size(335, 54)),
-                                shape: MaterialStateProperty.all(
-                                    RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10))))),
+                          ],
+                        ),
                         Expanded(child: Container()),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text('Don\'t have an account?',
+                            const Text('Don\'t have an account?',
                                 style: TextStyle(
                                   fontFamily: 'poopins',
                                   fontWeight: FontWeight.w400,
@@ -308,7 +322,7 @@ class _LoginPageState extends State<LoginPage> {
                                           const RegisterPage()),
                                 );
                               },
-                              child: Text(' Sign Up',
+                              child: const Text(' Sign Up',
                                   style: TextStyle(
                                     fontFamily: 'poopins',
                                     fontWeight: FontWeight.w600,

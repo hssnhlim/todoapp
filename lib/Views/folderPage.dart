@@ -27,7 +27,7 @@ class _FolderPageState extends State<FolderPage> {
 
   void _deleteTask(int index) {
     setState(() {
-      db.folderTask.removeAt(index);
+      widget.foldertask.task.removeAt(index);
     });
     db.updateDatabase();
   }
@@ -38,7 +38,7 @@ class _FolderPageState extends State<FolderPage> {
         appBar: AppBar(
           backgroundColor: Color(0xffF3F3F3),
           title: Text(
-            widget.foldertask.name! + ' Folder',
+            widget.foldertask.name! + ' 📂',
             style:
                 TextStyle(fontFamily: 'poppins', fontWeight: FontWeight.w500),
           ),
@@ -49,7 +49,7 @@ class _FolderPageState extends State<FolderPage> {
                   const EdgeInsets.only(left: 30, right: 30, top: 0, bottom: 0),
               child: ListView.builder(
                   padding: const EdgeInsets.only(top: 20, bottom: 20),
-                  itemCount: 50,
+                  itemCount: 5,
                   itemBuilder: (context, index) {
                     return ToDoTileTask(
                       taskName: 'Task Name',
@@ -64,8 +64,10 @@ class _FolderPageState extends State<FolderPage> {
           onPressed: () {
             showModalBottomSheet(
                 isScrollControlled: true,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)),
+                shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(10),
+                        topRight: Radius.circular(10))),
                 context: context,
                 builder: (context) => AddNewTaskPage());
           },

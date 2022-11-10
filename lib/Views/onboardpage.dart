@@ -40,29 +40,37 @@ class OnboardPage extends StatelessWidget {
               const SizedBox(
                 height: 122,
               ),
-              ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const RegisterPage()),
-                    );
-                  },
-                  style: ButtonStyle(
-                      elevation: MaterialStateProperty.all(0),
-                      backgroundColor: MaterialStateProperty.all(Colors.black),
-                      fixedSize: MaterialStateProperty.all(Size(335, 54)),
-                      shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10)))),
-                  child: const Text(
-                    'Get Started',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontFamily: 'poppins',
-                        fontWeight: FontWeight.w400,
-                        fontSize: 20,
-                        letterSpacing: 1),
-                  ))
+              Row(
+                children: [
+                  Expanded(
+                    child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const RegisterPage()),
+                          );
+                        },
+                        style: ButtonStyle(
+                            elevation: MaterialStateProperty.all(0),
+                            backgroundColor:
+                                MaterialStateProperty.all(Colors.black),
+                            fixedSize: MaterialStateProperty.all(Size(0, 54)),
+                            shape: MaterialStateProperty.all(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10)))),
+                        child: const Text(
+                          'Get Started',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontFamily: 'poppins',
+                              fontWeight: FontWeight.w400,
+                              fontSize: 20,
+                              letterSpacing: 1),
+                        )),
+                  ),
+                ],
+              )
             ],
           ),
         ),

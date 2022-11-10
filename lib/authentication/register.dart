@@ -242,12 +242,12 @@ class _RegisterPageState extends State<RegisterPage> {
                             return null;
                           },
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
                         TextFormField(
                           obscureText: obscureText,
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontFamily: 'poppins',
                               fontWeight: FontWeight.w400,
                               fontSize: 15,
@@ -272,30 +272,30 @@ class _RegisterPageState extends State<RegisterPage> {
                                   fontStyle: FontStyle.italic,
                                   fontSize: 12,
                                   color: Colors.red[400]),
-                              prefixIcon: Icon(
+                              prefixIcon: const Icon(
                                 Icons.password_outlined,
                                 color: Colors.black,
                               ),
                               filled: true,
                               fillColor: Colors.white,
                               hintText: 'Enter Password',
-                              hintStyle: TextStyle(
+                              hintStyle: const TextStyle(
                                   fontFamily: 'poppins',
                                   fontWeight: FontWeight.w400,
                                   fontSize: 15,
                                   color: Color(0xff929292)),
-                              focusedBorder: OutlineInputBorder(
+                              focusedBorder: const OutlineInputBorder(
                                   borderSide: BorderSide(
                                       color: Colors.black, width: 2.5)),
-                              enabledBorder: OutlineInputBorder(
+                              enabledBorder: const OutlineInputBorder(
                                   borderSide: BorderSide(
                                       color: Colors.black, width: 2.5)),
-                              errorBorder: OutlineInputBorder(
+                              errorBorder: const OutlineInputBorder(
                                   borderSide: BorderSide(
                                       color: Colors.red,
                                       style: BorderStyle.solid,
                                       width: 2.5)),
-                              focusedErrorBorder: OutlineInputBorder(
+                              focusedErrorBorder: const OutlineInputBorder(
                                   borderSide: BorderSide(
                                       color: Colors.red,
                                       style: BorderStyle.solid,
@@ -312,101 +312,114 @@ class _RegisterPageState extends State<RegisterPage> {
                             return null;
                           },
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 53,
                         ),
-                        ElevatedButton(
-                            onPressed: () async {
-                              // Validate returns true if the form is valid, or false otherwise.
-                              if (_formKey.currentState!.validate()) {
-                                try {
-                                  await Provider.of<AuthProvider>(context,
-                                          listen: false)
-                                      .register(
-                                    nameController.text.trim(),
-                                    emailController.text.trim(),
-                                    phoneController.text.trim(),
-                                    passwordController.text.trim(),
-                                  );
+                        Row(
+                          children: [
+                            Expanded(
+                              child: ElevatedButton(
+                                  onPressed: () async {
+                                    // Validate returns true if the form is valid, or false otherwise.
+                                    if (_formKey.currentState!.validate()) {
+                                      try {
+                                        await Provider.of<AuthProvider>(context,
+                                                listen: false)
+                                            .register(
+                                          nameController.text.trim(),
+                                          emailController.text.trim(),
+                                          phoneController.text.trim(),
+                                          passwordController.text.trim(),
+                                        );
 
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => const HomePage()),
-                                  );
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const HomePage()),
+                                        );
 
-                                  addUserDetails(
-                                      nameController.text.trim(),
-                                      emailController.text.trim(),
-                                      phoneController.text.trim());
-                                } on FirebaseAuthException catch (e) {
-                                  showDialog(
-                                      context: context,
-                                      builder: (context) => AlertDialog(
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(10)),
-                                            contentTextStyle: TextStyle(
-                                                color: Colors.black,
-                                                fontFamily: 'poppins',
-                                                fontWeight: FontWeight.w400,
-                                                fontSize: 15),
-                                            actionsPadding:
-                                                const EdgeInsets.fromLTRB(
-                                                    0, 0, 20, 10),
-                                            contentPadding:
-                                                const EdgeInsets.all(20),
-                                            content: Text(
-                                              e.message!,
-                                            ),
-                                            actions: [
-                                              TextButton(
-                                                  style: ButtonStyle(
-                                                      shape: MaterialStateProperty.all(
-                                                          RoundedRectangleBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          10))),
-                                                      backgroundColor:
-                                                          MaterialStateProperty
-                                                              .all(Colors
-                                                                  .black)),
-                                                  onPressed: () =>
-                                                      Navigator.pop(context),
-                                                  child: Text(
-                                                    'Okay',
-                                                    style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontFamily: 'poppins',
-                                                        fontWeight:
-                                                            FontWeight.w400,
-                                                        fontSize: 15),
-                                                  ))
-                                            ],
-                                          ));
-                                }
-                              }
-                            },
-                            child: const Text(
-                              'Sign Up',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontFamily: 'poppins',
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 20,
-                                  letterSpacing: 1),
+                                        addUserDetails(
+                                            nameController.text.trim(),
+                                            emailController.text.trim(),
+                                            phoneController.text.trim());
+                                      } on FirebaseAuthException catch (e) {
+                                        showDialog(
+                                            context: context,
+                                            builder: (context) => AlertDialog(
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10)),
+                                                  contentTextStyle: TextStyle(
+                                                      color: Colors.black,
+                                                      fontFamily: 'poppins',
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                      fontSize: 15),
+                                                  actionsPadding:
+                                                      const EdgeInsets.fromLTRB(
+                                                          0, 0, 20, 10),
+                                                  contentPadding:
+                                                      const EdgeInsets.all(20),
+                                                  content: Text(
+                                                    e.message!,
+                                                  ),
+                                                  actions: [
+                                                    TextButton(
+                                                        style: ButtonStyle(
+                                                            shape: MaterialStateProperty.all(
+                                                                RoundedRectangleBorder(
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            10))),
+                                                            backgroundColor:
+                                                                MaterialStateProperty
+                                                                    .all(Colors
+                                                                        .black)),
+                                                        onPressed: () =>
+                                                            Navigator.pop(
+                                                                context),
+                                                        child: Text(
+                                                          'Okay',
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.white,
+                                                              fontFamily:
+                                                                  'poppins',
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w400,
+                                                              fontSize: 15),
+                                                        ))
+                                                  ],
+                                                ));
+                                      }
+                                    }
+                                  },
+                                  child: const Text(
+                                    'Sign Up',
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontFamily: 'poppins',
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 20,
+                                        letterSpacing: 1),
+                                  ),
+                                  style: ButtonStyle(
+                                      elevation: MaterialStateProperty.all(0),
+                                      backgroundColor:
+                                          MaterialStateProperty.all(
+                                              Colors.black),
+                                      fixedSize: MaterialStateProperty.all(
+                                          Size(0, 54)),
+                                      shape: MaterialStateProperty.all(
+                                          RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10))))),
                             ),
-                            style: ButtonStyle(
-                                elevation: MaterialStateProperty.all(0),
-                                backgroundColor:
-                                    MaterialStateProperty.all(Colors.black),
-                                fixedSize:
-                                    MaterialStateProperty.all(Size(335, 54)),
-                                shape: MaterialStateProperty.all(
-                                    RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10))))),
+                          ],
+                        ),
                         Expanded(child: Container()),
                         SizedBox(
                           height: 20,

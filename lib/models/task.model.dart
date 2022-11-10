@@ -1,24 +1,27 @@
 class Task {
   String? name;
   String? note;
-  bool? reminder;
-  String? dateTime;
+  bool? reminderDate;
+  bool? repeat;
   String? path;
   bool? isChecked = false;
+  String? reminderTime;
 
   Task(
       {required this.name,
       required this.note,
-      required this.reminder,
-      required this.dateTime,
+      required this.reminderDate,
+      required this.repeat,
       required this.path,
+      required this.reminderTime,
       this.isChecked});
   factory Task.fromJson(json) {
     return Task(
       name: json['name'],
       note: json['note'],
-      reminder: json['reminder'],
-      dateTime: json['dateTime'],
+      reminderDate: json['reminderDate'],
+      reminderTime: json['reminderTime'],
+      repeat: json['repeat'],
       path: json['path'],
     );
   }

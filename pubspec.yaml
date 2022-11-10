@@ -45,6 +45,8 @@ dependencies:
   google_nav_bar: ^5.0.6
   modal_bottom_sheet: ^2.1.2
   intl: ^0.17.0
+  dotted_border: ^2.0.0+3
+  file_picker: ^5.2.2
 
 dev_dependencies:
   flutter_test:

@@ -15,14 +15,14 @@ class DialogBox extends StatelessWidget {
   Widget build(BuildContext context) {
     return AlertDialog(
       title: Text(
-        'Add Folder:',
+        'Add New Folder:',
         style: TextStyle(
             color: Colors.black,
             fontFamily: 'poppins',
             fontWeight: FontWeight.w500,
             fontSize: 20),
       ),
-      actionsPadding: const EdgeInsets.fromLTRB(0, 0, 20, 10),
+      actionsPadding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
       contentPadding: const EdgeInsets.all(20),
       actions: [
         Row(
@@ -49,7 +49,6 @@ class DialogBox extends StatelessWidget {
             ),
             TextButton(
                 style: ButtonStyle(
-                    side: MaterialStateProperty.all(BorderSide(width: 0)),
                     shape: MaterialStateProperty.all(RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10))),
                     backgroundColor: MaterialStateProperty.all(Colors.black)),
