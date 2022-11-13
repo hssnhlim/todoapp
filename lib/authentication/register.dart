@@ -51,7 +51,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         horizontal: 30, vertical: 20),
                     child: Column(
                       children: [
-                        Align(
+                        const Align(
                           alignment: Alignment.topLeft,
                           child: Text(
                             'Sign Up',
@@ -63,8 +63,8 @@ class _RegisterPageState extends State<RegisterPage> {
                             ),
                           ),
                         ),
-                        SizedBox(height: 20),
-                        Text(
+                        const SizedBox(height: 20),
+                        const Text(
                           'Sign up now to list all your important tasks',
                           style: TextStyle(
                             fontFamily: 'poppins',
@@ -73,11 +73,11 @@ class _RegisterPageState extends State<RegisterPage> {
                             color: Colors.black,
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 40,
                         ),
                         TextFormField(
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontFamily: 'poppins',
                               fontWeight: FontWeight.w400,
                               fontSize: 15,
@@ -90,28 +90,28 @@ class _RegisterPageState extends State<RegisterPage> {
                                 fontStyle: FontStyle.italic,
                                 fontSize: 12,
                                 color: Colors.red[400]),
-                            prefixIcon:
-                                Icon(Icons.person_outline, color: Colors.black),
+                            prefixIcon: const Icon(Icons.person_outline,
+                                color: Colors.black),
                             filled: true,
                             fillColor: Colors.white,
                             hintText: 'Enter Name',
-                            hintStyle: TextStyle(
+                            hintStyle: const TextStyle(
                                 fontFamily: 'poppins',
                                 fontWeight: FontWeight.w400,
                                 fontSize: 15,
                                 color: Color(0xff929292)),
-                            focusedBorder: OutlineInputBorder(
+                            focusedBorder: const OutlineInputBorder(
                                 borderSide: BorderSide(
                                     color: Colors.black, width: 2.5)),
-                            enabledBorder: OutlineInputBorder(
+                            enabledBorder: const OutlineInputBorder(
                                 borderSide: BorderSide(
                                     color: Colors.black, width: 2.5)),
-                            errorBorder: OutlineInputBorder(
+                            errorBorder: const OutlineInputBorder(
                                 borderSide: BorderSide(
                                     color: Colors.red,
                                     style: BorderStyle.solid,
                                     width: 2.5)),
-                            focusedErrorBorder: OutlineInputBorder(
+                            focusedErrorBorder: const OutlineInputBorder(
                                 borderSide: BorderSide(
                                     color: Colors.red,
                                     style: BorderStyle.solid,
@@ -128,11 +128,11 @@ class _RegisterPageState extends State<RegisterPage> {
                             return null;
                           },
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
                         TextFormField(
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontFamily: 'poppins',
                               fontWeight: FontWeight.w400,
                               fontSize: 15,
@@ -145,28 +145,28 @@ class _RegisterPageState extends State<RegisterPage> {
                                 fontStyle: FontStyle.italic,
                                 fontSize: 12,
                                 color: Colors.red[400]),
-                            prefixIcon:
-                                Icon(Icons.email_outlined, color: Colors.black),
+                            prefixIcon: const Icon(Icons.email_outlined,
+                                color: Colors.black),
                             filled: true,
                             fillColor: Colors.white,
                             hintText: 'Enter Email',
-                            hintStyle: TextStyle(
+                            hintStyle: const TextStyle(
                                 fontFamily: 'poppins',
                                 fontWeight: FontWeight.w400,
                                 fontSize: 15,
                                 color: Color(0xff929292)),
-                            focusedBorder: OutlineInputBorder(
+                            focusedBorder: const OutlineInputBorder(
                                 borderSide: BorderSide(
                                     color: Colors.black, width: 2.5)),
-                            enabledBorder: OutlineInputBorder(
+                            enabledBorder: const OutlineInputBorder(
                                 borderSide: BorderSide(
                                     color: Colors.black, width: 2.5)),
-                            errorBorder: OutlineInputBorder(
+                            errorBorder: const OutlineInputBorder(
                                 borderSide: BorderSide(
                                     color: Colors.red,
                                     style: BorderStyle.solid,
                                     width: 2.5)),
-                            focusedErrorBorder: OutlineInputBorder(
+                            focusedErrorBorder: const OutlineInputBorder(
                                 borderSide: BorderSide(
                                     color: Colors.red,
                                     style: BorderStyle.solid,
@@ -182,11 +182,11 @@ class _RegisterPageState extends State<RegisterPage> {
                             return null;
                           },
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
                         TextFormField(
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontFamily: 'poppins',
                               fontWeight: FontWeight.w400,
                               fontSize: 15,
@@ -199,28 +199,28 @@ class _RegisterPageState extends State<RegisterPage> {
                                 fontStyle: FontStyle.italic,
                                 fontSize: 12,
                                 color: Colors.red[400]),
-                            prefixIcon:
-                                Icon(Icons.phone_outlined, color: Colors.black),
+                            prefixIcon: const Icon(Icons.phone_outlined,
+                                color: Colors.black),
                             filled: true,
                             fillColor: Colors.white,
                             hintText: 'Digit only and without space',
-                            hintStyle: TextStyle(
+                            hintStyle: const TextStyle(
                                 fontFamily: 'poppins',
                                 fontWeight: FontWeight.w400,
                                 fontSize: 15,
                                 color: Color(0xff929292)),
-                            focusedBorder: OutlineInputBorder(
+                            focusedBorder: const OutlineInputBorder(
                                 borderSide: BorderSide(
                                     color: Colors.black, width: 2.5)),
-                            enabledBorder: OutlineInputBorder(
+                            enabledBorder: const OutlineInputBorder(
                                 borderSide: BorderSide(
                                     color: Colors.black, width: 2.5)),
-                            errorBorder: OutlineInputBorder(
+                            errorBorder: const OutlineInputBorder(
                                 borderSide: BorderSide(
                                     color: Colors.red,
                                     style: BorderStyle.solid,
                                     width: 2.5)),
-                            focusedErrorBorder: OutlineInputBorder(
+                            focusedErrorBorder: const OutlineInputBorder(
                                 borderSide: BorderSide(
                                     color: Colors.red,
                                     style: BorderStyle.solid,
@@ -351,12 +351,13 @@ class _RegisterPageState extends State<RegisterPage> {
                                                       borderRadius:
                                                           BorderRadius.circular(
                                                               10)),
-                                                  contentTextStyle: TextStyle(
-                                                      color: Colors.black,
-                                                      fontFamily: 'poppins',
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                      fontSize: 15),
+                                                  contentTextStyle:
+                                                      const TextStyle(
+                                                          color: Colors.black,
+                                                          fontFamily: 'poppins',
+                                                          fontWeight:
+                                                              FontWeight.w400,
+                                                          fontSize: 15),
                                                   actionsPadding:
                                                       const EdgeInsets.fromLTRB(
                                                           0, 0, 20, 10),
@@ -380,7 +381,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                                         onPressed: () =>
                                                             Navigator.pop(
                                                                 context),
-                                                        child: Text(
+                                                        child: const Text(
                                                           'Okay',
                                                           style: TextStyle(
                                                               color:
@@ -397,15 +398,6 @@ class _RegisterPageState extends State<RegisterPage> {
                                       }
                                     }
                                   },
-                                  child: const Text(
-                                    'Sign Up',
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontFamily: 'poppins',
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 20,
-                                        letterSpacing: 1),
-                                  ),
                                   style: ButtonStyle(
                                       elevation: MaterialStateProperty.all(0),
                                       backgroundColor:
@@ -416,18 +408,27 @@ class _RegisterPageState extends State<RegisterPage> {
                                       shape: MaterialStateProperty.all(
                                           RoundedRectangleBorder(
                                               borderRadius:
-                                                  BorderRadius.circular(10))))),
+                                                  BorderRadius.circular(10)))),
+                                  child: const Text(
+                                    'Sign Up',
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontFamily: 'poppins',
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 20,
+                                        letterSpacing: 1),
+                                  )),
                             ),
                           ],
                         ),
                         Expanded(child: Container()),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text('Already have an account?',
+                            const Text('Already have an account?',
                                 style: TextStyle(
                                   fontFamily: 'poopins',
                                   fontWeight: FontWeight.w400,
@@ -441,7 +442,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                       builder: (context) => const LoginPage()),
                                 );
                               },
-                              child: Text(' Sign In',
+                              child: const Text(' Sign In',
                                   style: TextStyle(
                                     fontFamily: 'poopins',
                                     fontWeight: FontWeight.w600,

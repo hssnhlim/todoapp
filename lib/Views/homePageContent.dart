@@ -24,6 +24,9 @@ class _HomePageContentState extends State<HomePageContent> {
   // List folderList = [];
 
   final _controller = TextEditingController();
+  final searchController = TextEditingController();
+
+  bool isIconVisible = false;
 
   @override
   void initState() {
@@ -86,7 +89,7 @@ class _HomePageContentState extends State<HomePageContent> {
                 const EdgeInsets.only(left: 30, right: 30, top: 20, bottom: 0),
             child: Column(
               children: [
-                Align(
+                const Align(
                   alignment: Alignment.topLeft,
                   child: Text(
                     'Tasks',
@@ -98,23 +101,77 @@ class _HomePageContentState extends State<HomePageContent> {
                     ),
                   ),
                 ),
-                Align(
-                  alignment: Alignment.topRight,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      AuthProvider.instance.signOut(context);
-                    },
-                    child: Text(
-                      'Logout',
-                      style: TextStyle(
-                        fontFamily: 'poppins',
-                        fontWeight: FontWeight.w600,
-                        fontSize: 20,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
+                const SizedBox(
+                  height: 20,
                 ),
+                TextFormField(
+                  style: const TextStyle(
+                    fontFamily: 'poppins',
+                    fontWeight: FontWeight.w400,
+                    fontSize: 15,
+                  ),
+                  cursorColor: Colors.black,
+                  decoration: InputDecoration(
+                      suffixIcon: IconButton(
+                          onPressed: () {
+                            if (searchController.text.isNotEmpty) {
+                              setState(() {
+                                isIconVisible = isIconVisible;
+                              });
+                            } else {
+                              setState(() {
+                                isIconVisible = !isIconVisible;
+                              });
+                            }
+                            searchController.clear();
+                          },
+                          icon: Icon(
+                            searchController.text.isNotEmpty
+                                ? Icons.clear
+                                : null,
+                            color: Colors.black.withOpacity(.7),
+                            size: 20,
+                          )),
+                      contentPadding: const EdgeInsets.all(10),
+                      prefixIcon: const Icon(
+                        Icons.search,
+                        color: Colors.grey,
+                      ),
+                      fillColor: Colors.grey.shade200,
+                      filled: true,
+                      hintText: 'Search',
+                      hintStyle: const TextStyle(
+                          fontFamily: 'poppins',
+                          fontWeight: FontWeight.w400,
+                          fontSize: 15,
+                          color: Colors.grey),
+                      focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide:
+                              const BorderSide(color: Colors.transparent)),
+                      enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide:
+                              const BorderSide(color: Colors.transparent))),
+                  controller: searchController,
+                ),
+                // Align(
+                //   alignment: Alignment.topRight,
+                //   child: ElevatedButton(
+                //     onPressed: () {
+                //       AuthProvider.instance.signOut(context);
+                //     },
+                //     child: const Text(
+                //       'Logout',
+                //       style: TextStyle(
+                //         fontFamily: 'poppins',
+                //         fontWeight: FontWeight.w600,
+                //         fontSize: 20,
+                //         color: Colors.black,
+                //       ),
+                //     ),
+                //   ),
+                // ),
                 Expanded(
                   child: ListView.builder(
                       padding: const EdgeInsets.only(top: 20, bottom: 20),
@@ -148,7 +205,7 @@ class _HomePageContentState extends State<HomePageContent> {
           onPressed: () {
             createNewFolder();
           },
-          child: Icon(Icons.add),
+          child: const Icon(Icons.add),
         ));
   }
 }

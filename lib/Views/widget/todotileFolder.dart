@@ -20,7 +20,7 @@ class ToDoTile extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 20),
       child: Slidable(
         endActionPane: ActionPane(
-          motion: BehindMotion(),
+          motion: const BehindMotion(),
           children: [
             SlidableAction(
               onPressed: deleteFunction,
@@ -42,7 +42,7 @@ class ToDoTile extends StatelessWidget {
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             Text(
               folderName,
-              style: TextStyle(
+              style: const TextStyle(
                   fontFamily: 'poppins',
                   fontWeight: FontWeight.w400,
                   fontSize: 20),

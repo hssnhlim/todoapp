@@ -1,9 +1,12 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:dotted_border/dotted_border.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:open_filex/open_filex.dart';
+import 'package:todoapp/Views/widget/uploadFileUI.dart';
 
 class AddNewTaskPage extends StatefulWidget {
   const AddNewTaskPage({super.key});
@@ -27,6 +30,8 @@ class _AddNewTaskPageState extends State<AddNewTaskPage> {
   String? valueRepeat;
 
   PlatformFile? pickedFile;
+
+  List<File>? files;
 
   @override
   Widget build(BuildContext context) {
@@ -126,7 +131,7 @@ class _AddNewTaskPageState extends State<AddNewTaskPage> {
             controller: notesController,
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return '';
+                return 'Notes null';
               }
             },
           ),
@@ -423,40 +428,111 @@ class _AddNewTaskPageState extends State<AddNewTaskPage> {
             height: 20,
           ),
           if (pickedFile != null)
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            Column(
               children: [
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Image.file(
-                      File(pickedFile!.path!),
-                      width: 50,
-                      height: 50,
-                      fit: BoxFit.cover,
-                    ),
-                    const SizedBox(
-                      width: 15,
-                    ),
-                    Text(
-                      pickedFile!.name,
-                      style: const TextStyle(
-                        fontFamily: 'poppins',
-                        fontWeight: FontWeight.w400,
-                        fontSize: 15,
+                    GestureDetector(
+                      onTap: () {
+                        OpenFilex.open(pickedFile!.path);
+                      },
+                      child: Row(
+                        children: [
+                          // Image.file(
+                          //   File(pickedFile!.path!),
+                          //   width: 50,
+                          //   height: 50,
+                          //   fit: BoxFit.cover,
+                          // ),
+                          const SizedBox(
+                            width: 15,
+                          ),
+                          Text(
+                            pickedFile!.name,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              fontFamily: 'poppins',
+                              fontWeight: FontWeight.w400,
+                              fontSize: 15,
+                            ),
+                          )
+                        ],
                       ),
-                    )
+                    ),
+                    IconButton(
+                      onPressed: () {},
+                      icon: Icon(
+                        Icons.clear,
+                        size: 20,
+                        color: Colors.black.withOpacity(.7),
+                      ),
+                    ),
                   ],
                 ),
-                IconButton(
-                  onPressed: () {},
-                  icon: Icon(
-                    Icons.clear,
-                    size: 20,
-                    color: Colors.black.withOpacity(.7),
-                  ),
-                )
+                Container(
+                    width: double.maxFinite,
+                    height: 1,
+                    decoration: BoxDecoration(
+                        color: Colors.grey.shade300,
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(2.5)))),
               ],
-            )
+            ),
+          const SizedBox(
+            height: 30,
+          ),
+          Row(
+            children: [
+              Expanded(
+                child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    style: ButtonStyle(
+                        elevation: MaterialStateProperty.all(0),
+                        backgroundColor:
+                            MaterialStateProperty.all(Colors.white),
+                        fixedSize: MaterialStateProperty.all(const Size(0, 54)),
+                        shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10))),
+                        side: MaterialStateProperty.all(
+                            const BorderSide(color: Colors.black))),
+                    child: const Text(
+                      'Cancel',
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontFamily: 'poppins',
+                          fontWeight: FontWeight.w400,
+                          fontSize: 15,
+                          letterSpacing: 1),
+                    )),
+              ),
+              const SizedBox(
+                width: 20,
+              ),
+              Expanded(
+                child: ElevatedButton(
+                    onPressed: () {},
+                    style: ButtonStyle(
+                        elevation: MaterialStateProperty.all(0),
+                        backgroundColor:
+                            MaterialStateProperty.all(Colors.black),
+                        fixedSize: MaterialStateProperty.all(const Size(0, 54)),
+                        shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10)))),
+                    child: const Text(
+                      'Add Task',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontFamily: 'poppins',
+                          fontWeight: FontWeight.w400,
+                          fontSize: 15,
+                          letterSpacing: 1),
+                    )),
+              ),
+            ],
+          )
         ]),
       ),
     );
@@ -464,11 +540,14 @@ class _AddNewTaskPageState extends State<AddNewTaskPage> {
 
   // Method for Select File
   Future selectFile() async {
-    final result = await FilePicker.platform.pickFiles();
+    final result = await FilePicker.platform.pickFiles(
+      allowMultiple: true,
+    );
     if (result == null) return;
 
     setState(() {
       pickedFile = result.files.first;
+      files = result.paths.map((path) => File(path.toString())).toList();
     });
   }
 }
