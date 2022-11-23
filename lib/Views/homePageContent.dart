@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:todoapp/Views/folderPage.dart';
 import 'package:todoapp/Views/widget/todotileFolder.dart';
-import 'package:todoapp/authentication/auth.provider.dart';
 
 import '../data/localDatabase.dart';
 import '../models/folder.task.model.dart';

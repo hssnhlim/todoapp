@@ -10,7 +10,7 @@ class TimeLinePage extends StatefulWidget {
 class _TimeLinePageState extends State<TimeLinePage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: Text('Timeline page'),
     );
   }

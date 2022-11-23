@@ -2,14 +2,9 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:hive/hive.dart';
 import 'package:todoapp/Views/homePageContent.dart';
 import 'package:todoapp/Views/profilePage.dart';
 import 'package:todoapp/Views/timelinePage.dart';
-import 'package:todoapp/Views/widget/dialogbox.dart';
-import 'package:todoapp/Views/widget/todotileFolder.dart';
-import 'package:todoapp/authentication/login.dart';
-import 'package:todoapp/data/localDatabase.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -28,7 +23,11 @@ class _HomePageState extends State<HomePage> {
   }
 
 // List of pages for nav bar
-  final tabs = [HomePageContent(), TimeLinePage(), ProfilePage()];
+  final tabs = [
+    const HomePageContent(),
+    const TimeLinePage(),
+    const ProfilePage()
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -41,10 +40,10 @@ class _HomePageState extends State<HomePage> {
               BoxShadow(
                   color: Colors.grey.withOpacity(.8),
                   blurRadius: 7,
-                  offset: Offset(0, 3),
+                  offset: const Offset(0, 3),
                   spreadRadius: 5)
             ],
-            borderRadius: BorderRadius.only(
+            borderRadius: const BorderRadius.only(
                 topRight: Radius.circular(20), topLeft: Radius.circular(20))),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15),
@@ -56,10 +55,10 @@ class _HomePageState extends State<HomePage> {
                   .primaries[Random().nextInt(Colors.primaries.length)]
                   .shade100,
               gap: 10,
-              padding: EdgeInsets.all(15),
+              padding: const EdgeInsets.all(15),
               onTabChange: navigateBtmNavBar,
               curve: Curves.easeInCubic,
-              tabs: [
+              tabs: const [
                 GButton(
                   icon: Icons.home,
                   text: 'Home',

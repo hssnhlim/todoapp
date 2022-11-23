@@ -2,10 +2,6 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:hive/hive.dart';
-import 'package:todoapp/models/folder.task.model.dart';
-
-import '../folderPage.dart';
 
 class ToDoTile extends StatelessWidget {
   ToDoTile({super.key, required this.folderName, required this.deleteFunction});
@@ -47,7 +43,7 @@ class ToDoTile extends StatelessWidget {
                   fontWeight: FontWeight.w400,
                   fontSize: 20),
             ),
-            Icon(Icons.keyboard_arrow_right_outlined)
+            const Icon(Icons.keyboard_arrow_right_outlined)
           ]),
         ),
       ),

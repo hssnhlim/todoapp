@@ -11,10 +11,10 @@ class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
 
   @override
-  _RegisterPageState createState() => _RegisterPageState();
+  RegisterPageState createState() => RegisterPageState();
 }
 
-class _RegisterPageState extends State<RegisterPage> {
+class RegisterPageState extends State<RegisterPage> {
   final _formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final phoneController = TextEditingController();
@@ -326,18 +326,19 @@ class _RegisterPageState extends State<RegisterPage> {
                                         await Provider.of<AuthProvider>(context,
                                                 listen: false)
                                             .register(
-                                          nameController.text.trim(),
-                                          emailController.text.trim(),
-                                          phoneController.text.trim(),
-                                          passwordController.text.trim(),
-                                        );
-
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const HomePage()),
-                                        );
+                                              nameController.text.trim(),
+                                              emailController.text.trim(),
+                                              phoneController.text.trim(),
+                                              passwordController.text.trim(),
+                                            )
+                                            .then((value) => {
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            const HomePage()),
+                                                  )
+                                                });
 
                                         addUserDetails(
                                             nameController.text.trim(),
@@ -404,7 +405,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                           MaterialStateProperty.all(
                                               Colors.black),
                                       fixedSize: MaterialStateProperty.all(
-                                          Size(0, 54)),
+                                          const Size(0, 54)),
                                       shape: MaterialStateProperty.all(
                                           RoundedRectangleBorder(
                                               borderRadius:

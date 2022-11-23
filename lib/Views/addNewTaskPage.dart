@@ -1,8 +1,8 @@
 import 'dart:io';
-import 'dart:math';
 
 import 'package:dotted_border/dotted_border.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:open_filex/open_filex.dart';
@@ -115,6 +115,8 @@ class _AddNewTaskPageState extends State<AddNewTaskPage> {
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Please enter task name!';
+                } else {
+                  return null;
                 }
               },
             ),
@@ -150,6 +152,8 @@ class _AddNewTaskPageState extends State<AddNewTaskPage> {
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Notes null';
+                } else {
+                  return null;
                 }
               },
             ),
@@ -216,6 +220,8 @@ class _AddNewTaskPageState extends State<AddNewTaskPage> {
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return '';
+                } else {
+                  return null;
                 }
               },
             ),
@@ -300,6 +306,8 @@ class _AddNewTaskPageState extends State<AddNewTaskPage> {
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return '';
+                } else {
+                  return null;
                 }
               },
             ),
@@ -373,6 +381,8 @@ class _AddNewTaskPageState extends State<AddNewTaskPage> {
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return '';
+                } else {
+                  return null;
                 }
               },
             ),
@@ -549,7 +559,9 @@ class _AddNewTaskPageState extends State<AddNewTaskPage> {
       pickedFile = result.files.first;
       files = result.paths.map((path) => File(path!)).toList();
     });
-    print(result.names);
+    if (kDebugMode) {
+      print(result.names);
+    }
   }
 
   void removeSelectedFile(int index) {

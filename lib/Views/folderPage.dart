@@ -1,17 +1,12 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:todoapp/Views/addNewTaskPage.dart';
 import 'package:todoapp/Views/todotileTask.dart';
-import 'package:todoapp/Views/widget/dialogbox.dart';
 import 'package:todoapp/data/localDatabase.dart';
 import 'package:todoapp/models/folder.task.model.dart';
 
-import '../authentication/auth.provider.dart';
-
 class FolderPage extends StatefulWidget {
-  FolderPage({super.key, required this.foldertask});
+  const FolderPage({super.key, required this.foldertask});
 
   final FolderTask foldertask;
 
@@ -36,11 +31,11 @@ class _FolderPageState extends State<FolderPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Color(0xffF3F3F3),
+          backgroundColor: const Color(0xffF3F3F3),
           title: Text(
-            widget.foldertask.name! + ' 📂',
-            style:
-                TextStyle(fontFamily: 'poppins', fontWeight: FontWeight.w500),
+            '${widget.foldertask.name!} 📂',
+            style: const TextStyle(
+                fontFamily: 'poppins', fontWeight: FontWeight.w500),
           ),
         ),
         body: SafeArea(
@@ -69,9 +64,9 @@ class _FolderPageState extends State<FolderPage> {
                         topLeft: Radius.circular(10),
                         topRight: Radius.circular(10))),
                 context: context,
-                builder: (context) => AddNewTaskPage());
+                builder: (context) => const AddNewTaskPage());
           },
-          child: Icon(Icons.add),
+          child: const Icon(Icons.add),
         ));
   }
 }
