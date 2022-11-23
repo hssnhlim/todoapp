@@ -186,6 +186,7 @@ class RegisterPageState extends State<RegisterPage> {
                           height: 20,
                         ),
                         TextFormField(
+                          keyboardType: TextInputType.phone,
                           style: const TextStyle(
                               fontFamily: 'poppins',
                               fontWeight: FontWeight.w400,
