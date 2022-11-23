@@ -469,7 +469,7 @@ class _AddNewTaskPageState extends State<AddNewTaskPage> {
               height: 20,
             ),
             if (pickedFile != null)
-              Container(
+              SizedBox(
                 height: 100,
                 child: ListView.builder(
                     shrinkWrap: true,
