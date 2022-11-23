@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:dotted_border/dotted_border.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
@@ -29,7 +28,7 @@ class _AddNewTaskPageState extends State<AddNewTaskPage> {
 
   String? valueRepeat;
 
-  PlatformFile? pickedFile;
+  List<PlatformFile>? pickedFile;
 
   List<File>? files;
 
@@ -56,7 +55,7 @@ class _AddNewTaskPageState extends State<AddNewTaskPage> {
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 20),
         child: SingleChildScrollView(
-          child: Column(children: [
+          child: Column(mainAxisSize: MainAxisSize.min, children: [
             // Container(
             //   width: 80,
             //   height: 5,
@@ -470,15 +469,17 @@ class _AddNewTaskPageState extends State<AddNewTaskPage> {
               height: 20,
             ),
             if (pickedFile != null)
-              SizedBox(
-                height: 50,
+              Container(
+                height: 100,
                 child: ListView.builder(
-                    itemCount: files!.length,
+                    shrinkWrap: true,
+                    primary: false,
+                    itemCount: pickedFile!.length,
                     itemBuilder: (context, index) {
                       return uploadFileUI(
-                        name: pickedFile!.name,
+                        name: pickedFile![index].name,
                         openFile: () {
-                          OpenFilex.open(pickedFile!.path);
+                          OpenFilex.open(pickedFile![index].path);
                         },
                       );
                     }),
@@ -554,9 +555,9 @@ class _AddNewTaskPageState extends State<AddNewTaskPage> {
     );
     if (result == null) return;
     // int index = files!.length;
-
+    print(result.files.length);
     setState(() {
-      pickedFile = result.files.first;
+      pickedFile = result.files;
       files = result.paths.map((path) => File(path!)).toList();
     });
     if (kDebugMode) {
