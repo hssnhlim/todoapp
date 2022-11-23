@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todoapp/authentication/auth.provider.dart';
-import 'package:todoapp/authentication/landing.dart';
 import 'package:todoapp/authentication/register.dart';
 
 import '../Views/forgotpasswordpage.dart';
@@ -12,10 +11,10 @@ class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
 
   @override
-  _LoginPageState createState() => _LoginPageState();
+  LoginPageState createState() => LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
@@ -216,6 +215,8 @@ class _LoginPageState extends State<LoginPage> {
                                                 listen: false)
                                             .login(emailController.text.trim(),
                                                 passwordController.text.trim());
+                                        if (!mounted) return;
+
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
@@ -277,15 +278,6 @@ class _LoginPageState extends State<LoginPage> {
                                       }
                                     }
                                   },
-                                  child: Text(
-                                    'Sign In',
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontFamily: 'poppins',
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 20,
-                                        letterSpacing: 1),
-                                  ),
                                   style: ButtonStyle(
                                       elevation: MaterialStateProperty.all(0),
                                       backgroundColor:
@@ -296,7 +288,16 @@ class _LoginPageState extends State<LoginPage> {
                                       shape: MaterialStateProperty.all(
                                           RoundedRectangleBorder(
                                               borderRadius:
-                                                  BorderRadius.circular(10))))),
+                                                  BorderRadius.circular(10)))),
+                                  child: const Text(
+                                    'Sign In',
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontFamily: 'poppins',
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 20,
+                                        letterSpacing: 1),
+                                  )),
                             ),
                           ],
                         ),

@@ -3,10 +3,6 @@ import 'dart:math';
 import 'package:drop_shadow/drop_shadow.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:hive/hive.dart';
-import 'package:todoapp/models/folder.task.model.dart';
-
-import '../folderPage.dart';
 
 class ToDoTile extends StatelessWidget {
   ToDoTile({super.key, required this.folderName, required this.deleteFunction});

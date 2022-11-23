@@ -30,10 +30,11 @@ class AuthProvider extends ChangeNotifier {
   }
 
   Future<void> signOut(BuildContext context) async {
-    await FirebaseAuth.instance.signOut();
-    Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (context) => LandingPage()),
-        (route) => false);
+    await FirebaseAuth.instance.signOut().then((value) => {
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => const LandingPage()),
+              (route) => false)
+        });
   }
 }

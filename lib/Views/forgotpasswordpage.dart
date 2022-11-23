@@ -26,7 +26,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
           builder: (context) => AlertDialog(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10)),
-                contentTextStyle: TextStyle(
+                contentTextStyle: const TextStyle(
                   color: Colors.black,
                   fontFamily: 'poppins',
                   fontWeight: FontWeight.w400,
@@ -34,7 +34,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                 ),
                 actionsPadding: const EdgeInsets.fromLTRB(0, 0, 20, 10),
                 contentPadding: const EdgeInsets.all(20),
-                content: Text(
+                content: const Text(
                   'Successfully sent!',
                 ),
               ));
@@ -46,7 +46,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
           builder: (context) => AlertDialog(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10)),
-                contentTextStyle: TextStyle(
+                contentTextStyle: const TextStyle(
                     color: Colors.black,
                     fontFamily: 'poppins',
                     fontWeight: FontWeight.w400,
@@ -65,7 +65,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                           backgroundColor:
                               MaterialStateProperty.all(Colors.black)),
                       onPressed: () => Navigator.pop(context),
-                      child: Text(
+                      child: const Text(
                         'Okay',
                         style: TextStyle(
                             color: Colors.white,
@@ -82,7 +82,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'Forgot Password',
           style: TextStyle(
             fontFamily: 'poppins',
@@ -96,7 +96,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
           child: Column(children: [
-            Text(
+            const Text(
               'Enter your email. We will send password reset link.',
               style: TextStyle(
                 fontFamily: 'poppins',
@@ -105,17 +105,17 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                 color: Colors.black,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             TextFormField(
-              style: TextStyle(
+              style: const TextStyle(
                   fontFamily: 'poppins',
                   fontWeight: FontWeight.w400,
                   fontSize: 15,
                   color: Colors.black),
               // The validator receives the text that the user has entered.
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 prefixIcon: Icon(Icons.email_outlined, color: Colors.black),
                 filled: true,
                 fillColor: Colors.white,
@@ -148,7 +148,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                 return null;
               },
             ),
-            SizedBox(
+            const SizedBox(
               height: 40,
             ),
             ElevatedButton(
@@ -166,7 +166,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                 style: ButtonStyle(
                     elevation: MaterialStateProperty.all(0),
                     backgroundColor: MaterialStateProperty.all(Colors.black),
-                    fixedSize: MaterialStateProperty.all(Size(167.5, 54)),
+                    fixedSize: MaterialStateProperty.all(const Size(167.5, 54)),
                     shape: MaterialStateProperty.all(RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10))))),
           ]),

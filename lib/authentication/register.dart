@@ -11,10 +11,10 @@ class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
 
   @override
-  _RegisterPageState createState() => _RegisterPageState();
+  RegisterPageState createState() => RegisterPageState();
 }
 
-class _RegisterPageState extends State<RegisterPage> {
+class RegisterPageState extends State<RegisterPage> {
   final _formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final phoneController = TextEditingController();
@@ -186,6 +186,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           height: 20,
                         ),
                         TextFormField(
+                          keyboardType: TextInputType.phone,
                           style: const TextStyle(
                               fontFamily: 'poppins',
                               fontWeight: FontWeight.w400,
@@ -326,18 +327,19 @@ class _RegisterPageState extends State<RegisterPage> {
                                         await Provider.of<AuthProvider>(context,
                                                 listen: false)
                                             .register(
-                                          nameController.text.trim(),
-                                          emailController.text.trim(),
-                                          phoneController.text.trim(),
-                                          passwordController.text.trim(),
-                                        );
-
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const HomePage()),
-                                        );
+                                              nameController.text.trim(),
+                                              emailController.text.trim(),
+                                              phoneController.text.trim(),
+                                              passwordController.text.trim(),
+                                            )
+                                            .then((value) => {
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            const HomePage()),
+                                                  )
+                                                });
 
                                         addUserDetails(
                                             nameController.text.trim(),

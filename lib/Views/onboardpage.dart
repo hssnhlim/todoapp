@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:todoapp/authentication/login.dart';
 import 'package:todoapp/authentication/register.dart';
 
 class OnboardPage extends StatelessWidget {

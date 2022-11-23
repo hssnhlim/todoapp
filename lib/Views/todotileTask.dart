@@ -17,7 +17,7 @@ class ToDoTileTask extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 20),
       child: Slidable(
         endActionPane: ActionPane(
-          motion: BehindMotion(),
+          motion: const BehindMotion(),
           children: [
             SlidableAction(
               onPressed: deleteFunction,
@@ -52,11 +52,10 @@ class ToDoTileTask extends StatelessWidget {
                   fontWeight: FontWeight.w400,
                   fontSize: 20),
             ),
-            Icon(Icons.keyboard_arrow_right_outlined)
+            const Icon(Icons.keyboard_arrow_right_outlined)
           ]),
         ),
       ),
     );
-    ;
   }
 }

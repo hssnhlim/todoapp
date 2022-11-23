@@ -1,13 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:todoapp/Views/forgotpasswordpage.dart';
-import 'package:todoapp/Views/homepage.dart';
-import 'package:todoapp/Views/onboardpage.dart';
 import 'package:todoapp/authentication/auth.provider.dart';
-import 'package:todoapp/authentication/login.dart';
 import 'package:todoapp/firebase_options.dart';
 
 import 'authentication/landing.dart';
@@ -43,7 +38,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
         theme: ThemeData(
-          scaffoldBackgroundColor: Color(0xffF3F3F3),
+          scaffoldBackgroundColor: const Color(0xffF3F3F3),
           useMaterial3: true,
           primarySwatch: Colors.blue,
         ),

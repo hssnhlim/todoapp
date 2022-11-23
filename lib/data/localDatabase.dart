@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:math';
 
 import 'package:hive/hive.dart';
 import 'package:todoapp/authentication/auth.provider.dart';
@@ -38,12 +37,12 @@ class ToDoDatabase {
   void updateDatabase() {
     List folderJson = [];
 
-    folderTask.forEach((todo) {
+    for (var todo in folderTask) {
       folderJson.add({
         "name": todo.name,
         "task": todo.task,
       });
-    });
+    }
 
     var data = jsonEncode(folderJson);
     myBox.put(key, data);
