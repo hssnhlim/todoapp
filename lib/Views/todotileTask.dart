@@ -32,6 +32,14 @@ class ToDoTileTask extends StatelessWidget {
           width: double.maxFinite,
           height: 79,
           decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                    color: Colors.grey.withOpacity(0.4),
+                    spreadRadius: 1,
+                    blurRadius: 5,
+                    offset: const Offset(5, 5) // changes position of shadow
+                    ),
+              ],
               color: Colors.primaries[Random().nextInt(Colors.primaries.length)]
                   .shade200,
               borderRadius: BorderRadius.circular(8)),
@@ -39,7 +47,7 @@ class ToDoTileTask extends StatelessWidget {
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             Text(
               taskName,
-              style: TextStyle(
+              style: const TextStyle(
                   fontFamily: 'poppins',
                   fontWeight: FontWeight.w400,
                   fontSize: 20),

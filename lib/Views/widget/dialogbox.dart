@@ -14,7 +14,7 @@ class DialogBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(
+      title: const Text(
         'Add New Folder:',
         style: TextStyle(
             color: Colors.black,
@@ -36,7 +36,7 @@ class DialogBox extends StatelessWidget {
                         borderRadius: BorderRadius.circular(10))),
                     backgroundColor: MaterialStateProperty.all(Colors.white)),
                 onPressed: onCancel,
-                child: Text(
+                child: const Text(
                   'Cancel',
                   style: TextStyle(
                       color: Colors.black,
@@ -44,7 +44,7 @@ class DialogBox extends StatelessWidget {
                       fontWeight: FontWeight.w400,
                       fontSize: 15),
                 )),
-            SizedBox(
+            const SizedBox(
               width: 10,
             ),
             TextButton(
@@ -53,7 +53,7 @@ class DialogBox extends StatelessWidget {
                         borderRadius: BorderRadius.circular(10))),
                     backgroundColor: MaterialStateProperty.all(Colors.black)),
                 onPressed: onSave,
-                child: Text(
+                child: const Text(
                   'Okay',
                   style: TextStyle(
                       color: Colors.white,
@@ -64,16 +64,17 @@ class DialogBox extends StatelessWidget {
           ],
         ),
       ],
-      backgroundColor: Color(0xffF3F3F3),
+      backgroundColor: const Color(0xffF3F3F3),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       content: TextFormField(
-        style: TextStyle(
+        minLines: 1, maxLines: 2,
+        style: const TextStyle(
             fontFamily: 'poppins',
             fontWeight: FontWeight.w400,
             fontSize: 15,
             color: Colors.black),
         // The validator receives the text that the user has entered.
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
           prefixIcon: Icon(
             Icons.create_new_folder_outlined,
             color: Colors.black,

@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:drop_shadow/drop_shadow.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:hive/hive.dart';
@@ -35,19 +36,31 @@ class ToDoTile extends StatelessWidget {
           width: double.maxFinite,
           height: 79,
           decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                    color: Colors.grey.withOpacity(0.4),
+                    spreadRadius: 1,
+                    blurRadius: 5,
+                    offset: const Offset(5, 5) // changes position of shadow
+                    ),
+              ],
               color: Colors.primaries[Random().nextInt(Colors.primaries.length)]
                   .shade200,
               borderRadius: BorderRadius.circular(8)),
           child:
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-            Text(
-              folderName,
-              style: const TextStyle(
-                  fontFamily: 'poppins',
-                  fontWeight: FontWeight.w400,
-                  fontSize: 20),
+            Expanded(
+              child: Text(
+                folderName,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+                style: const TextStyle(
+                    fontFamily: 'poppins',
+                    fontWeight: FontWeight.w400,
+                    fontSize: 20),
+              ),
             ),
-            Icon(Icons.keyboard_arrow_right_outlined)
+            const Icon(Icons.keyboard_arrow_right_outlined)
           ]),
         ),
       ),

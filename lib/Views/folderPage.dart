@@ -22,6 +22,10 @@ class FolderPage extends StatefulWidget {
 class _FolderPageState extends State<FolderPage> {
   ToDoDatabase db = ToDoDatabase();
 
+  final searchController = TextEditingController();
+
+  bool isIconVisible = false;
+
   // reference the hive box
   final myBox = Hive.box('ToDoDatabase');
 
@@ -45,17 +49,80 @@ class _FolderPageState extends State<FolderPage> {
         ),
         body: SafeArea(
           child: Padding(
-              padding:
-                  const EdgeInsets.only(left: 30, right: 30, top: 0, bottom: 0),
-              child: ListView.builder(
-                  padding: const EdgeInsets.only(top: 20, bottom: 20),
-                  itemCount: 5,
-                  itemBuilder: (context, index) {
-                    return ToDoTileTask(
-                      taskName: 'Task Name',
-                      deleteFunction: (context) => _deleteTask(index),
-                    );
-                  })),
+            padding:
+                const EdgeInsets.only(left: 30, right: 20, top: 0, bottom: 0),
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 10.0),
+                  child: TextFormField(
+                    style: const TextStyle(
+                      fontFamily: 'poppins',
+                      fontWeight: FontWeight.w400,
+                      fontSize: 15,
+                    ),
+                    cursorColor: Colors.black,
+                    decoration: InputDecoration(
+                        suffixIcon: IconButton(
+                            onPressed: () {
+                              if (searchController.text.isNotEmpty) {
+                                setState(() {
+                                  isIconVisible = isIconVisible;
+                                });
+                              } else {
+                                setState(() {
+                                  isIconVisible = !isIconVisible;
+                                });
+                              }
+                              searchController.clear();
+                            },
+                            icon: Icon(
+                              searchController.text.isNotEmpty
+                                  ? Icons.clear
+                                  : null,
+                              color: Colors.black.withOpacity(.7),
+                              size: 20,
+                            )),
+                        contentPadding: const EdgeInsets.all(10),
+                        prefixIcon: const Icon(
+                          Icons.search,
+                          color: Colors.grey,
+                        ),
+                        fillColor: Colors.grey.shade200,
+                        filled: true,
+                        hintText: 'Search',
+                        hintStyle: const TextStyle(
+                            fontFamily: 'poppins',
+                            fontWeight: FontWeight.w400,
+                            fontSize: 15,
+                            color: Colors.grey),
+                        focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide:
+                                const BorderSide(color: Colors.transparent)),
+                        enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide:
+                                const BorderSide(color: Colors.transparent))),
+                    controller: searchController,
+                  ),
+                ),
+                Expanded(
+                  child: ListView.builder(
+                      padding:
+                          const EdgeInsets.only(top: 20, bottom: 20, right: 10),
+                      // itemCount: widget.foldertask.task.length,
+                      itemCount: 20,
+                      itemBuilder: (context, index) {
+                        return ToDoTileTask(
+                          taskName: 'Task Name',
+                          deleteFunction: (context) => _deleteTask(index),
+                        );
+                      }),
+                )
+              ],
+            ),
+          ),
         ),
         floatingActionButton: FloatingActionButton(
           shape:
@@ -64,14 +131,14 @@ class _FolderPageState extends State<FolderPage> {
           onPressed: () {
             showModalBottomSheet(
                 isScrollControlled: true,
-                shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(10),
-                        topRight: Radius.circular(10))),
+                // shape: const RoundedRectangleBorder(
+                //     borderRadius: BorderRadius.only(
+                //         topLeft: Radius.circular(10),
+                //         topRight: Radius.circular(10))),
                 context: context,
-                builder: (context) => AddNewTaskPage());
+                builder: (context) => const AddNewTaskPage());
           },
-          child: Icon(Icons.add),
+          child: const Icon(Icons.add),
         ));
   }
 }

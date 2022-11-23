@@ -20,9 +20,9 @@ class _LandingPageState extends State<LandingPage> {
   Widget build(BuildContext context) {
     var user = Provider.of<AuthProvider>(context).user;
     if (user == null) {
-      return OnboardPage();
+      return const OnboardPage();
     } else {
-      return HomePage();
+      return const HomePage();
     }
   }
 }

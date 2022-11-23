@@ -63,6 +63,7 @@ class _HomePageContentState extends State<HomePageContent> {
 
   void createNewFolder() {
     showDialog(
+        barrierDismissible: false,
         context: context,
         builder: (context) {
           return DialogBox(
@@ -86,7 +87,7 @@ class _HomePageContentState extends State<HomePageContent> {
         body: SafeArea(
           child: Padding(
             padding:
-                const EdgeInsets.only(left: 30, right: 30, top: 20, bottom: 0),
+                const EdgeInsets.only(left: 30, right: 20, top: 20, bottom: 0),
             child: Column(
               children: [
                 const Align(
@@ -104,56 +105,59 @@ class _HomePageContentState extends State<HomePageContent> {
                 const SizedBox(
                   height: 20,
                 ),
-                TextFormField(
-                  style: const TextStyle(
-                    fontFamily: 'poppins',
-                    fontWeight: FontWeight.w400,
-                    fontSize: 15,
+                Padding(
+                  padding: const EdgeInsets.only(right: 10),
+                  child: TextFormField(
+                    style: const TextStyle(
+                      fontFamily: 'poppins',
+                      fontWeight: FontWeight.w400,
+                      fontSize: 15,
+                    ),
+                    cursorColor: Colors.black,
+                    decoration: InputDecoration(
+                        suffixIcon: IconButton(
+                            onPressed: () {
+                              if (searchController.text.isNotEmpty) {
+                                setState(() {
+                                  isIconVisible = isIconVisible;
+                                });
+                              } else {
+                                setState(() {
+                                  isIconVisible = !isIconVisible;
+                                });
+                              }
+                              searchController.clear();
+                            },
+                            icon: Icon(
+                              searchController.text.isNotEmpty
+                                  ? Icons.clear
+                                  : null,
+                              color: Colors.black.withOpacity(.7),
+                              size: 20,
+                            )),
+                        contentPadding: const EdgeInsets.all(10),
+                        prefixIcon: const Icon(
+                          Icons.search,
+                          color: Colors.grey,
+                        ),
+                        fillColor: Colors.grey.shade200,
+                        filled: true,
+                        hintText: 'Search',
+                        hintStyle: const TextStyle(
+                            fontFamily: 'poppins',
+                            fontWeight: FontWeight.w400,
+                            fontSize: 15,
+                            color: Colors.grey),
+                        focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide:
+                                const BorderSide(color: Colors.transparent)),
+                        enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide:
+                                const BorderSide(color: Colors.transparent))),
+                    controller: searchController,
                   ),
-                  cursorColor: Colors.black,
-                  decoration: InputDecoration(
-                      suffixIcon: IconButton(
-                          onPressed: () {
-                            if (searchController.text.isNotEmpty) {
-                              setState(() {
-                                isIconVisible = isIconVisible;
-                              });
-                            } else {
-                              setState(() {
-                                isIconVisible = !isIconVisible;
-                              });
-                            }
-                            searchController.clear();
-                          },
-                          icon: Icon(
-                            searchController.text.isNotEmpty
-                                ? Icons.clear
-                                : null,
-                            color: Colors.black.withOpacity(.7),
-                            size: 20,
-                          )),
-                      contentPadding: const EdgeInsets.all(10),
-                      prefixIcon: const Icon(
-                        Icons.search,
-                        color: Colors.grey,
-                      ),
-                      fillColor: Colors.grey.shade200,
-                      filled: true,
-                      hintText: 'Search',
-                      hintStyle: const TextStyle(
-                          fontFamily: 'poppins',
-                          fontWeight: FontWeight.w400,
-                          fontSize: 15,
-                          color: Colors.grey),
-                      focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide:
-                              const BorderSide(color: Colors.transparent)),
-                      enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide:
-                              const BorderSide(color: Colors.transparent))),
-                  controller: searchController,
                 ),
                 // Align(
                 //   alignment: Alignment.topRight,
@@ -174,7 +178,8 @@ class _HomePageContentState extends State<HomePageContent> {
                 // ),
                 Expanded(
                   child: ListView.builder(
-                      padding: const EdgeInsets.only(top: 20, bottom: 20),
+                      padding:
+                          const EdgeInsets.only(top: 20, bottom: 20, right: 10),
                       itemCount: db.folderTask.length,
                       itemBuilder: (context, index) {
                         return GestureDetector(

@@ -404,7 +404,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                           MaterialStateProperty.all(
                                               Colors.black),
                                       fixedSize: MaterialStateProperty.all(
-                                          Size(0, 54)),
+                                          const Size(0, 54)),
                                       shape: MaterialStateProperty.all(
                                           RoundedRectangleBorder(
                                               borderRadius:
