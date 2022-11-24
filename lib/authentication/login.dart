@@ -95,8 +95,8 @@ class LoginPageState extends State<LoginPage> {
                                 borderSide: BorderSide(
                                     color: Colors.black, width: 2.5)),
                             enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Colors.black, width: 2.5)),
+                                borderSide:
+                                    BorderSide(color: Colors.grey, width: 1)),
                             errorBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
                                     color: Colors.red,
@@ -156,8 +156,8 @@ class LoginPageState extends State<LoginPage> {
                                   borderSide: BorderSide(
                                       color: Colors.black, width: 2.5)),
                               enabledBorder: const OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: Colors.black, width: 2.5)),
+                                  borderSide:
+                                      BorderSide(color: Colors.grey, width: 1)),
                               errorBorder: const OutlineInputBorder(
                                   borderSide: BorderSide(
                                       color: Colors.red,

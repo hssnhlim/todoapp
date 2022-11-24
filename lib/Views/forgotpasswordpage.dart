@@ -153,6 +153,12 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
             ),
             ElevatedButton(
                 onPressed: passwordReset,
+                style: ButtonStyle(
+                    elevation: MaterialStateProperty.all(0),
+                    backgroundColor: MaterialStateProperty.all(Colors.black),
+                    fixedSize: MaterialStateProperty.all(const Size(167.5, 54)),
+                    shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10)))),
                 child: const Text(
                   'Reset Password',
                   style: TextStyle(
@@ -162,13 +168,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                       fontSize: 15,
                       letterSpacing: 1),
                   textAlign: TextAlign.center,
-                ),
-                style: ButtonStyle(
-                    elevation: MaterialStateProperty.all(0),
-                    backgroundColor: MaterialStateProperty.all(Colors.black),
-                    fixedSize: MaterialStateProperty.all(const Size(167.5, 54)),
-                    shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10))))),
+                )),
           ]),
         ),
       ),

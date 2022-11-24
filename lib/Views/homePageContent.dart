@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:todoapp/Views/folderPage.dart';
@@ -83,81 +84,154 @@ class _HomePageContentState extends State<HomePageContent> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        extendBodyBehindAppBar: true,
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          surfaceTintColor: Colors.white,
+          scrolledUnderElevation: 0,
+          toolbarHeight: 150,
+          title: Column(
+            children: [
+              const Align(
+                alignment: Alignment.topLeft,
+                child: Text(
+                  'Tasks',
+                  style: TextStyle(
+                    fontFamily: 'poppins',
+                    fontWeight: FontWeight.w600,
+                    fontSize: 35,
+                    color: Colors.black,
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              TextFormField(
+                style: const TextStyle(
+                  fontFamily: 'poppins',
+                  fontWeight: FontWeight.w400,
+                  fontSize: 15,
+                ),
+                cursorColor: Colors.black,
+                decoration: InputDecoration(
+                    suffixIcon: IconButton(
+                        onPressed: () {
+                          if (searchController.text.isNotEmpty) {
+                            setState(() {
+                              isIconVisible = isIconVisible;
+                            });
+                          } else {
+                            setState(() {
+                              isIconVisible = !isIconVisible;
+                            });
+                          }
+                          searchController.clear();
+                        },
+                        icon: Icon(
+                          searchController.text.isNotEmpty ? Icons.clear : null,
+                          color: Colors.black.withOpacity(.7),
+                          size: 20,
+                        )),
+                    contentPadding: const EdgeInsets.all(10),
+                    prefixIcon: const Icon(
+                      Icons.search,
+                      color: Colors.grey,
+                    ),
+                    fillColor: Colors.grey.shade200,
+                    filled: true,
+                    hintText: 'Search',
+                    hintStyle: const TextStyle(
+                        fontFamily: 'poppins',
+                        fontWeight: FontWeight.w400,
+                        fontSize: 15,
+                        color: Colors.grey),
+                    focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: const BorderSide(color: Colors.white)),
+                    enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: const BorderSide(color: Colors.white))),
+                controller: searchController,
+              ),
+            ],
+          ),
+        ),
         body: SafeArea(
           child: Padding(
             padding:
                 const EdgeInsets.only(left: 30, right: 20, top: 20, bottom: 0),
             child: Column(
               children: [
-                const Align(
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    'Tasks',
-                    style: TextStyle(
-                      fontFamily: 'poppins',
-                      fontWeight: FontWeight.w600,
-                      fontSize: 35,
-                      color: Colors.black,
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(right: 10),
-                  child: TextFormField(
-                    style: const TextStyle(
-                      fontFamily: 'poppins',
-                      fontWeight: FontWeight.w400,
-                      fontSize: 15,
-                    ),
-                    cursorColor: Colors.black,
-                    decoration: InputDecoration(
-                        suffixIcon: IconButton(
-                            onPressed: () {
-                              if (searchController.text.isNotEmpty) {
-                                setState(() {
-                                  isIconVisible = isIconVisible;
-                                });
-                              } else {
-                                setState(() {
-                                  isIconVisible = !isIconVisible;
-                                });
-                              }
-                              searchController.clear();
-                            },
-                            icon: Icon(
-                              searchController.text.isNotEmpty
-                                  ? Icons.clear
-                                  : null,
-                              color: Colors.black.withOpacity(.7),
-                              size: 20,
-                            )),
-                        contentPadding: const EdgeInsets.all(10),
-                        prefixIcon: const Icon(
-                          Icons.search,
-                          color: Colors.grey,
-                        ),
-                        fillColor: Colors.grey.shade200,
-                        filled: true,
-                        hintText: 'Search',
-                        hintStyle: const TextStyle(
-                            fontFamily: 'poppins',
-                            fontWeight: FontWeight.w400,
-                            fontSize: 15,
-                            color: Colors.grey),
-                        focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide:
-                                const BorderSide(color: Colors.transparent)),
-                        enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide:
-                                const BorderSide(color: Colors.transparent))),
-                    controller: searchController,
-                  ),
-                ),
+                // const Align(
+                //   alignment: Alignment.topLeft,
+                //   child: Text(
+                //     'Tasks',
+                //     style: TextStyle(
+                //       fontFamily: 'poppins',
+                //       fontWeight: FontWeight.w600,
+                //       fontSize: 35,
+                //       color: Colors.black,
+                //     ),
+                //   ),
+                // ),
+                // const SizedBox(
+                //   height: 20,
+                // ),
+                // Padding(
+                //   padding: const EdgeInsets.only(right: 10),
+                //   child: TextFormField(
+                //     style: const TextStyle(
+                //       fontFamily: 'poppins',
+                //       fontWeight: FontWeight.w400,
+                //       fontSize: 15,
+                //     ),
+                //     cursorColor: Colors.black,
+                //     decoration: InputDecoration(
+                //         suffixIcon: IconButton(
+                //             onPressed: () {
+                //               if (searchController.text.isNotEmpty) {
+                //                 setState(() {
+                //                   isIconVisible = isIconVisible;
+                //                 });
+                //               } else {
+                //                 setState(() {
+                //                   isIconVisible = !isIconVisible;
+                //                 });
+                //               }
+                //               searchController.clear();
+                //             },
+                //             icon: Icon(
+                //               searchController.text.isNotEmpty
+                //                   ? Icons.clear
+                //                   : null,
+                //               color: Colors.black.withOpacity(.7),
+                //               size: 20,
+                //             )),
+                //         contentPadding: const EdgeInsets.all(10),
+                //         prefixIcon: const Icon(
+                //           Icons.search,
+                //           color: Colors.grey,
+                //         ),
+                //         fillColor: Colors.grey.shade200,
+                //         filled: true,
+                //         hintText: 'Search',
+                //         hintStyle: const TextStyle(
+                //             fontFamily: 'poppins',
+                //             fontWeight: FontWeight.w400,
+                //             fontSize: 15,
+                //             color: Colors.grey),
+                //         focusedBorder: OutlineInputBorder(
+                //             borderRadius: BorderRadius.circular(10),
+                //             borderSide:
+                //                 const BorderSide(color: Colors.transparent)),
+                //         enabledBorder: OutlineInputBorder(
+                //             borderRadius: BorderRadius.circular(10),
+                //             borderSide:
+                //                 const BorderSide(color: Colors.transparent))),
+                //     controller: searchController,
+                //   ),
+                // ),
                 // Align(
                 //   alignment: Alignment.topRight,
                 //   child: ElevatedButton(
@@ -176,40 +250,47 @@ class _HomePageContentState extends State<HomePageContent> {
                 //   ),
                 // ),
                 Expanded(
-                  child: ListView.builder(
-                      padding:
-                          const EdgeInsets.only(top: 20, bottom: 20, right: 10),
-                      itemCount: db.folderTask.length,
-                      itemBuilder: (context, index) {
-                        return GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => FolderPage(
-                                        foldertask: db.folderTask[index],
-                                      )),
-                            );
-                          },
-                          child: ToDoTile(
-                            folderName: db.folderTask[index].name!,
-                            deleteFunction: (context) => _deleteFolder(index),
-                          ),
-                        );
-                      }),
+                  child: FadeInUp(
+                    duration: const Duration(milliseconds: 1400),
+                    child: ListView.builder(
+                        padding: const EdgeInsets.only(
+                            top: 20, bottom: 20, right: 10),
+                        itemCount: db.folderTask.length,
+                        itemBuilder: (context, index) {
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => FolderPage(
+                                          foldertask: db.folderTask[index],
+                                        )),
+                              );
+                            },
+                            child: ToDoTile(
+                              folderName: db.folderTask[index].name!,
+                              deleteFunction: (context) => _deleteFolder(index),
+                            ),
+                          );
+                        }),
+                  ),
                 ),
               ],
             ),
           ),
         ),
-        floatingActionButton: FloatingActionButton(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
-          backgroundColor: Colors.black,
-          onPressed: () {
-            createNewFolder();
-          },
-          child: const Icon(Icons.add),
+        floatingActionButton: FadeInRight(
+          duration: const Duration(milliseconds: 1400),
+          delay: const Duration(milliseconds: 800),
+          child: FloatingActionButton(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+            backgroundColor: Colors.black,
+            onPressed: () {
+              createNewFolder();
+            },
+            child: const Icon(Icons.add),
+          ),
         ));
   }
 }

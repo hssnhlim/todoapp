@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
@@ -35,37 +34,37 @@ class _AddNewTaskPageState extends State<AddNewTaskPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(70),
-        child: AppBar(
-          // centerTitle: true,
-          backgroundColor: const Color(0xffF3F3F3),
-
-          elevation: 0,
-          automaticallyImplyLeading: false,
-          title: const Padding(
-            padding: EdgeInsets.only(top: 30, left: 20),
-            child: Text(
-              'Add New Task',
-              style: TextStyle(
-                  fontFamily: 'poppins',
-                  fontWeight: FontWeight.w500,
-                  fontSize: 20),
-            ),
-          ),
-          actions: [
-            Padding(
-              padding: const EdgeInsets.only(top: 30, right: 30),
-              child: GestureDetector(
-                  onTap: () {
+      appBar: AppBar(
+        // centerTitle: true,
+        // backgroundColor: const Color(0xffF3F3F3),
+        // backgroundColor: Colors.white,
+        // elevation: 10,
+        surfaceTintColor: Colors.white,
+        toolbarHeight: 80,
+        automaticallyImplyLeading: false,
+        title: Padding(
+          padding: const EdgeInsets.only(top: 20.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const Text(
+                'Add New Task',
+                style: TextStyle(
+                    fontFamily: 'poppins',
+                    fontWeight: FontWeight.w500,
+                    fontSize: 20),
+              ),
+              IconButton(
+                  onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: Icon(
+                  icon: const Icon(
                     Icons.clear,
-                    color: Colors.black.withOpacity(.7),
-                  )),
-            )
-          ],
+                    color: Colors.black,
+                  ))
+            ],
+          ),
         ),
       ),
       body: Padding(
@@ -565,7 +564,7 @@ class _AddNewTaskPageState extends State<AddNewTaskPage> {
     );
     if (result == null) return;
     // int index = files!.length;
-    print(result.files.length);
+
     setState(() {
       pickedFile = result.files;
       // files = result.paths.map((path) => File(path!)).toList();
