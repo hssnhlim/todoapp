@@ -112,7 +112,7 @@ class LoginPageState extends State<LoginPage> {
                     child: Column(
                       children: [
                         FadeInLeft(
-                          duration: const Duration(milliseconds: 1400),
+                          duration: const Duration(milliseconds: 1000),
                           delay: const Duration(milliseconds: 800),
                           child: Column(
                             children: const [
@@ -145,7 +145,7 @@ class LoginPageState extends State<LoginPage> {
                           height: 40,
                         ),
                         FadeInUp(
-                          duration: const Duration(milliseconds: 1400),
+                          duration: const Duration(milliseconds: 1000),
                           delay: const Duration(milliseconds: 1000),
                           child: Column(
                             children: [
@@ -287,7 +287,7 @@ class LoginPageState extends State<LoginPage> {
                           children: [
                             Expanded(
                               child: FadeInUp(
-                                duration: const Duration(milliseconds: 1400),
+                                duration: const Duration(milliseconds: 1000),
                                 delay: const Duration(milliseconds: 1000),
                                 child: ElevatedButton(
                                     onPressed: () async {
@@ -402,7 +402,7 @@ class LoginPageState extends State<LoginPage> {
                           height: 20,
                         ),
                         FadeInUp(
-                          duration: const Duration(milliseconds: 1400),
+                          duration: const Duration(milliseconds: 1000),
                           delay: const Duration(milliseconds: 1000),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,

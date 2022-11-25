@@ -68,7 +68,7 @@ class _HomePageContentState extends State<HomePageContent> {
         context: context,
         builder: (context) {
           return ZoomIn(
-            duration: const Duration(milliseconds: 300),
+            duration: const Duration(milliseconds: 200),
             child: DialogBox(
                 addNewFolderController: _controller,
                 onSave: saveNewFolder,
@@ -268,7 +268,7 @@ class _HomePageContentState extends State<HomePageContent> {
                                     foldertask: db.folderTask[index],
                                   ),
                                   type: PageTransitionType.rightToLeft,
-                                  duration: const Duration(milliseconds: 500),
+                                  duration: const Duration(milliseconds: 300),
                                   curve: Curves.easeInCubic));
                             },
                             child: ToDoTile(
