@@ -182,7 +182,7 @@ class _FolderPageState extends State<FolderPage> {
                 // ),
                 Expanded(
                   child: FadeInUp(
-                    duration: const Duration(milliseconds: 1400),
+                    duration: const Duration(milliseconds: 800),
                     child: ListView.builder(
                         padding: const EdgeInsets.only(
                             top: 20, bottom: 20, right: 10),

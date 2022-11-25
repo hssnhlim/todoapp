@@ -255,7 +255,7 @@ class _HomePageContentState extends State<HomePageContent> {
                 // ),
                 Expanded(
                   child: FadeInUp(
-                    duration: const Duration(milliseconds: 1400),
+                    duration: const Duration(milliseconds: 800),
                     child: ListView.builder(
                         padding: const EdgeInsets.only(
                             top: 20, bottom: 20, right: 10),
@@ -284,7 +284,7 @@ class _HomePageContentState extends State<HomePageContent> {
           ),
         ),
         floatingActionButton: FadeInRight(
-          duration: const Duration(milliseconds: 1400),
+          duration: const Duration(milliseconds: 800),
           delay: const Duration(milliseconds: 800),
           child: FloatingActionButton(
             shape:
