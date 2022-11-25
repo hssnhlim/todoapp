@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 import 'package:todoapp/Views/homepage.dart';
 import 'package:todoapp/authentication/login.dart';
@@ -115,6 +116,7 @@ class RegisterPageState extends State<RegisterPage> {
                       children: [
                         FadeInLeft(
                           duration: const Duration(milliseconds: 1400),
+                          delay: const Duration(milliseconds: 800),
                           child: Column(
                             children: const [
                               Align(
@@ -147,6 +149,7 @@ class RegisterPageState extends State<RegisterPage> {
                         ),
                         FadeInUp(
                           duration: const Duration(milliseconds: 1400),
+                          delay: const Duration(milliseconds: 1000),
                           child: Column(
                             children: [
                               TextFormField(
@@ -399,7 +402,7 @@ class RegisterPageState extends State<RegisterPage> {
                             Expanded(
                               child: FadeInUp(
                                 duration: const Duration(milliseconds: 1400),
-                                delay: const Duration(milliseconds: 800),
+                                delay: const Duration(milliseconds: 1000),
                                 child: ElevatedButton(
                                     onPressed: () async {
                                       // Validate returns true if the form is valid, or false otherwise.
@@ -415,12 +418,21 @@ class RegisterPageState extends State<RegisterPage> {
                                                 passwordController.text.trim(),
                                               )
                                               .then((value) => {
-                                                    Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              const HomePage()),
-                                                    )
+                                                    Navigator.of(context).push(
+                                                        PageTransition(
+                                                            child:
+                                                                const HomePage(),
+                                                            type:
+                                                                PageTransitionType
+                                                                    .rightToLeft,
+                                                            childCurrent:
+                                                                const RegisterPage(),
+                                                            duration:
+                                                                const Duration(
+                                                                    milliseconds:
+                                                                        800),
+                                                            curve: Curves
+                                                                .easeInCubic))
                                                   });
 
                                           addUserDetails(
@@ -518,7 +530,7 @@ class RegisterPageState extends State<RegisterPage> {
                         ),
                         FadeInUp(
                           duration: const Duration(milliseconds: 1400),
-                          delay: const Duration(milliseconds: 1400),
+                          delay: const Duration(milliseconds: 1000),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -530,12 +542,13 @@ class RegisterPageState extends State<RegisterPage> {
                                   )),
                               GestureDetector(
                                 onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const LoginPage()),
-                                  );
+                                  Navigator.of(context).push(PageTransition(
+                                      child: const LoginPage(),
+                                      type: PageTransitionType.bottomToTop,
+                                      childCurrent: const RegisterPage(),
+                                      duration:
+                                          const Duration(milliseconds: 800),
+                                      curve: Curves.easeInCubic));
                                 },
                                 child: const Text(' Sign In',
                                     style: TextStyle(

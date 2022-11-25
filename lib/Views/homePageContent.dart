@@ -1,6 +1,7 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:todoapp/Views/folderPage.dart';
 import 'package:todoapp/Views/widget/todotileFolder.dart';
 
@@ -262,13 +263,13 @@ class _HomePageContentState extends State<HomePageContent> {
                         itemBuilder: (context, index) {
                           return GestureDetector(
                             onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => FolderPage(
-                                          foldertask: db.folderTask[index],
-                                        )),
-                              );
+                              Navigator.of(context).push(PageTransition(
+                                  child: FolderPage(
+                                    foldertask: db.folderTask[index],
+                                  ),
+                                  type: PageTransitionType.rightToLeft,
+                                  duration: const Duration(milliseconds: 500),
+                                  curve: Curves.easeInCubic));
                             },
                             child: ToDoTile(
                               folderName: db.folderTask[index].name!,

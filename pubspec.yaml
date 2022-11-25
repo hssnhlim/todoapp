@@ -51,6 +51,7 @@ dependencies:
   open_filex: ^4.3.1
   drop_shadow: ^0.0.1+4
   animate_do: ^3.0.2
+  page_transition: ^2.0.9
  
 
 dev_dependencies:

@@ -4,6 +4,7 @@ import 'package:animate_do/animate_do.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 import 'package:todoapp/authentication/auth.provider.dart';
 import 'package:todoapp/authentication/register.dart';
@@ -112,6 +113,7 @@ class LoginPageState extends State<LoginPage> {
                       children: [
                         FadeInLeft(
                           duration: const Duration(milliseconds: 1400),
+                          delay: const Duration(milliseconds: 800),
                           child: Column(
                             children: const [
                               Align(
@@ -144,6 +146,7 @@ class LoginPageState extends State<LoginPage> {
                         ),
                         FadeInUp(
                           duration: const Duration(milliseconds: 1400),
+                          delay: const Duration(milliseconds: 1000),
                           child: Column(
                             children: [
                               TextFormField(
@@ -285,7 +288,7 @@ class LoginPageState extends State<LoginPage> {
                             Expanded(
                               child: FadeInUp(
                                 duration: const Duration(milliseconds: 1400),
-                                delay: const Duration(milliseconds: 800),
+                                delay: const Duration(milliseconds: 1000),
                                 child: ElevatedButton(
                                     onPressed: () async {
                                       // Validate returns true if the form is valid, or false otherwise.
@@ -300,12 +303,15 @@ class LoginPageState extends State<LoginPage> {
                                                       .trim());
                                           if (!mounted) return;
 
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    const HomePage()),
-                                          );
+                                          Navigator.of(context).push(
+                                              PageTransition(
+                                                  child: const HomePage(),
+                                                  type:
+                                                      PageTransitionType
+                                                          .rightToLeft,
+                                                  duration: const Duration(
+                                                      milliseconds: 800),
+                                                  curve: Curves.easeInCubic));
                                         } on FirebaseAuthException catch (e) {
                                           showDialog(
                                               context: context,
@@ -397,7 +403,7 @@ class LoginPageState extends State<LoginPage> {
                         ),
                         FadeInUp(
                           duration: const Duration(milliseconds: 1400),
-                          delay: const Duration(milliseconds: 1400),
+                          delay: const Duration(milliseconds: 1000),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -409,12 +415,13 @@ class LoginPageState extends State<LoginPage> {
                                   )),
                               GestureDetector(
                                 onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const RegisterPage()),
-                                  );
+                                  Navigator.of(context).push(PageTransition(
+                                      child: const RegisterPage(),
+                                      type: PageTransitionType.topToBottom,
+                                      childCurrent: const LoginPage(),
+                                      duration:
+                                          const Duration(milliseconds: 800),
+                                      curve: Curves.easeInCubic));
                                 },
                                 child: const Text(' Sign Up',
                                     style: TextStyle(

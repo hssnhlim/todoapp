@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 
 import '../authentication/auth.provider.dart';
@@ -126,11 +127,13 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   InkWell(
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const LoginPage()),
-                      );
+                      Navigator.of(context).push(PageTransition(
+                          child: const LoginPage(),
+                          type: PageTransitionType.bottomToTop,
+                          childCurrent: const ProfilePage(),
+                          duration: const Duration(milliseconds: 1000),
+                          curve: Curves.easeInCubic));
+
                       AuthProvider.instance.signOut(context);
                     },
                     child: Container(
