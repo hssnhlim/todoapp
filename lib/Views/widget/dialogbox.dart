@@ -30,11 +30,15 @@ class DialogBox extends StatelessWidget {
           children: [
             TextButton(
                 style: ButtonStyle(
-                    side: MaterialStateProperty.all(BorderSide(width: 1)),
+                    side: MaterialStateProperty.all(const BorderSide(
+                      width: 1,
+                    )),
                     shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                        side: BorderSide(color: Colors.black, width: 2),
+                        side: const BorderSide(
+                            color: Colors.transparent, width: 2),
                         borderRadius: BorderRadius.circular(10))),
-                    backgroundColor: MaterialStateProperty.all(Colors.white)),
+                    backgroundColor:
+                        MaterialStateProperty.all(Colors.transparent)),
                 onPressed: onCancel,
                 child: const Text(
                   'Cancel',
@@ -88,7 +92,7 @@ class DialogBox extends StatelessWidget {
           focusedBorder: UnderlineInputBorder(
               borderSide: BorderSide(color: Colors.black, width: 1)),
           enabledBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: Colors.black, width: 1)),
+              borderSide: BorderSide(color: Colors.grey, width: 1)),
         ),
         controller: addNewFolderController!,
       ),

@@ -66,13 +66,16 @@ class _HomePageContentState extends State<HomePageContent> {
         barrierDismissible: false,
         context: context,
         builder: (context) {
-          return DialogBox(
-              addNewFolderController: _controller,
-              onSave: saveNewFolder,
-              onCancel: () {
-                Navigator.of(context).pop();
-                _controller.clear();
-              });
+          return ZoomIn(
+            duration: const Duration(milliseconds: 300),
+            child: DialogBox(
+                addNewFolderController: _controller,
+                onSave: saveNewFolder,
+                onCancel: () {
+                  Navigator.of(context).pop();
+                  _controller.clear();
+                }),
+          );
         });
   }
 
