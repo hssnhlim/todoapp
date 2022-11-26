@@ -3,9 +3,10 @@ class Task {
   String? note;
   String? reminderDate;
   String? repeat;
-  String? path;
+  // String? path;
   bool? isChecked = false;
   String? reminderTime;
+  List path = [];
 
   Task(
       {required this.name,

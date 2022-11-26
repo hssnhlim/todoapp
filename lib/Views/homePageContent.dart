@@ -30,8 +30,6 @@ class _HomePageContentState extends State<HomePageContent> {
 
   bool isIconVisible = false;
 
-  // List searchFolderTask = [];
-
   List foundFolder = [];
 
   @override

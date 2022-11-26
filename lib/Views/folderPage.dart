@@ -1,4 +1,5 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:todoapp/Views/addNewTaskPage.dart';
@@ -180,6 +181,11 @@ class _FolderPageState extends State<FolderPage> {
                 //     controller: searchController,
                 //   ),
                 // ),
+                IconButton(
+                    onPressed: () {
+                      print(widget.foldertask.task.length);
+                    },
+                    icon: Icon(Icons.headphones)),
                 Expanded(
                   child: FadeInUp(
                     duration: const Duration(milliseconds: 800),
@@ -190,7 +196,7 @@ class _FolderPageState extends State<FolderPage> {
                         itemCount: widget.foldertask.task.length,
                         itemBuilder: (context, index) {
                           return ToDoTileTask(
-                            taskName: 'Task Name',
+                            taskName: widget.foldertask.task[index].name,
                             deleteFunction: (context) => _deleteTask(index),
                           );
                         }),

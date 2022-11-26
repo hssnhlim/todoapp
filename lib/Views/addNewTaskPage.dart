@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:dotted_border/dotted_border.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
@@ -11,7 +13,7 @@ import 'package:todoapp/models/task.model.dart';
 import '../data/localDatabase.dart';
 
 class AddNewTaskPage extends StatefulWidget {
-  AddNewTaskPage({super.key});
+  const AddNewTaskPage({super.key});
 
   @override
   State<AddNewTaskPage> createState() => _AddNewTaskPageState();
@@ -34,6 +36,8 @@ class _AddNewTaskPageState extends State<AddNewTaskPage> {
   String? valueRepeat;
 
   List<PlatformFile>? pickedFile;
+
+  List pathList = [];
 
   @override
   Widget build(BuildContext context) {
@@ -529,17 +533,8 @@ class _AddNewTaskPageState extends State<AddNewTaskPage> {
                 primary: false,
                 itemCount: pickedFile!.length,
                 itemBuilder: (context, index) {
-                  return uploadFileUI(
-                    name: pickedFile![index].name,
-                    openFile: () {
-                      OpenFilex.open(pickedFile![index].path);
-                    },
-                    deleteFile: ((p0) {
-                      if (kDebugMode) {
-                        print("clicekd");
-                      }
-                    }),
-                  );
+                  return uploadFileUi(index);
+                  ;
                 }),
           const SizedBox(
             height: 30,
@@ -558,7 +553,75 @@ class _AddNewTaskPageState extends State<AddNewTaskPage> {
         ),
         backgroundColor: Colors.black,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        onPressed: () {},
+        onPressed: () {
+          if (pickedFile != null) {
+            pickedFile!.forEach((element) {
+              setState(() {
+                var data = element.path;
+                pathList.add(data);
+                // print(pathList);
+              });
+            });
+          }
+
+          setState(() {
+            if (taskNameController.text.isNotEmpty) {
+              db.task.add(Task(
+                  name: taskNameController.text,
+                  note: notesController.text,
+                  reminderDate: reminderDateController.text,
+                  repeat: valueRepeat,
+                  path: pathList,
+                  reminderTime: reminderTimeController.text));
+            }
+          });
+
+          Navigator.of(context).pop();
+          db.updateDatabase();
+        },
+      ),
+    );
+  }
+
+  Padding uploadFileUi(int index) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 10),
+      child: InkWell(
+        onTap: () {
+          OpenFilex.open(pickedFile![index].path);
+        },
+        child: Container(
+          padding: const EdgeInsets.only(left: 20, right: 5),
+          width: double.maxFinite,
+          height: 40,
+          decoration: BoxDecoration(
+              color: Colors.grey.shade300,
+              // border: Border.all(color: Colors.black),
+              // color: Colors
+              //     .primaries[Random().nextInt(Colors.primaries.length)].shade200,
+              borderRadius: BorderRadius.circular(8)),
+          child:
+              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+            Expanded(
+              child: Text(
+                pickedFile![index].name,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+                style: const TextStyle(
+                    fontFamily: 'poppins',
+                    fontWeight: FontWeight.w400,
+                    fontSize: 15),
+              ),
+            ),
+            IconButton(
+                onPressed: () => removeFile(index),
+                icon: Icon(
+                  Icons.clear,
+                  size: 20,
+                  color: Colors.black.withOpacity(.7),
+                ))
+          ]),
+        ),
       ),
     );
   }
@@ -580,15 +643,9 @@ class _AddNewTaskPageState extends State<AddNewTaskPage> {
     }
   }
 
-  // void saveNewTask() {
-  //   if (taskNameController.text.isNotEmpty) {
-  //     db.task.add(Task(
-  //         name: taskNameController.text,
-  //         note: notesController.text,
-  //         reminderDate: reminderDateController.text,
-  //         repeat: valueRepeat,
-  //         path: ,
-  //         reminderTime: reminderTimeController.text));
-  //   }
-  // }
+  void removeFile(int index) {
+    setState(() {
+      pickedFile!.removeAt(index);
+    });
+  }
 }
