@@ -25,9 +25,6 @@ class uploadFileUI extends StatelessWidget {
           height: 40,
           decoration: BoxDecoration(
               color: Colors.grey.shade300,
-              // border: Border.all(color: Colors.black),
-              // color: Colors
-              //     .primaries[Random().nextInt(Colors.primaries.length)].shade200,
               borderRadius: BorderRadius.circular(8)),
           child:
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [

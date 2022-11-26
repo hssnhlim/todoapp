@@ -1,8 +1,8 @@
 class Task {
   String? name;
   String? note;
-  bool? reminderDate;
-  bool? repeat;
+  String? reminderDate;
+  String? repeat;
   String? path;
   bool? isChecked = false;
   String? reminderTime;

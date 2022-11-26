@@ -5,15 +5,21 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:open_filex/open_filex.dart';
 import 'package:todoapp/Views/widget/uploadFileUI.dart';
+import 'package:todoapp/models/folder.task.model.dart';
+import 'package:todoapp/models/task.model.dart';
+
+import '../data/localDatabase.dart';
 
 class AddNewTaskPage extends StatefulWidget {
-  const AddNewTaskPage({super.key});
+  AddNewTaskPage({super.key});
 
   @override
   State<AddNewTaskPage> createState() => _AddNewTaskPageState();
 }
 
 class _AddNewTaskPageState extends State<AddNewTaskPage> {
+  ToDoDatabase db = ToDoDatabase();
+
   final taskNameController = TextEditingController();
   final notesController = TextEditingController();
   final dateController = TextEditingController();
@@ -28,8 +34,6 @@ class _AddNewTaskPageState extends State<AddNewTaskPage> {
   String? valueRepeat;
 
   List<PlatformFile>? pickedFile;
-
-  // List<File>? files;
 
   @override
   Widget build(BuildContext context) {
@@ -530,8 +534,10 @@ class _AddNewTaskPageState extends State<AddNewTaskPage> {
                     openFile: () {
                       OpenFilex.open(pickedFile![index].path);
                     },
-                    deleteFile: ((context) {
-                      removeSelectedFile(index);
+                    deleteFile: ((p0) {
+                      if (kDebugMode) {
+                        print("clicekd");
+                      }
                     }),
                   );
                 }),
@@ -574,9 +580,15 @@ class _AddNewTaskPageState extends State<AddNewTaskPage> {
     }
   }
 
-  void removeSelectedFile(int index) {
-    setState(() {
-      pickedFile!.removeAt(index);
-    });
-  }
+  // void saveNewTask() {
+  //   if (taskNameController.text.isNotEmpty) {
+  //     db.task.add(Task(
+  //         name: taskNameController.text,
+  //         note: notesController.text,
+  //         reminderDate: reminderDateController.text,
+  //         repeat: valueRepeat,
+  //         path: ,
+  //         reminderTime: reminderTimeController.text));
+  //   }
+  // }
 }

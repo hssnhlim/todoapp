@@ -187,7 +187,7 @@ class _FolderPageState extends State<FolderPage> {
                         padding: const EdgeInsets.only(
                             top: 20, bottom: 20, right: 10),
                         // itemCount: widget.foldertask.task.length,
-                        itemCount: 5,
+                        itemCount: widget.foldertask.task.length,
                         itemBuilder: (context, index) {
                           return ToDoTileTask(
                             taskName: 'Task Name',
@@ -212,7 +212,7 @@ class _FolderPageState extends State<FolderPage> {
                 //         topLeft: Radius.circular(10),
                 //         topRight: Radius.circular(10))),
                 context: context,
-                builder: (context) => const AddNewTaskPage());
+                builder: (context) => AddNewTaskPage());
           },
           child: const Icon(Icons.add),
         ));
