@@ -525,15 +525,8 @@ class _AddNewTaskPageState extends State<AddNewTaskPage> {
                 primary: false,
                 itemCount: pickedFile!.length,
                 itemBuilder: (context, index) {
-                  return uploadFileUI(
-                    name: pickedFile![index].name,
-                    openFile: () {
-                      OpenFilex.open(pickedFile![index].path);
-                    },
-                    deleteFile: ((context) {
-                      removeSelectedFile(index);
-                    }),
-                  );
+                  return uploadFileUi(index);
+                  ;
                 }),
           const SizedBox(
             height: 30,
@@ -557,6 +550,49 @@ class _AddNewTaskPageState extends State<AddNewTaskPage> {
     );
   }
 
+  Padding uploadFileUi(int index) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 10),
+      child: InkWell(
+        onTap: () {
+          OpenFilex.open(pickedFile![index].path);
+        },
+        child: Container(
+          padding: const EdgeInsets.only(left: 20, right: 5),
+          width: double.maxFinite,
+          height: 40,
+          decoration: BoxDecoration(
+              color: Colors.grey.shade300,
+              // border: Border.all(color: Colors.black),
+              // color: Colors
+              //     .primaries[Random().nextInt(Colors.primaries.length)].shade200,
+              borderRadius: BorderRadius.circular(8)),
+          child:
+              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+            Expanded(
+              child: Text(
+                pickedFile![index].name,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+                style: const TextStyle(
+                    fontFamily: 'poppins',
+                    fontWeight: FontWeight.w400,
+                    fontSize: 15),
+              ),
+            ),
+            IconButton(
+                onPressed: () => removeFile(index),
+                icon: Icon(
+                  Icons.clear,
+                  size: 20,
+                  color: Colors.black.withOpacity(.7),
+                ))
+          ]),
+        ),
+      ),
+    );
+  }
+
   // Method for Select File
   Future selectFile() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
@@ -575,6 +611,12 @@ class _AddNewTaskPageState extends State<AddNewTaskPage> {
   }
 
   void removeSelectedFile(int index) {
+    setState(() {
+      pickedFile!.removeAt(index);
+    });
+  }
+
+  void removeFile(int index) {
     setState(() {
       pickedFile!.removeAt(index);
     });
