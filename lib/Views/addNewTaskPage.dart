@@ -610,12 +610,6 @@ class _AddNewTaskPageState extends State<AddNewTaskPage> {
     }
   }
 
-  void removeSelectedFile(int index) {
-    setState(() {
-      pickedFile!.removeAt(index);
-    });
-  }
-
   void removeFile(int index) {
     setState(() {
       pickedFile!.removeAt(index);
