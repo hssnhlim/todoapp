@@ -34,8 +34,6 @@ class _HomePageContentState extends State<HomePageContent> {
 
   List foundFolder = [];
 
-  List defaultFolder = [];
-
   @override
   void initState() {
     //must execute to check foldertask empty or not
@@ -48,7 +46,7 @@ class _HomePageContentState extends State<HomePageContent> {
     }
 
     foundFolder = db.folderTask;
-    defaultFolder = db.folderTask;
+
     super.initState();
   }
 
@@ -148,17 +146,6 @@ class _HomePageContentState extends State<HomePageContent> {
                 decoration: InputDecoration(
                     suffixIcon: IconButton(
                         onPressed: () {
-                          if (searchController.text.isEmpty) {
-                            setState(() {
-                              defaultFolder;
-                            });
-                            ;
-                          } else {
-                            setState(() {
-                              foundFolder;
-                            });
-                            ;
-                          }
                           if (searchController.text.isNotEmpty) {
                             setState(() {
                               isIconVisible = isIconVisible;
@@ -169,6 +156,7 @@ class _HomePageContentState extends State<HomePageContent> {
                             });
                           }
                           searchController.clear();
+                          setToDefault();
                         },
                         icon: Icon(
                           searchController.text.isNotEmpty ? Icons.clear : null,
@@ -260,5 +248,11 @@ class _HomePageContentState extends State<HomePageContent> {
             child: const Icon(Icons.add),
           ),
         ));
+  }
+
+  void setToDefault() {
+    setState(() {
+      foundFolder = db.folderTask;
+    });
   }
 }
