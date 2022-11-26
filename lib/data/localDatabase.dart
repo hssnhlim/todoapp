@@ -9,6 +9,7 @@ import '../models/task.model.dart';
 class ToDoDatabase {
   List<FolderTask> folderTask = [];
   List<Task> task = [];
+
   var key = 'FOLDERLIST${AuthProvider().user!.uid}';
   // reference the hive box
   final myBox = Hive.box('ToDoDatabase');

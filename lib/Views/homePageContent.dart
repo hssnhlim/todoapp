@@ -1,4 +1,5 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:page_transition/page_transition.dart';
@@ -29,6 +30,12 @@ class _HomePageContentState extends State<HomePageContent> {
 
   bool isIconVisible = false;
 
+  // List searchFolderTask = [];
+
+  List foundFolder = [];
+
+  List defaultFolder = [];
+
   @override
   void initState() {
     //must execute to check foldertask empty or not
@@ -39,6 +46,9 @@ class _HomePageContentState extends State<HomePageContent> {
       // then create the default data
       db.createInitialData();
     }
+
+    foundFolder = db.folderTask;
+    defaultFolder = db.folderTask;
     super.initState();
   }
 
@@ -80,6 +90,22 @@ class _HomePageContentState extends State<HomePageContent> {
         });
   }
 
+  void searchFilter(String enteredKeyword) {
+    List? results = [];
+    if (enteredKeyword.isEmpty) {
+      results = db.folderTask;
+    } else {
+      results = db.folderTask
+          .where((folder) =>
+              folder.name!.toLowerCase().contains(enteredKeyword.toLowerCase()))
+          .toList();
+      // print(results);
+    }
+    setState(() {
+      foundFolder = results!;
+    });
+  }
+
   @override
   void dispose() {
     super.dispose();
@@ -112,6 +138,7 @@ class _HomePageContentState extends State<HomePageContent> {
                 height: 20,
               ),
               TextFormField(
+                onChanged: (value) => searchFilter(value),
                 style: const TextStyle(
                   fontFamily: 'poppins',
                   fontWeight: FontWeight.w400,
@@ -121,6 +148,17 @@ class _HomePageContentState extends State<HomePageContent> {
                 decoration: InputDecoration(
                     suffixIcon: IconButton(
                         onPressed: () {
+                          if (searchController.text.isEmpty) {
+                            setState(() {
+                              defaultFolder;
+                            });
+                            ;
+                          } else {
+                            setState(() {
+                              foundFolder;
+                            });
+                            ;
+                          }
                           if (searchController.text.isNotEmpty) {
                             setState(() {
                               isIconVisible = isIconVisible;
@@ -167,116 +205,42 @@ class _HomePageContentState extends State<HomePageContent> {
                 const EdgeInsets.only(left: 30, right: 20, top: 20, bottom: 0),
             child: Column(
               children: [
-                // const Align(
-                //   alignment: Alignment.topLeft,
-                //   child: Text(
-                //     'Tasks',
-                //     style: TextStyle(
-                //       fontFamily: 'poppins',
-                //       fontWeight: FontWeight.w600,
-                //       fontSize: 35,
-                //       color: Colors.black,
-                //     ),
-                //   ),
-                // ),
-                // const SizedBox(
-                //   height: 20,
-                // ),
-                // Padding(
-                //   padding: const EdgeInsets.only(right: 10),
-                //   child: TextFormField(
-                //     style: const TextStyle(
-                //       fontFamily: 'poppins',
-                //       fontWeight: FontWeight.w400,
-                //       fontSize: 15,
-                //     ),
-                //     cursorColor: Colors.black,
-                //     decoration: InputDecoration(
-                //         suffixIcon: IconButton(
-                //             onPressed: () {
-                //               if (searchController.text.isNotEmpty) {
-                //                 setState(() {
-                //                   isIconVisible = isIconVisible;
-                //                 });
-                //               } else {
-                //                 setState(() {
-                //                   isIconVisible = !isIconVisible;
-                //                 });
-                //               }
-                //               searchController.clear();
-                //             },
-                //             icon: Icon(
-                //               searchController.text.isNotEmpty
-                //                   ? Icons.clear
-                //                   : null,
-                //               color: Colors.black.withOpacity(.7),
-                //               size: 20,
-                //             )),
-                //         contentPadding: const EdgeInsets.all(10),
-                //         prefixIcon: const Icon(
-                //           Icons.search,
-                //           color: Colors.grey,
-                //         ),
-                //         fillColor: Colors.grey.shade200,
-                //         filled: true,
-                //         hintText: 'Search',
-                //         hintStyle: const TextStyle(
-                //             fontFamily: 'poppins',
-                //             fontWeight: FontWeight.w400,
-                //             fontSize: 15,
-                //             color: Colors.grey),
-                //         focusedBorder: OutlineInputBorder(
-                //             borderRadius: BorderRadius.circular(10),
-                //             borderSide:
-                //                 const BorderSide(color: Colors.transparent)),
-                //         enabledBorder: OutlineInputBorder(
-                //             borderRadius: BorderRadius.circular(10),
-                //             borderSide:
-                //                 const BorderSide(color: Colors.transparent))),
-                //     controller: searchController,
-                //   ),
-                // ),
-                // Align(
-                //   alignment: Alignment.topRight,
-                //   child: ElevatedButton(
-                //     onPressed: () {
-                //       AuthProvider.instance.signOut(context);
-                //     },
-                //     child: const Text(
-                //       'Logout',
-                //       style: TextStyle(
-                //         fontFamily: 'poppins',
-                //         fontWeight: FontWeight.w600,
-                //         fontSize: 20,
-                //         color: Colors.black,
-                //       ),
-                //     ),
-                //   ),
-                // ),
                 Expanded(
                   child: FadeInUp(
-                    duration: const Duration(milliseconds: 800),
-                    child: ListView.builder(
-                        padding: const EdgeInsets.only(
-                            top: 20, bottom: 20, right: 10),
-                        itemCount: db.folderTask.length,
-                        itemBuilder: (context, index) {
-                          return GestureDetector(
-                            onTap: () {
-                              Navigator.of(context).push(PageTransition(
-                                  child: FolderPage(
-                                    foldertask: db.folderTask[index],
-                                  ),
-                                  type: PageTransitionType.rightToLeft,
-                                  duration: const Duration(milliseconds: 300),
-                                  curve: Curves.easeInCubic));
-                            },
-                            child: ToDoTile(
-                              folderName: db.folderTask[index].name!,
-                              deleteFunction: (context) => _deleteFolder(index),
+                    duration: const Duration(milliseconds: 500),
+                    child: foundFolder.isNotEmpty
+                        ? ListView.builder(
+                            padding: const EdgeInsets.only(
+                                top: 20, bottom: 20, right: 10),
+                            itemCount: foundFolder.length,
+                            itemBuilder: (context, index) {
+                              return GestureDetector(
+                                onTap: () {
+                                  Navigator.of(context).push(PageTransition(
+                                      child: FolderPage(
+                                        foldertask: db.folderTask[index],
+                                      ),
+                                      type: PageTransitionType.rightToLeft,
+                                      duration:
+                                          const Duration(milliseconds: 300),
+                                      curve: Curves.easeInCubic));
+                                },
+                                child: ToDoTile(
+                                  folderName: foundFolder[index].name!,
+                                  deleteFunction: (context) =>
+                                      _deleteFolder(index),
+                                ),
+                              );
+                            })
+                        : const Center(
+                            child: Text(
+                            'No folder found 😞',
+                            style: TextStyle(
+                              fontFamily: 'poppins',
+                              fontWeight: FontWeight.w400,
+                              fontSize: 20,
                             ),
-                          );
-                        }),
+                          )),
                   ),
                 ),
               ],
@@ -284,8 +248,8 @@ class _HomePageContentState extends State<HomePageContent> {
           ),
         ),
         floatingActionButton: FadeInRight(
-          duration: const Duration(milliseconds: 800),
-          delay: const Duration(milliseconds: 800),
+          duration: const Duration(milliseconds: 500),
+          delay: const Duration(milliseconds: 200),
           child: FloatingActionButton(
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
