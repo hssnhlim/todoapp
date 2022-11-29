@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:dotted_border/dotted_border.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
@@ -11,8 +13,10 @@ import 'package:todoapp/models/task.model.dart';
 import '../data/localDatabase.dart';
 
 class AddNewTaskPage extends StatefulWidget {
-  const AddNewTaskPage({super.key, required this.fileName});
+  const AddNewTaskPage(
+      {super.key, required this.folderTask, required this.fileName});
   final fileName;
+  final FolderTask folderTask;
   @override
   State<AddNewTaskPage> createState() => _AddNewTaskPageState();
 }
@@ -554,16 +558,44 @@ class _AddNewTaskPageState extends State<AddNewTaskPage> {
             // }
 
             if (taskNameController.text.isNotEmpty) {
-              db.folderTask.add(FolderTask(name: widget.fileName, task: [
-                Task(
-                    name: taskNameController.text,
-                    note: notesController.text,
-                    dueDate: dateController.text,
-                    reminderDate: reminderDateController.text,
-                    repeat: valueRepeat,
-                    path: pathList,
-                    reminderTime: reminderTimeController.text)
-              ]));
+              //add default if foldertask empty
+              if (db.folderTask.isEmpty) {
+                db.folderTask.add(widget.folderTask);
+              }
+              int index = db.folderTask.indexOf(widget.folderTask);
+              //add task to existing list
+              if (widget.folderTask.task.isNotEmpty) {
+                var data = Task(
+                        name: taskNameController.text,
+                        note: notesController.text,
+                        dueDate: dateController.text,
+                        reminderDate: reminderDateController.text,
+                        repeat: valueRepeat,
+                        path: pathList,
+                        reminderTime: reminderTimeController.text,
+                        isChecked: false)
+                    .toJson();
+                var list = widget.folderTask.task;
+                list.add(data);
+                db.setTask(index,
+                    FolderTask(name: widget.folderTask.name, task: list));
+              } else {
+                //add task to empty list
+                var list = [
+                  Task(
+                          name: taskNameController.text,
+                          note: notesController.text,
+                          dueDate: dateController.text,
+                          reminderDate: reminderDateController.text,
+                          repeat: valueRepeat,
+                          path: pathList,
+                          reminderTime: reminderTimeController.text,
+                          isChecked: false)
+                      .toJson()
+                ];
+                db.setTask(index,
+                    FolderTask(name: widget.folderTask.name, task: list));
+              }
             }
 
             // if (kDebugMode) {
@@ -574,7 +606,6 @@ class _AddNewTaskPageState extends State<AddNewTaskPage> {
 
           // db.updateDatabase();
           Navigator.of(context).pop();
-          db.updateDatabase();
         },
       ),
     );

@@ -32,30 +32,17 @@ class ToDoDatabase {
         folderTask.add(data);
       });
     }
+    print(folderTask);
   }
 
   // update the database
   void updateDatabase() {
-    List folderJson = [];
-    int? index;
-
-    for (var todo in folderTask) {
-      folderJson.add({
-        "name": todo.name,
-        "task": [
-          task[index!].name,
-          task[index].note,
-          task[index].dueDate,
-          task[index].reminderDate,
-          task[index].reminderTime,
-          task[index].repeat,
-          task[index].path,
-          task[index].isChecked,
-        ]
-      });
-    }
-
-    var data = jsonEncode(folderJson);
+    List folder = [];
+    folderTask.forEach((element) {
+      folder.add(element.toJson());
+    });
+    print(folder);
+    var data = jsonEncode(folder);
     myBox.put(key, data);
 
     // for (var todoTask in task) {
@@ -74,5 +61,14 @@ class ToDoDatabase {
 
     // var dataTask = jsonEncode(folderJson);
     // myBox.put(key, dataTask);
+  }
+
+  void setTask(int index, newTask) {
+    if (folderTask.isEmpty) {
+      folderTask.add(newTask);
+    } else {
+      folderTask[index] = newTask;
+    }
+    updateDatabase();
   }
 }

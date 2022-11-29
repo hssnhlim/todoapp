@@ -1,5 +1,3 @@
-import 'package:todoapp/models/task.model.dart';
-
 class FolderTask {
   String? name;
   List task;
@@ -7,4 +5,5 @@ class FolderTask {
   factory FolderTask.fromJson(json) {
     return FolderTask(name: json['name'], task: json['task']);
   }
+  Map<String, dynamic> toJson() => {"name": name, "task": task};
 }

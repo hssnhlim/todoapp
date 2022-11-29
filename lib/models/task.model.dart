@@ -19,13 +19,24 @@ class Task {
       this.isChecked});
   factory Task.fromJson(json) {
     return Task(
-      name: json['name'],
-      note: json['note'],
-      dueDate: json['dueDate'],
-      reminderDate: json['reminderDate'],
-      reminderTime: json['reminderTime'],
-      repeat: json['repeat'],
-      path: json['path'],
-    );
+        name: json['name'],
+        note: json['note'],
+        dueDate: json['dueDate'],
+        reminderDate: json['reminderDate'],
+        reminderTime: json['reminderTime'],
+        repeat: json['repeat'],
+        path: json['path'],
+        isChecked: json['isChecked']);
   }
+
+  Map<String, dynamic> toJson() => {
+        "name": name,
+        "note": note,
+        "dueDate": dueDate,
+        "reminderDate": reminderDate,
+        "reminderTime": reminderTime,
+        "repeat": repeat,
+        "path": path,
+        'isChecked': isChecked
+      };
 }

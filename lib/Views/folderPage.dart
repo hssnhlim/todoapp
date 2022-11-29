@@ -8,6 +8,8 @@ import 'package:todoapp/Views/addNewTaskPage.dart';
 import 'package:todoapp/data/localDatabase.dart';
 import 'package:todoapp/models/folder.task.model.dart';
 
+import '../models/task.model.dart';
+
 class FolderPage extends StatefulWidget {
   const FolderPage({super.key, required this.foldertask});
 
@@ -195,7 +197,7 @@ class _FolderPageState extends State<FolderPage> {
                       padding:
                           const EdgeInsets.only(top: 20, bottom: 20, right: 10),
                       // itemCount: widget.foldertask.task.length,
-                      itemCount: db.task.length,
+                      itemCount: widget.foldertask.task.length,
                       itemBuilder: (context, index) {
                         return toDoTileTask(index);
                       }),
@@ -216,8 +218,10 @@ class _FolderPageState extends State<FolderPage> {
               //         topLeft: Radius.circular(10),
               //         topRight: Radius.circular(10))),
               context: context,
-              builder: (context) =>
-                  AddNewTaskPage(fileName: '${widget.foldertask.name}'));
+              builder: (context) => AddNewTaskPage(
+                    fileName: '${widget.foldertask.name}',
+                    folderTask: widget.foldertask,
+                  ));
         },
         child: const Icon(Icons.add),
       ),
@@ -261,18 +265,17 @@ class _FolderPageState extends State<FolderPage> {
               color: Colors.primaries[Random().nextInt(Colors.primaries.length)]
                   .shade200,
               borderRadius: BorderRadius.circular(8)),
-          child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: const [
-                Text(
-                  'New Task',
-                  style: TextStyle(
-                      fontFamily: 'poppins',
-                      fontWeight: FontWeight.w400,
-                      fontSize: 20),
-                ),
-                Icon(Icons.keyboard_arrow_right_outlined)
-              ]),
+          child:
+              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+            Text(
+              widget.foldertask.task[index]['name'],
+              style: const TextStyle(
+                  fontFamily: 'poppins',
+                  fontWeight: FontWeight.w400,
+                  fontSize: 20),
+            ),
+            const Icon(Icons.keyboard_arrow_right_outlined)
+          ]),
         ),
       ),
     );
