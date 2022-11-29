@@ -598,10 +598,7 @@ class _AddNewTaskPageState extends State<AddNewTaskPage> {
               }
             }
 
-            // if (kDebugMode) {
-            //   int? index;
-            //   print(db.folderTask);
-            // }
+            db.reloadData();
           });
 
           // db.updateDatabase();

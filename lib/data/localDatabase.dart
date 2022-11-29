@@ -29,10 +29,11 @@ class ToDoDatabase {
       var jsonResultList = jsonDecode(json);
       jsonResultList.forEach((element) {
         var data = FolderTask.fromJson(element);
-        folderTask.add(data);
+        if (!folderTask.contains(element)) {
+          folderTask.add(data);
+        }
       });
     }
-    print(folderTask);
   }
 
   // update the database
@@ -65,10 +66,26 @@ class ToDoDatabase {
 
   void setTask(int index, newTask) {
     if (folderTask.isEmpty) {
-      folderTask.add(newTask);
+      createInitialData();
     } else {
       folderTask[index] = newTask;
     }
     updateDatabase();
+  }
+
+  void removeAt(FolderTask folder, int index) {
+    if (folderTask.isEmpty) {
+      createInitialData();
+    }
+    if (folderTask.isNotEmpty) {
+      folderTask[index] = folder;
+      print(folderTask[index].toJson());
+    }
+    updateDatabase();
+  }
+
+  void reloadData() {
+    folderTask.clear();
+    loadData();
   }
 }

@@ -8,8 +8,6 @@ import 'package:todoapp/Views/addNewTaskPage.dart';
 import 'package:todoapp/data/localDatabase.dart';
 import 'package:todoapp/models/folder.task.model.dart';
 
-import '../models/task.model.dart';
-
 class FolderPage extends StatefulWidget {
   const FolderPage({super.key, required this.foldertask});
 
@@ -230,7 +228,8 @@ class _FolderPageState extends State<FolderPage> {
 
   void removeTask(int index) {
     setState(() {
-      db.task.removeAt(index);
+      widget.foldertask.task.removeAt(index);
+      db.removeAt(widget.foldertask, index);
     });
   }
 
