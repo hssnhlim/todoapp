@@ -1,3 +1,5 @@
+import 'package:todoapp/models/task.model.dart';
+
 class FolderTask {
   String? name;
   List task;

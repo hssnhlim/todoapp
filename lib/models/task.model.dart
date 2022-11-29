@@ -3,7 +3,7 @@ class Task {
   String? note;
   String? reminderDate;
   String? repeat;
-  // String? path;
+  String dueDate;
   bool? isChecked = false;
   String? reminderTime;
   List path = [];
@@ -11,6 +11,7 @@ class Task {
   Task(
       {required this.name,
       required this.note,
+      required this.dueDate,
       required this.reminderDate,
       required this.repeat,
       required this.path,
@@ -20,6 +21,7 @@ class Task {
     return Task(
       name: json['name'],
       note: json['note'],
+      dueDate: json['dueDate'],
       reminderDate: json['reminderDate'],
       reminderTime: json['reminderTime'],
       repeat: json['repeat'],

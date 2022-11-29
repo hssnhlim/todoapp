@@ -71,8 +71,8 @@ class OnboardPage extends StatelessWidget {
                                   elevation: MaterialStateProperty.all(0),
                                   backgroundColor:
                                       MaterialStateProperty.all(Colors.black),
-                                  fixedSize:
-                                      MaterialStateProperty.all(Size(0, 54)),
+                                  fixedSize: MaterialStateProperty.all(
+                                      const Size(0, 54)),
                                   shape: MaterialStateProperty.all(
                                       RoundedRectangleBorder(
                                           borderRadius:

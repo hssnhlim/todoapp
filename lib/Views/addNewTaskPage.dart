@@ -1,26 +1,25 @@
-import 'dart:math';
-
 import 'package:dotted_border/dotted_border.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:open_filex/open_filex.dart';
-import 'package:todoapp/Views/widget/uploadFileUI.dart';
 import 'package:todoapp/models/folder.task.model.dart';
 import 'package:todoapp/models/task.model.dart';
 
 import '../data/localDatabase.dart';
 
 class AddNewTaskPage extends StatefulWidget {
-  const AddNewTaskPage({super.key});
-
+  const AddNewTaskPage({super.key, required this.fileName});
+  final fileName;
   @override
   State<AddNewTaskPage> createState() => _AddNewTaskPageState();
 }
 
 class _AddNewTaskPageState extends State<AddNewTaskPage> {
   ToDoDatabase db = ToDoDatabase();
+  final myBox = Hive.box('ToDoDatabase');
 
   final taskNameController = TextEditingController();
   final notesController = TextEditingController();
@@ -79,26 +78,6 @@ class _AddNewTaskPageState extends State<AddNewTaskPage> {
         padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 20),
         child: SingleChildScrollView(
             child: Column(mainAxisSize: MainAxisSize.min, children: [
-          // Container(
-          //   width: 80,
-          //   height: 5,
-          //   decoration: BoxDecoration(
-          //       color: Colors.grey.shade300,
-          //       borderRadius: BorderRadius.all(Radius.circular(2.5))),
-          // ),
-          // const SizedBox(
-          //   height: 15,
-          // ),
-          // const Text(
-          //   'Add New Task',
-          //   style: TextStyle(
-          //       fontFamily: 'poppins',
-          //       fontWeight: FontWeight.w500,
-          //       fontSize: 20),
-          // ),
-          // const SizedBox(
-          //   height: 20,
-          // ),
           TextFormField(
             minLines: 1,
             maxLines: 2,
@@ -534,7 +513,6 @@ class _AddNewTaskPageState extends State<AddNewTaskPage> {
                 itemCount: pickedFile!.length,
                 itemBuilder: (context, index) {
                   return uploadFileUi(index);
-                  ;
                 }),
           const SizedBox(
             height: 30,
@@ -555,27 +533,46 @@ class _AddNewTaskPageState extends State<AddNewTaskPage> {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         onPressed: () {
           if (pickedFile != null) {
-            pickedFile!.forEach((element) {
+            for (var element in pickedFile!) {
               setState(() {
                 var data = element.path;
                 pathList.add(data);
                 // print(pathList);
               });
-            });
+            }
           }
 
           setState(() {
+            // if (taskNameController.text.isNotEmpty) {
+            //   db.task.add(Task(
+            //       name: taskNameController.text,
+            //       note: notesController.text,
+            //       reminderDate: reminderDateController.text,
+            //       repeat: valueRepeat,
+            //       path: pathList,
+            //       reminderTime: reminderTimeController.text));
+            // }
+
             if (taskNameController.text.isNotEmpty) {
-              db.task.add(Task(
-                  name: taskNameController.text,
-                  note: notesController.text,
-                  reminderDate: reminderDateController.text,
-                  repeat: valueRepeat,
-                  path: pathList,
-                  reminderTime: reminderTimeController.text));
+              db.folderTask.add(FolderTask(name: widget.fileName, task: [
+                Task(
+                    name: taskNameController.text,
+                    note: notesController.text,
+                    dueDate: dateController.text,
+                    reminderDate: reminderDateController.text,
+                    repeat: valueRepeat,
+                    path: pathList,
+                    reminderTime: reminderTimeController.text)
+              ]));
             }
+
+            // if (kDebugMode) {
+            //   int? index;
+            //   print(db.folderTask);
+            // }
           });
 
+          // db.updateDatabase();
           Navigator.of(context).pop();
           db.updateDatabase();
         },
@@ -596,9 +593,6 @@ class _AddNewTaskPageState extends State<AddNewTaskPage> {
           height: 40,
           decoration: BoxDecoration(
               color: Colors.grey.shade300,
-              // border: Border.all(color: Colors.black),
-              // color: Colors
-              //     .primaries[Random().nextInt(Colors.primaries.length)].shade200,
               borderRadius: BorderRadius.circular(8)),
           child:
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
