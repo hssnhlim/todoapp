@@ -4,6 +4,7 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:hive/hive.dart';
+import 'package:provider/provider.dart';
 import 'package:todoapp/Views/addNewTaskPage.dart';
 import 'package:todoapp/data/localDatabase.dart';
 import 'package:todoapp/models/folder.task.model.dart';
@@ -191,14 +192,27 @@ class _FolderPageState extends State<FolderPage> {
               Expanded(
                 child: FadeInUp(
                   duration: const Duration(milliseconds: 800),
-                  child: ListView.builder(
-                      padding:
-                          const EdgeInsets.only(top: 20, bottom: 20, right: 10),
-                      // itemCount: widget.foldertask.task.length,
-                      itemCount: widget.foldertask.task.length,
-                      itemBuilder: (context, index) {
-                        return toDoTileTask(index);
-                      }),
+                  child: Consumer<ToDoDatabase>(
+                    builder: (context, value, child) {
+                      return ListView.builder(
+                          padding: const EdgeInsets.only(
+                              top: 20, bottom: 20, right: 10),
+                          // itemCount: widget.foldertask.task.length,
+
+                          itemCount: value.task.length,
+                          itemBuilder: (context, index) {
+                            return toDoTileTask(index);
+                          });
+                    },
+                    // child: ListView.builder(
+                    //     padding:
+                    //         const EdgeInsets.only(top: 20, bottom: 20, right: 10),
+                    //     // itemCount: widget.foldertask.task.length,
+                    //     itemCount: widget.foldertask.task.length,
+                    //     itemBuilder: (context, index) {
+                    //       return toDoTileTask(index);
+                    //     }),
+                  ),
                 ),
               ),
             ],
@@ -241,7 +255,7 @@ class _FolderPageState extends State<FolderPage> {
           motion: const BehindMotion(),
           children: [
             SlidableAction(
-              onPressed: (context) => removeTask(index),
+              onPressed: (context) => _deleteTask(index),
               icon: Icons.delete,
               backgroundColor: Colors.red,
               borderRadius: BorderRadius.circular(8),

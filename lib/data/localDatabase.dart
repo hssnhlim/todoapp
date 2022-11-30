@@ -1,12 +1,13 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 import 'package:todoapp/authentication/auth.provider.dart';
 
 import '../models/folder.task.model.dart';
 import '../models/task.model.dart';
 
-class ToDoDatabase {
+class ToDoDatabase with ChangeNotifier {
   List<FolderTask> folderTask = [];
   List<Task> task = [];
 
@@ -18,6 +19,7 @@ class ToDoDatabase {
   void createInitialData() {
     task = [];
     folderTask = [FolderTask(name: 'Personal', task: task)];
+    notifyListeners();
   }
 
   // load the data from local database
@@ -34,17 +36,21 @@ class ToDoDatabase {
         }
       });
     }
+    notifyListeners();
   }
 
   // update the database
   void updateDatabase() {
     List folder = [];
-    folderTask.forEach((element) {
+    for (var element in folderTask) {
       folder.add(element.toJson());
-    });
-    print(folder);
+    }
+    if (kDebugMode) {
+      print(folder);
+    }
     var data = jsonEncode(folder);
     myBox.put(key, data);
+    notifyListeners();
 
     // for (var todoTask in task) {
     //   folderJson.add({
@@ -71,6 +77,10 @@ class ToDoDatabase {
       folderTask[index] = newTask;
     }
     updateDatabase();
+    notifyListeners();
+    if (kDebugMode) {
+      print(folderTask[index]);
+    }
   }
 
   void removeAt(FolderTask folder, int index) {
@@ -79,13 +89,17 @@ class ToDoDatabase {
     }
     if (folderTask.isNotEmpty) {
       folderTask[index] = folder;
-      print(folderTask[index].toJson());
+      if (kDebugMode) {
+        print(folderTask[index].toJson());
+      }
     }
     updateDatabase();
+    notifyListeners();
   }
 
   void reloadData() {
     folderTask.clear();
     loadData();
+    notifyListeners();
   }
 }

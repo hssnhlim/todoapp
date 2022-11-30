@@ -4,11 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
 class ToDoTile extends StatelessWidget {
-  ToDoTile({super.key, required this.folderName, required this.deleteFunction});
+  const ToDoTile(
+      {super.key, required this.folderName, required this.deleteFunction});
 
   final String folderName;
 
-  Function(BuildContext)? deleteFunction;
+  final Function(BuildContext)? deleteFunction;
   // final FolderTask folderTask;
   @override
   Widget build(BuildContext context) {

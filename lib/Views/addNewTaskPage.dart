@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:dotted_border/dotted_border.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
@@ -7,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:open_filex/open_filex.dart';
+import 'package:provider/provider.dart';
 import 'package:todoapp/models/folder.task.model.dart';
 import 'package:todoapp/models/task.model.dart';
 
@@ -560,7 +559,10 @@ class _AddNewTaskPageState extends State<AddNewTaskPage> {
             if (taskNameController.text.isNotEmpty) {
               //add default if foldertask empty
               if (db.folderTask.isEmpty) {
-                db.folderTask.add(widget.folderTask);
+                Provider.of<ToDoDatabase>(context, listen: false)
+                    .folderTask
+                    .add(widget.folderTask);
+                // db.folderTask.add(widget.folderTask);
               }
               int index = db.folderTask.indexOf(widget.folderTask);
               //add task to existing list
@@ -576,9 +578,17 @@ class _AddNewTaskPageState extends State<AddNewTaskPage> {
                         isChecked: false)
                     .toJson();
                 var list = widget.folderTask.task;
+                // Provider.of<ToDoDatabase>(context, listen: false)
+                //     .addListener(() {
+                //   list.add(data);
+                //   db.setTask(index,
+                //       FolderTask(name: widget.folderTask.name, task: list));
+                // });
                 list.add(data);
-                db.setTask(index,
+                Provider.of<ToDoDatabase>(context, listen: false).setTask(index,
                     FolderTask(name: widget.folderTask.name, task: list));
+                // db.setTask(index,
+                //     FolderTask(name: widget.folderTask.name, task: list));
               } else {
                 //add task to empty list
                 var list = [
@@ -593,12 +603,14 @@ class _AddNewTaskPageState extends State<AddNewTaskPage> {
                           isChecked: false)
                       .toJson()
                 ];
-                db.setTask(index,
+                Provider.of<ToDoDatabase>(context, listen: false).setTask(index,
                     FolderTask(name: widget.folderTask.name, task: list));
+                // db.setTask(index,
+                //     FolderTask(name: widget.folderTask.name, task: list));
               }
             }
 
-            db.reloadData();
+            Provider.of<ToDoDatabase>(context, listen: false).reloadData();
           });
 
           // db.updateDatabase();

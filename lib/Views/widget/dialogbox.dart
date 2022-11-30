@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
 class DialogBox extends StatelessWidget {
-  DialogBox(
+  const DialogBox(
       {super.key,
       required this.addNewFolderController,
       required this.onCancel,
       required this.onSave});
 
   final addNewFolderController;
-  VoidCallback onSave;
-  VoidCallback onCancel;
+  final VoidCallback onSave;
+  final VoidCallback onCancel;
 
   @override
   Widget build(BuildContext context) {

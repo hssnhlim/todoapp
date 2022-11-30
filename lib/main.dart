@@ -6,6 +6,7 @@ import 'package:todoapp/authentication/auth.provider.dart';
 import 'package:todoapp/firebase_options.dart';
 
 import 'authentication/landing.dart';
+import 'data/localDatabase.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,7 +33,8 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<AuthProvider>(
-            create: (context) => AuthProvider())
+            create: (context) => AuthProvider()),
+        ChangeNotifierProvider(create: (context) => ToDoDatabase())
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
