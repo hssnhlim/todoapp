@@ -1,6 +1,7 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todoapp/authentication/register.dart';
 
 class OnboardPage extends StatelessWidget {
@@ -59,7 +60,10 @@ class OnboardPage extends StatelessWidget {
                           duration: const Duration(milliseconds: 1400),
                           delay: const Duration(milliseconds: 800),
                           child: ElevatedButton(
-                              onPressed: () {
+                              onPressed: () async {
+                                final prefs =
+                                    await SharedPreferences.getInstance();
+                                prefs.setBool('showHome', true);
                                 Navigator.of(context).push(PageTransition(
                                     child: const RegisterPage(),
                                     type: PageTransitionType.bottomToTop,

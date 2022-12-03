@@ -50,6 +50,7 @@ class ToDoDatabase with ChangeNotifier {
     }
     var data = jsonEncode(folder);
     myBox.put(key, data);
+
     notifyListeners();
 
     // for (var todoTask in task) {
@@ -74,9 +75,10 @@ class ToDoDatabase with ChangeNotifier {
     if (folderTask.isEmpty) {
       createInitialData();
     } else {
-      folderTask[index] = newTask;
+      // folderTask[index] = newTask;
+      folderTask.replaceRange(index, index + 1, [newTask]);
     }
-    updateDatabase();
+    // updateDatabase();
     notifyListeners();
     if (kDebugMode) {
       print(folderTask[index]);

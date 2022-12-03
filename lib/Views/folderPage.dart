@@ -280,6 +280,13 @@ class _FolderPageState extends State<FolderPage> {
               borderRadius: BorderRadius.circular(8)),
           child:
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+            Checkbox(
+                value: widget.foldertask.task[index].isChecked,
+                onChanged: (newValue) {
+                  setState(() {
+                    widget.foldertask.task[index].isChecked = newValue;
+                  });
+                }),
             Text(
               widget.foldertask.task[index]['name'],
               style: const TextStyle(

@@ -1,6 +1,8 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
+import 'package:todoapp/Views/edit_profile.dart';
 
 import '../authentication/auth.provider.dart';
 import '../authentication/login.dart';
@@ -17,7 +19,6 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    var user = Provider.of<AuthProvider>(context).user;
     return Scaffold(
       body: SafeArea(
           child: SingleChildScrollView(
@@ -56,18 +57,25 @@ class _ProfilePageState extends State<ProfilePage> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Expanded(
-                          child: Text(
-                            user?.displayName ?? 'Username',
-                            // user != null ? user.displayName! : "user",
-                            style: const TextStyle(
-                              fontFamily: 'poppins',
-                              fontWeight: FontWeight.w500,
-                              fontSize: 25,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            maxLines: 1,
-                          ),
+                        Consumer<AuthProvider>(
+                          builder: (context, value, child) {
+                            if (kDebugMode) {
+                              print(value.user!.displayName);
+                            }
+                            return Expanded(
+                              child: Text(
+                                value.user!.displayName ?? 'Username',
+                                // user != null ? user.displayName! : "user",
+                                style: const TextStyle(
+                                  fontFamily: 'poppins',
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 25,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                maxLines: 1,
+                              ),
+                            );
+                          },
                         ),
                         const SizedBox(
                           height: 10,
@@ -83,7 +91,14 @@ class _ProfilePageState extends State<ProfilePage> {
                       ],
                     ),
                     IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.of(context).push(PageTransition(
+                              child: const EditProfilePage(),
+                              type: PageTransitionType.rightToLeft,
+                              childCurrent: const ProfilePage(),
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.easeInCubic));
+                        },
                         icon: const Icon(Icons.keyboard_arrow_right_outlined))
                   ],
                 ),
@@ -127,14 +142,13 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   InkWell(
                     onTap: () {
+                      AuthProvider.instance.signOut(context);
                       Navigator.of(context).push(PageTransition(
                           child: const LoginPage(),
                           type: PageTransitionType.bottomToTop,
                           childCurrent: const ProfilePage(),
                           duration: const Duration(milliseconds: 1000),
                           curve: Curves.easeInCubic));
-
-                      AuthProvider.instance.signOut(context);
                     },
                     child: Container(
                       width: double.maxFinite,

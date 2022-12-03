@@ -219,7 +219,7 @@ class _HomePageContentState extends State<HomePageContent> {
                             })
                         : const Center(
                             child: Text(
-                            'No folder found 😞',
+                            'No folder available 😞',
                             style: TextStyle(
                               fontFamily: 'poppins',
                               fontWeight: FontWeight.w400,

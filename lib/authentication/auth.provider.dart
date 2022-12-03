@@ -37,4 +37,14 @@ class AuthProvider extends ChangeNotifier {
               (route) => false)
         });
   }
+
+  Future<void> updateProfileName(name) async {
+    await FirebaseAuth.instance.currentUser!.updateDisplayName(name);
+    notifyListeners();
+  }
+
+  Future<void> updateProfileEmail(email) async {
+    await FirebaseAuth.instance.currentUser!.updateEmail(email);
+    notifyListeners();
+  }
 }
