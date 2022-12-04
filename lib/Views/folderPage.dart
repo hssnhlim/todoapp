@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:animate_do/animate_do.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:hive/hive.dart';
@@ -51,6 +52,12 @@ class _FolderPageState extends State<FolderPage> {
                 IconButton(
                     onPressed: () {
                       Navigator.of(context).pop();
+                      if (kDebugMode) {
+                        print('Out from folder: ${widget.foldertask.name}');
+                      }
+                      if (kDebugMode) {
+                        print('Remaining tasks: ${widget.foldertask.task}');
+                      }
                     },
                     icon: const Icon(Icons.arrow_back)),
                 const SizedBox(
@@ -194,6 +201,9 @@ class _FolderPageState extends State<FolderPage> {
                   duration: const Duration(milliseconds: 800),
                   child: Consumer<ToDoDatabase>(
                     builder: (context, value, child) {
+                      if (kDebugMode) {
+                        print(value.task);
+                      }
                       return ListView.builder(
                           padding: const EdgeInsets.only(
                               top: 20, bottom: 20, right: 10),
@@ -201,7 +211,7 @@ class _FolderPageState extends State<FolderPage> {
 
                           itemCount: value.task.length,
                           itemBuilder: (context, index) {
-                            return toDoTileTask(index);
+                            return toDoTileTask(index, value.task[index].name);
                           });
                     },
                     // child: ListView.builder(
@@ -231,7 +241,6 @@ class _FolderPageState extends State<FolderPage> {
               //         topRight: Radius.circular(10))),
               context: context,
               builder: (context) => AddNewTaskPage(
-                    fileName: '${widget.foldertask.name}',
                     folderTask: widget.foldertask,
                   ));
         },
@@ -247,7 +256,7 @@ class _FolderPageState extends State<FolderPage> {
     });
   }
 
-  Padding toDoTileTask(int index) {
+  Padding toDoTileTask(int index, text) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 20),
       child: Slidable(
@@ -288,7 +297,7 @@ class _FolderPageState extends State<FolderPage> {
                   });
                 }),
             Text(
-              widget.foldertask.task[index]['name'],
+              text,
               style: const TextStyle(
                   fontFamily: 'poppins',
                   fontWeight: FontWeight.w400,
