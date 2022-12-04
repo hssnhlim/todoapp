@@ -1,10 +1,5 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
-import 'package:todoapp/Views/homepage.dart';
-import 'package:todoapp/Views/profilePage.dart';
 
 import '../authentication/auth.provider.dart';
 
@@ -83,6 +78,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
           style: TextStyle(fontFamily: 'poppins', fontWeight: FontWeight.w400),
         )));
       });
+      Navigator.of(context).pop();
     } else if (emailController.text.isNotEmpty) {
       setState(() {
         Provider.of<AuthProvider>(context, listen: false)
@@ -93,6 +89,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
           style: TextStyle(fontFamily: 'poppins', fontWeight: FontWeight.w400),
         )));
       });
+      Navigator.of(context).pop();
     } else if (nameController.text.isEmpty || emailController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text(
@@ -164,7 +161,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
     } else {
       Navigator.pop(context);
     }
-    ;
+
+    return null;
   }
 
   @override
