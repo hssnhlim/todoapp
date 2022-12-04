@@ -36,6 +36,9 @@ class ToDoDatabase with ChangeNotifier {
         }
       });
     }
+    if (kDebugMode) {
+      print(folderTask);
+    }
     notifyListeners();
   }
 
@@ -72,17 +75,18 @@ class ToDoDatabase with ChangeNotifier {
   }
 
   void setTask(int index, newTask) {
+    var specificIndex = folderTask
+        .indexWhere((element) => element.name == folderTask[index].name);
     if (folderTask.isEmpty) {
       createInitialData();
-    } else {
+    } else if (specificIndex != -1) {
+      folderTask[index] =
+          FolderTask(name: folderTask[index].name, task: newTask);
       // folderTask[index] = newTask;
-      folderTask.replaceRange(index, index + 1, [newTask]);
+
     }
-    // updateDatabase();
+    updateDatabase();
     notifyListeners();
-    if (kDebugMode) {
-      print(folderTask[index]);
-    }
   }
 
   void removeAt(FolderTask folder, int index) {
