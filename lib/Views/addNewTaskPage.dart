@@ -12,9 +12,11 @@ import 'package:todoapp/models/task.model.dart';
 import '../data/localDatabase.dart';
 
 class AddNewTaskPage extends StatefulWidget {
-  const AddNewTaskPage(
-      {super.key, required this.folderTask, required this.fileName});
-  final fileName;
+  const AddNewTaskPage({
+    super.key,
+    required this.folderTask,
+  });
+
   final FolderTask folderTask;
   @override
   State<AddNewTaskPage> createState() => _AddNewTaskPageState();
@@ -572,19 +574,21 @@ class _AddNewTaskPageState extends State<AddNewTaskPage> {
                       .add(widget.folderTask);
                   // db.folderTask.add(widget.folderTask);
                 }
-                int index = db.folderTask.indexOf(widget.folderTask);
+                int? index = db.folderTask.indexOf(widget.folderTask);
                 //add task to existing list
                 if (widget.folderTask.task.isNotEmpty) {
-                  var data = Task(
-                          name: taskNameController.text,
-                          note: notesController.text,
-                          dueDate: dateController.text,
-                          reminderDate: reminderDateController.text,
-                          repeat: valueRepeat,
-                          path: pathList,
-                          reminderTime: reminderTimeController.text,
-                          isChecked: false)
-                      .toJson();
+                  var data = [
+                    Task(
+                            name: taskNameController.text,
+                            note: notesController.text,
+                            dueDate: dateController.text,
+                            reminderDate: reminderDateController.text,
+                            repeat: valueRepeat,
+                            path: pathList,
+                            reminderTime: reminderTimeController.text,
+                            isChecked: false)
+                        .toJson()
+                  ];
                   var list = widget.folderTask.task;
                   // Provider.of<ToDoDatabase>(context, listen: false)
                   //     .addListener(() {
@@ -593,11 +597,20 @@ class _AddNewTaskPageState extends State<AddNewTaskPage> {
                   //       FolderTask(name: widget.folderTask.name, task: list));
                   // });
                   list.add(data);
-                  Provider.of<ToDoDatabase>(context, listen: false).setTask(
-                      index,
-                      FolderTask(name: widget.folderTask.name, task: list));
+                  if (kDebugMode) {
+                    print(list);
+                  }
+                  Provider.of<ToDoDatabase>(context, listen: false)
+                      .setTask(index, list);
+                  // Provider.of<ToDoDatabase>(context, listen: false).setTask(
+                  //     index,
+                  //     FolderTask(name: widget.folderTask.name, task: list));
                   // db.setTask(index,
                   //     FolderTask(name: widget.folderTask.name, task: list));
+                  // Provider.of<ToDoDatabase>(context, listen: false)
+                  //     .folderTask
+                  //     .add(FolderTask(
+                  //         name: db.folderTask[index].name, task: list));
                 } else {
                   //add task to empty list
                   var list = [
@@ -612,17 +625,22 @@ class _AddNewTaskPageState extends State<AddNewTaskPage> {
                             isChecked: false)
                         .toJson()
                   ];
-                  Provider.of<ToDoDatabase>(context, listen: false).setTask(
-                      index,
-                      FolderTask(name: widget.folderTask.name, task: list));
+                  Provider.of<ToDoDatabase>(context, listen: false)
+                      .setTask(index, list);
+                  // Provider.of<ToDoDatabase>(context, listen: false)
+                  //     .folderTask
+                  //     .add(FolderTask(
+                  //         name: db.folderTask[index].name, task: list));
+                  // Provider.of<ToDoDatabase>(context, listen: false).setTask(
+                  //     index,
+                  //     FolderTask(name: widget.folderTask.name, task: list));
                   // db.setTask(index,
                   //     FolderTask(name: widget.folderTask.name, task: list));
                 }
               }
-
-              Provider.of<ToDoDatabase>(context, listen: false).reloadData();
-              Provider.of<ToDoDatabase>(context, listen: false)
-                  .updateDatabase();
+              // Provider.of<ToDoDatabase>(context, listen: false)
+              //     .updateDatabase();
+              // Provider.of<ToDoDatabase>(context, listen: false).reloadData();
             });
           }
 
@@ -771,6 +789,14 @@ class _AddNewTaskPageState extends State<AddNewTaskPage> {
   void removeFile(int index) {
     setState(() {
       pickedFile!.removeAt(index);
+      if (kDebugMode) {
+        print('One item removed!');
+      }
     });
+    if (pickedFile!.isEmpty) {
+      if (kDebugMode) {
+        print('Upload File: Selected file is empty.');
+      }
+    }
   }
 }
