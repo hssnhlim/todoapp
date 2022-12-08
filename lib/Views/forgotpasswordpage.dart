@@ -32,10 +32,12 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                   fontWeight: FontWeight.w400,
                   fontSize: 15,
                 ),
-                actionsPadding: const EdgeInsets.fromLTRB(0, 0, 20, 10),
-                contentPadding: const EdgeInsets.all(20),
+                // actionsPadding: const EdgeInsets.fromLTRB(0, 0, 20, 10),
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 0, vertical: 20),
                 content: const Text(
                   'Successfully sent!',
+                  textAlign: TextAlign.center,
                 ),
               ));
 

@@ -4,12 +4,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
 class ToDoTile extends StatelessWidget {
-  const ToDoTile(
-      {super.key, required this.folderName, required this.deleteFunction});
+  ToDoTile(
+      {super.key,
+      required this.folderName,
+      required this.deleteFunction,
+      required this.isChecked,
+      required this.onChanged});
 
   final String folderName;
+  final bool isChecked;
+  Function(BuildContext?)? deleteFunction;
+  void Function(bool?)? onChanged;
 
-  final Function(BuildContext)? deleteFunction;
   // final FolderTask folderTask;
   @override
   Widget build(BuildContext context) {
@@ -28,7 +34,7 @@ class ToDoTile extends StatelessWidget {
           ],
         ),
         child: Container(
-          padding: const EdgeInsets.only(left: 20, right: 20),
+          padding: const EdgeInsets.only(left: 10, right: 20),
           width: double.maxFinite,
           height: 79,
           decoration: BoxDecoration(
@@ -45,18 +51,25 @@ class ToDoTile extends StatelessWidget {
               borderRadius: BorderRadius.circular(8)),
           child:
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+            Checkbox(
+                fillColor:
+                    MaterialStateProperty.all(Colors.black.withOpacity(.8)),
+                value: isChecked,
+                onChanged: onChanged),
             Expanded(
               child: Text(
                 folderName,
                 overflow: TextOverflow.ellipsis,
                 maxLines: 1,
-                style: const TextStyle(
+                style: TextStyle(
                     fontFamily: 'poppins',
                     fontWeight: FontWeight.w400,
-                    fontSize: 20),
+                    fontSize: 17,
+                    decoration: isChecked
+                        ? TextDecoration.lineThrough
+                        : TextDecoration.none),
               ),
             ),
-            const Icon(Icons.keyboard_arrow_right_outlined)
           ]),
         ),
       ),

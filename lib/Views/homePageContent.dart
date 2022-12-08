@@ -1,8 +1,6 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-import 'package:page_transition/page_transition.dart';
-import 'package:todoapp/Views/folderPage.dart';
 import 'package:todoapp/Views/widget/todotileFolder.dart';
 
 import '../data/localDatabase.dart';
@@ -29,6 +27,8 @@ class _HomePageContentState extends State<HomePageContent> {
 
   bool isIconVisible = false;
 
+  bool isChecked = false;
+
   List foundFolder = [];
 
   @override
@@ -50,7 +50,7 @@ class _HomePageContentState extends State<HomePageContent> {
   void saveNewFolder() {
     setState(() {
       if (_controller.text.isNotEmpty) {
-        db.folderTask.add(FolderTask(name: _controller.text, task: []));
+        db.folderTask.add(FolderTask(name: _controller.text, isChecked: false));
         _controller.clear();
       } else {
         () => Navigator.of(context).pop();
@@ -99,6 +99,15 @@ class _HomePageContentState extends State<HomePageContent> {
     setState(() {
       foundFolder = results!;
     });
+  }
+
+  // my function for checkbox
+  void checkBoxChanged(bool? value, int index) {
+    setState(() {
+      db.folderTask[index] =
+          FolderTask(name: db.folderTask[index].name, isChecked: value!);
+    });
+    db.updateDatabase();
   }
 
   @override
@@ -201,25 +210,27 @@ class _HomePageContentState extends State<HomePageContent> {
                             itemBuilder: (context, index) {
                               return GestureDetector(
                                 onTap: () {
-                                  Navigator.of(context).push(PageTransition(
-                                      child: FolderPage(
-                                        foldertask: db.folderTask[index],
-                                      ),
-                                      type: PageTransitionType.rightToLeft,
-                                      duration:
-                                          const Duration(milliseconds: 300),
-                                      curve: Curves.easeInCubic));
+                                  // Navigator.of(context).push(PageTransition(
+                                  //     child: FolderPage(
+                                  //       foldertask: db.folderTask[index],
+                                  //     ),
+                                  //     type: PageTransitionType.rightToLeft,
+                                  //     duration:
+                                  //         const Duration(milliseconds: 300),
+                                  //     curve: Curves.easeInCubic));
                                 },
                                 child: ToDoTile(
-                                  folderName: foundFolder[index].name!,
-                                  deleteFunction: (context) =>
-                                      _deleteFolder(index),
-                                ),
+                                    folderName: foundFolder[index].name!,
+                                    deleteFunction: (context) =>
+                                        _deleteFolder(index),
+                                    isChecked: db.folderTask[index].isChecked,
+                                    onChanged: (value) =>
+                                        checkBoxChanged(value, index)),
                               );
                             })
                         : const Center(
                             child: Text(
-                            'No folder available 😞',
+                            'No task available 😞',
                             style: TextStyle(
                               fontFamily: 'poppins',
                               fontWeight: FontWeight.w400,
@@ -233,18 +244,25 @@ class _HomePageContentState extends State<HomePageContent> {
           ),
         ),
         floatingActionButton: FadeInRight(
-          duration: const Duration(milliseconds: 500),
-          delay: const Duration(milliseconds: 200),
-          child: FloatingActionButton(
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
-            backgroundColor: Colors.black,
-            onPressed: () {
-              createNewFolder();
-            },
-            child: const Icon(Icons.add),
-          ),
-        ));
+            duration: const Duration(milliseconds: 500),
+            delay: const Duration(milliseconds: 200),
+            child: FloatingActionButton.extended(
+              label: const Text(
+                'Add Task',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontFamily: 'poppins',
+                    fontWeight: FontWeight.w400,
+                    fontSize: 15,
+                    letterSpacing: 1),
+              ),
+              backgroundColor: Colors.black,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(6)),
+              onPressed: () {
+                createNewFolder();
+              },
+            )));
   }
 
   void setToDefault() {

@@ -15,7 +15,7 @@ class DialogBox extends StatelessWidget {
   Widget build(BuildContext context) {
     return AlertDialog(
       title: const Text(
-        'Add New Folder:',
+        'Add New Task 📂',
         style: TextStyle(
             color: Colors.black,
             fontFamily: 'poppins',
@@ -80,10 +80,10 @@ class DialogBox extends StatelessWidget {
         // The validator receives the text that the user has entered.
         decoration: const InputDecoration(
           prefixIcon: Icon(
-            Icons.create_new_folder_outlined,
+            Icons.task_outlined,
             color: Colors.black,
           ),
-          hintText: 'Folder name',
+          hintText: 'Task name',
           hintStyle: TextStyle(
               fontFamily: 'poppins',
               fontWeight: FontWeight.w400,

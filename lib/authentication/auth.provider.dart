@@ -47,4 +47,8 @@ class AuthProvider extends ChangeNotifier {
     await FirebaseAuth.instance.currentUser!.updateEmail(email);
     notifyListeners();
   }
+
+  Future<String> getCurrentUID() async {
+    return await user!.uid;
+  }
 }

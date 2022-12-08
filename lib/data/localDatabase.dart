@@ -18,7 +18,7 @@ class ToDoDatabase with ChangeNotifier {
   // run this method if this is the first time opening the app
   void createInitialData() {
     task = [];
-    folderTask = [FolderTask(name: 'Personal', task: task)];
+    folderTask = [FolderTask(name: 'Buy groceries stuff', isChecked: false)];
     notifyListeners();
   }
 
@@ -42,9 +42,25 @@ class ToDoDatabase with ChangeNotifier {
     notifyListeners();
   }
 
+  // update task
+  // void updateTask() {
+  //   List updateTask = [];
+
+  //   for (var element in task) {
+  //     updateTask.add(element.toJson());
+  //   }
+
+  //   print(updateTask);
+  //   var data = jsonEncode(updateTask);
+  //   myBox.put(key, data);
+
+  //   notifyListeners();
+  // }
+
   // update the database
   void updateDatabase() {
     List folder = [];
+
     for (var element in folderTask) {
       folder.add(element.toJson());
     }
@@ -74,20 +90,20 @@ class ToDoDatabase with ChangeNotifier {
     // myBox.put(key, dataTask);
   }
 
-  void setTask(int index, newTask) {
-    var specificIndex = folderTask
-        .indexWhere((element) => element.name == folderTask[index].name);
-    if (folderTask.isEmpty) {
-      createInitialData();
-    } else if (specificIndex != -1) {
-      folderTask[index] =
-          FolderTask(name: folderTask[index].name, task: newTask);
-      // folderTask[index] = newTask;
-
-    }
-    updateDatabase();
-    notifyListeners();
-  }
+  // void setTask(int index, newTask) {
+  //   // var specificIndex = folderTask
+  //   //     .indexWhere((element) => element.name == folderTask[index].name);
+  //   if (folderTask.isEmpty) {
+  //     createInitialData();
+  //   } else {
+  //     // folderTask[index] =
+  //     //     FolderTask(name: folderTask[index].name, task: [newTask]);
+  //     // folderTask[index] = newTask;
+  //     folderTask[index].task.add(newTask);
+  //   }
+  //   updateDatabase();
+  //   notifyListeners();
+  // }
 
   void removeAt(FolderTask folder, int index) {
     if (folderTask.isEmpty) {
