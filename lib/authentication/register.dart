@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 import 'package:todoapp/Views/homepage.dart';
+import 'package:todoapp/authentication/landing.dart';
 import 'package:todoapp/authentication/login.dart';
 import 'package:todoapp/data/localDatabase.dart';
 
@@ -542,7 +543,7 @@ class RegisterPageState extends State<RegisterPage> {
                               GestureDetector(
                                 onTap: () {
                                   Navigator.of(context).push(PageTransition(
-                                      child: const LoginPage(),
+                                      child: const LandingPage(),
                                       type: PageTransitionType.bottomToTop,
                                       childCurrent: const RegisterPage(),
                                       duration:
