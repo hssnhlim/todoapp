@@ -7,6 +7,12 @@ import 'package:todoapp/authentication/auth.provider.dart';
 import '../models/folder.task.model.dart';
 
 class ToDoDatabase with ChangeNotifier {
+  factory ToDoDatabase() => ToDoDatabase._();
+  //execute when app start running
+  ToDoDatabase._() {
+    loadData();
+  }
+
   List<FolderTask> folderTask = [];
   // List<Task> task = [];
 
@@ -28,10 +34,13 @@ class ToDoDatabase with ChangeNotifier {
 
     if (json != null) {
       var jsonResultList = jsonDecode(json);
+
       jsonResultList.forEach((element) {
         var data = FolderTask.fromJson(element);
         if (!folderTask.contains(element)) {
           folderTask.add(data);
+          print(data.isChecked);
+          notifyListeners();
         }
       });
     } else {
@@ -66,10 +75,14 @@ class ToDoDatabase with ChangeNotifier {
       folder.add(element.toJson());
     }
     if (kDebugMode) {
-      print(folder);
+      print("save $folder");
     }
-    var data = jsonEncode(folder);
-    myBox.put(key, data);
+    try {
+      var data = jsonEncode(folder);
+      myBox.put(key, data);
+    } catch (e) {
+      print(e);
+    }
 
     notifyListeners();
 
@@ -124,5 +137,23 @@ class ToDoDatabase with ChangeNotifier {
     folderTask.clear();
     loadData();
     notifyListeners();
+  }
+
+  void setValue(bool? value, int index) {
+    folderTask[index].isChecked = value!;
+    notifyListeners();
+    updateDatabase();
+  }
+
+  void addTask(FolderTask data) {
+    folderTask.add(data);
+    notifyListeners();
+    updateDatabase();
+  }
+
+  void editTask(FolderTask data, int index) {
+    folderTask[index] == data;
+    notifyListeners();
+    updateDatabase();
   }
 }
