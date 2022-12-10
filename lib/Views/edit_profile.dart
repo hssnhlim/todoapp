@@ -20,54 +20,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
   // bool snackBar = false;
 
   Future<void> saveEditProfile() async {
-    // form textfield error if empty
-    // if (_formKey.currentState!.validate()) {
-    //   try {
-    //     await Provider.of<AuthProvider>(context, listen: false)
-    //         .updateProfileName(nameController.text.trim());
-    //     await Provider.of<AuthProvider>(context, listen: false)
-    //         .updateProfileEmail(emailController.text.trim());
-    //   } on FirebaseAuthException catch (e) {
-    //     return showDialog(
-    //         useSafeArea: true,
-    //         context: context,
-    //         builder: (context) {
-    //           return AlertDialog(
-    //             shape: RoundedRectangleBorder(
-    //                 borderRadius: BorderRadius.circular(10)),
-    //             titlePadding: const EdgeInsets.only(
-    //                 top: 30, left: 20, right: 20, bottom: 20),
-    //             actionsPadding: const EdgeInsets.only(
-    //                 right: 20, left: 20, top: 0, bottom: 20),
-    //             title: Text(
-    //               e.message!,
-    //               style: const TextStyle(
-    //                 fontFamily: 'poppins',
-    //                 fontWeight: FontWeight.w400,
-    //                 fontSize: 18,
-    //               ),
-    //             ),
-    //             actions: [
-    //               MaterialButton(
-    //                 color: Colors.black,
-    //                 onPressed: () {
-    //                   Navigator.of(context).pop();
-    //                 },
-    //                 child: const Text(
-    //                   'Yes',
-    //                   style: TextStyle(
-    //                       fontFamily: 'poppins',
-    //                       fontWeight: FontWeight.w400,
-    //                       fontSize: 15,
-    //                       color: Colors.white),
-    //                 ),
-    //               )
-    //             ],
-    //           );
-    //         });
-    //   }
-    // }
-    // Navigator.of(context).pop();
     if (nameController.text.isNotEmpty) {
       setState(() {
         Provider.of<AuthProvider>(context, listen: false)
@@ -99,8 +51,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
     } else {
       return;
     }
-
-    // Navigator.of(context).pop();
   }
 
   Future<bool?> onBackButton() async {
