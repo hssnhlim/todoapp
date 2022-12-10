@@ -5,11 +5,16 @@ import 'package:hive/hive.dart';
 import 'package:todoapp/authentication/auth.provider.dart';
 
 import '../models/folder.task.model.dart';
-import '../models/task.model.dart';
 
 class ToDoDatabase with ChangeNotifier {
+  factory ToDoDatabase() => ToDoDatabase._();
+  //execute when app start running
+  ToDoDatabase._() {
+    loadData();
+  }
+
   List<FolderTask> folderTask = [];
-  List<Task> task = [];
+  // List<Task> task = [];
 
   var key = 'FOLDERLIST${AuthProvider().user!.uid}';
   // reference the hive box
@@ -17,7 +22,7 @@ class ToDoDatabase with ChangeNotifier {
 
   // run this method if this is the first time opening the app
   void createInitialData() {
-    task = [];
+    // task = [];
     folderTask = [FolderTask(name: 'Buy groceries stuff', isChecked: false)];
     notifyListeners();
   }
@@ -29,12 +34,17 @@ class ToDoDatabase with ChangeNotifier {
 
     if (json != null) {
       var jsonResultList = jsonDecode(json);
+
       jsonResultList.forEach((element) {
         var data = FolderTask.fromJson(element);
         if (!folderTask.contains(element)) {
           folderTask.add(data);
+          print(data.isChecked);
+          notifyListeners();
         }
       });
+    } else {
+      createInitialData();
     }
     if (kDebugMode) {
       print(folderTask);
@@ -65,10 +75,14 @@ class ToDoDatabase with ChangeNotifier {
       folder.add(element.toJson());
     }
     if (kDebugMode) {
-      print(folder);
+      print("save $folder");
     }
-    var data = jsonEncode(folder);
-    myBox.put(key, data);
+    try {
+      var data = jsonEncode(folder);
+      myBox.put(key, data);
+    } catch (e) {
+      print(e);
+    }
 
     notifyListeners();
 
@@ -123,5 +137,23 @@ class ToDoDatabase with ChangeNotifier {
     folderTask.clear();
     loadData();
     notifyListeners();
+  }
+
+  void setValue(bool? value, int index) {
+    folderTask[index].isChecked = value!;
+    notifyListeners();
+    updateDatabase();
+  }
+
+  void addTask(FolderTask data) {
+    folderTask.add(data);
+    notifyListeners();
+    updateDatabase();
+  }
+
+  void editTask(FolderTask data, int index) {
+    folderTask[index] == data;
+    notifyListeners();
+    updateDatabase();
   }
 }

@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:todoapp/authentication/auth.provider.dart';
@@ -18,8 +19,8 @@ Future<void> main() async {
   await Hive.initFlutter();
 
   // open the box or database
-
-  var box = await Hive.openBox('ToDoDatabase');
+  await GetStorage.init();
+  await Hive.openBox('ToDoDatabase');
 
   runApp(const MyApp());
 }

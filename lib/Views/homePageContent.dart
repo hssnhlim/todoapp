@@ -1,6 +1,7 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:provider/provider.dart';
 import 'package:todoapp/Views/widget/todotileFolder.dart';
 import 'package:todoapp/services/notifications_service.dart';
 
@@ -32,18 +33,13 @@ class _HomePageContentState extends State<HomePageContent> {
 
   List foundFolder = [];
 
-  var notifyHelper;
+  dynamic notifyHelper;
 
   @override
   void initState() {
     //must execute to check foldertask empty or not
-    db.loadData();
+
     //if folder exist, this task will be ignore
-    if (db.folderTask.isEmpty) {
-      // if this is the first time opening the app
-      // then create the default data
-      db.createInitialData();
-    }
 
     foundFolder = db.folderTask;
 
@@ -57,21 +53,21 @@ class _HomePageContentState extends State<HomePageContent> {
   void saveNewFolder() {
     setState(() {
       if (_controller.text.isNotEmpty) {
-        db.folderTask.add(FolderTask(name: _controller.text, isChecked: false));
+        var data = FolderTask(name: _controller.text, isChecked: false);
+        Provider.of<ToDoDatabase>(context, listen: false).addTask(data);
+        // db.folderTask.add();
         _controller.clear();
       } else {
         () => Navigator.of(context).pop();
       }
     });
     Navigator.of(context).pop();
-    db.updateDatabase();
   }
 
   void _deleteFolder(int index) {
     setState(() {
       db.folderTask.removeAt(index);
     });
-    db.updateDatabase();
   }
 
   void createNewFolder() {
@@ -93,28 +89,31 @@ class _HomePageContentState extends State<HomePageContent> {
   }
 
   void searchFilter(String enteredKeyword) {
+    var list = Provider.of<ToDoDatabase>(context, listen: false).folderTask;
     List? results = [];
     if (enteredKeyword.isEmpty) {
-      results = db.folderTask;
+      results = list;
+      setState(() {
+        foundFolder = results!;
+      });
     } else {
-      results = db.folderTask
+      results = list
           .where((folder) =>
               folder.name!.toLowerCase().contains(enteredKeyword.toLowerCase()))
           .toList();
-      // print(results);
+      setState(() {
+        foundFolder = results!;
+      });
     }
-    setState(() {
-      foundFolder = results!;
-    });
   }
 
   // my function for checkbox
   void checkBoxChanged(bool? value, int index) {
     setState(() {
-      db.folderTask[index] =
-          FolderTask(name: db.folderTask[index].name, isChecked: value!);
+      // db.folderTask[index] =
+      //     FolderTask(name: db.folderTask[index].name, isChecked: value!);
+      Provider.of<ToDoDatabase>(context, listen: false).setValue(value, index);
     });
-    db.updateDatabase();
   }
 
   @override
@@ -124,152 +123,165 @@ class _HomePageContentState extends State<HomePageContent> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        extendBodyBehindAppBar: true,
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          surfaceTintColor: Colors.white,
-          scrolledUnderElevation: 0,
-          toolbarHeight: 150,
-          title: Column(
-            children: [
-              const Align(
-                alignment: Alignment.topLeft,
-                child: Text(
-                  'Tasks',
-                  style: TextStyle(
-                    fontFamily: 'poppins',
-                    fontWeight: FontWeight.w600,
-                    fontSize: 35,
-                    color: Colors.black,
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              TextFormField(
-                onChanged: (value) => searchFilter(value),
-                style: const TextStyle(
-                  fontFamily: 'poppins',
-                  fontWeight: FontWeight.w400,
-                  fontSize: 15,
-                ),
-                cursorColor: Colors.black,
-                decoration: InputDecoration(
-                    suffixIcon: IconButton(
-                        onPressed: () {
-                          if (searchController.text.isNotEmpty) {
-                            setState(() {
-                              isIconVisible = isIconVisible;
-                            });
-                          } else {
-                            setState(() {
-                              isIconVisible = !isIconVisible;
-                            });
-                          }
-                          searchController.clear();
-                          setToDefault();
-                        },
-                        icon: Icon(
-                          searchController.text.isNotEmpty ? Icons.clear : null,
-                          color: Colors.black.withOpacity(.7),
-                          size: 20,
-                        )),
-                    contentPadding: const EdgeInsets.all(10),
-                    prefixIcon: const Icon(
-                      Icons.search,
-                      color: Colors.grey,
-                    ),
-                    fillColor: Colors.grey.shade200,
-                    filled: true,
-                    hintText: 'Search',
-                    hintStyle: const TextStyle(
-                        fontFamily: 'poppins',
-                        fontWeight: FontWeight.w400,
-                        fontSize: 15,
-                        color: Colors.grey),
-                    focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(color: Colors.white)),
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(color: Colors.white))),
-                controller: searchController,
-              ),
-            ],
-          ),
-        ),
-        body: SafeArea(
-          child: Padding(
-            padding:
-                const EdgeInsets.only(left: 30, right: 20, top: 20, bottom: 0),
-            child: Column(
+    return Consumer<ToDoDatabase>(builder: (context, todo, _) {
+      return Scaffold(
+          extendBodyBehindAppBar: true,
+          appBar: AppBar(
+            automaticallyImplyLeading: false,
+            surfaceTintColor: Colors.white,
+            scrolledUnderElevation: 0,
+            toolbarHeight: 150,
+            title: Column(
               children: [
-                Expanded(
-                  child: FadeInUp(
-                    duration: const Duration(milliseconds: 500),
-                    child: foundFolder.isNotEmpty
-                        ? ListView.builder(
-                            padding: const EdgeInsets.only(
-                                top: 20, bottom: 20, right: 10),
-                            itemCount: foundFolder.length,
-                            itemBuilder: (context, index) {
-                              return GestureDetector(
-                                onTap: () {
-                                  // Navigator.of(context).push(PageTransition(
-                                  //     child: FolderPage(
-                                  //       foldertask: db.folderTask[index],
-                                  //     ),
-                                  //     type: PageTransitionType.rightToLeft,
-                                  //     duration:
-                                  //         const Duration(milliseconds: 300),
-                                  //     curve: Curves.easeInCubic));
-                                },
-                                child: ToDoTile(
-                                    folderName: foundFolder[index].name!,
-                                    deleteFunction: (context) =>
-                                        _deleteFolder(index),
-                                    isChecked: db.folderTask[index].isChecked,
-                                    onChanged: (value) =>
-                                        checkBoxChanged(value, index)),
-                              );
-                            })
-                        : const Center(
-                            child: Text(
-                            'No task available 😞',
-                            style: TextStyle(
-                              fontFamily: 'poppins',
-                              fontWeight: FontWeight.w400,
-                              fontSize: 20,
-                            ),
-                          )),
+                const Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    'Tasks',
+                    style: TextStyle(
+                      fontFamily: 'poppins',
+                      fontWeight: FontWeight.w600,
+                      fontSize: 35,
+                      color: Colors.black,
+                    ),
                   ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                TextFormField(
+                  onChanged: (value) => searchFilter(value),
+                  style: const TextStyle(
+                    fontFamily: 'poppins',
+                    fontWeight: FontWeight.w400,
+                    fontSize: 15,
+                  ),
+                  cursorColor: Colors.black,
+                  decoration: InputDecoration(
+                      suffixIcon: IconButton(
+                          onPressed: () {
+                            if (searchController.text.isNotEmpty) {
+                              setState(() {
+                                isIconVisible = isIconVisible;
+                              });
+                            } else {
+                              setState(() {
+                                isIconVisible = !isIconVisible;
+                              });
+                            }
+                            searchController.clear();
+                            setToDefault();
+                          },
+                          icon: Icon(
+                            searchController.text.isNotEmpty
+                                ? Icons.clear
+                                : null,
+                            color: Colors.black.withOpacity(.7),
+                            size: 20,
+                          )),
+                      contentPadding: const EdgeInsets.all(10),
+                      prefixIcon: const Icon(
+                        Icons.search,
+                        color: Colors.grey,
+                      ),
+                      fillColor: Colors.grey.shade200,
+                      filled: true,
+                      hintText: 'Search',
+                      hintStyle: const TextStyle(
+                          fontFamily: 'poppins',
+                          fontWeight: FontWeight.w400,
+                          fontSize: 15,
+                          color: Colors.grey),
+                      focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: const BorderSide(color: Colors.white)),
+                      enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: const BorderSide(color: Colors.white))),
+                  controller: searchController,
                 ),
               ],
             ),
           ),
-        ),
-        floatingActionButton: FadeInRight(
-            duration: const Duration(milliseconds: 500),
-            delay: const Duration(milliseconds: 200),
-            child: FloatingActionButton.extended(
-              label: const Text(
-                'Add Task',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontFamily: 'poppins',
-                    fontWeight: FontWeight.w400,
-                    fontSize: 15,
-                    letterSpacing: 1),
+          body: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.only(
+                  left: 30, right: 20, top: 20, bottom: 0),
+              child: Column(
+                children: [
+                  Expanded(
+                    child: FadeInUp(
+                      duration: const Duration(milliseconds: 500),
+                      child: todo.folderTask.isNotEmpty
+                          ? ListView.builder(
+                              padding: const EdgeInsets.only(
+                                  top: 20, bottom: 20, right: 10),
+                              itemCount: searchController.value.text.isNotEmpty
+                                  ? foundFolder.length
+                                  : todo.folderTask.length,
+                              itemBuilder: (context, index) {
+                                return GestureDetector(
+                                  onTap: () {
+                                    // Navigator.of(context).push(PageTransition(
+                                    //     child: FolderPage(
+                                    //       foldertask: db.folderTask[index],
+                                    //     ),
+                                    //     type: PageTransitionType.rightToLeft,
+                                    //     duration:
+                                    //         const Duration(milliseconds: 300),
+                                    //     curve: Curves.easeInCubic));
+                                  },
+                                  child: ToDoTile(
+                                      folderName:
+                                          searchController.value.text.isNotEmpty
+                                              ? foundFolder[index].name
+                                              : todo.folderTask[index].name!,
+                                      deleteFunction: (context) =>
+                                          _deleteFolder(index),
+                                      isChecked: searchController
+                                              .value.text.isNotEmpty
+                                          ? foundFolder[index].isChecked
+                                          : todo.folderTask[index].isChecked ??
+                                              false,
+                                      onChanged: (value) =>
+                                          checkBoxChanged(value, index)),
+                                );
+                              })
+                          : const Center(
+                              child: Text(
+                              'No task available 😞',
+                              style: TextStyle(
+                                fontFamily: 'poppins',
+                                fontWeight: FontWeight.w400,
+                                fontSize: 20,
+                              ),
+                            )),
+                    ),
+                  ),
+                ],
               ),
-              backgroundColor: Colors.black,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(6)),
-              onPressed: () {
-                createNewFolder();
-              },
-            )));
+            ),
+          ),
+          floatingActionButton: FadeInRight(
+              duration: const Duration(milliseconds: 500),
+              delay: const Duration(milliseconds: 200),
+              child: FloatingActionButton.extended(
+                label: const Text(
+                  'Add Task',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontFamily: 'poppins',
+                      fontWeight: FontWeight.w400,
+                      fontSize: 15,
+                      letterSpacing: 1),
+                ),
+                backgroundColor: Colors.black,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(6)),
+                onPressed: () {
+                  createNewFolder();
+                },
+              )));
+    });
   }
 
   void setToDefault() {

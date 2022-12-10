@@ -3,7 +3,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_picker_timeline/date_picker_timeline.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:todoapp/Views/add-task-page.dart';
 import 'package:todoapp/Views/update_delete_page.dart';
@@ -18,7 +17,8 @@ class TimeLinePage extends StatefulWidget {
 }
 
 class _TimeLinePageState extends State<TimeLinePage> {
-  DateTime currentDate = DateTime.now();
+  DateTime currentDate =
+      DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
 
   DocumentReference uidRef = FirebaseFirestore.instance
       .collection('timeline')
@@ -115,17 +115,23 @@ class _TimeLinePageState extends State<TimeLinePage> {
                               final DocumentSnapshot documentSnapshot =
                                   snapshot.data![index];
 
-                              DateTime date = DateFormat.jm()
-                                  .parse(documentSnapshot['time']);
-                              var myTime = DateFormat('HH:mm').format(date);
-                              var hour =
-                                  int.parse(myTime.toString().split(':')[0]);
-                              var min =
-                                  int.parse(myTime.toString().split(':')[1]);
+                              // DateTime date = DateFormat.jm()
+                              //     .parse(documentSnapshot['time']);
+                              // var myTime = DateFormat('HH:mm').format(date);
+                              // var hour =
+                              //     int.parse(myTime.toString().split(':')[0]);
+                              // var min =
+                              //     int.parse(myTime.toString().split(':')[1]);
+                              var date = documentSnapshot['date'].split(' ');
+                              var year = date[2];
+                              var day = date[1].toString().replaceAll(',', '');
+                              var month = getMonth(date[0]);
+                              var acceptString = "$year-$month-$day";
+                              var docDate = DateTime.parse(acceptString);
 
-                              notifyHelper.scheduledNotification(
-                                  hour, min, documentSnapshot);
-
+                              if (docDate != currentDate) {
+                                return Container();
+                              }
                               return Padding(
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 30, vertical: 5),
@@ -147,7 +153,8 @@ class _TimeLinePageState extends State<TimeLinePage> {
                                           color: Colors.black),
                                     ),
                                     subtitle: Text(
-                                      documentSnapshot['time'],
+                                      documentSnapshot['time'] +
+                                          "\n${documentSnapshot['date']}",
                                       style: TextStyle(
                                           fontFamily: 'poppins',
                                           fontWeight: FontWeight.w400,
@@ -211,6 +218,15 @@ class _TimeLinePageState extends State<TimeLinePage> {
             },
           ),
         ));
+  }
+
+  getMonth(date) {
+    //todo:do for all month
+    if (date == 'December') {
+      return 12;
+    } else if (date == 'January') {
+      return 1;
+    }
   }
 }
 

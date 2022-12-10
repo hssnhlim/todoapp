@@ -49,6 +49,6 @@ class AuthProvider extends ChangeNotifier {
   }
 
   Future<String> getCurrentUID() async {
-    return await user!.uid;
+    return user!.uid;
   }
 }
