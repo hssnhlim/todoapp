@@ -6,10 +6,12 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:todoapp/authentication/auth.provider.dart';
 import 'package:todoapp/models/timeline.model.dart';
+import 'package:todoapp/services/notifications_service.dart';
 
 class AddTaskPage extends StatefulWidget {
-  const AddTaskPage({super.key});
-
+  const AddTaskPage({
+    super.key,
+  });
   @override
   State<AddTaskPage> createState() => _AddTaskPageState();
 }
@@ -22,6 +24,14 @@ class _AddTaskPageState extends State<AddTaskPage> {
   final _formKey = GlobalKey<FormState>();
 
   final db = FirebaseFirestore.instance;
+
+  final notifyHelper = NotifyHelper();
+
+  @override
+  void initState() {
+    super.initState();
+    notifyHelper.configureLocalTimezone();
+  }
 
   DocumentReference uidRef = FirebaseFirestore.instance
       .collection('timeline')
@@ -36,7 +46,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
       DateTime parsedTime =
           DateFormat.jm().parse(pickTime.format(context).toString());
       //converting to DateTime so that we can further format on different pattern.
-      String formattedTime = DateFormat('').add_jm().format(parsedTime);
+      String formattedTime = DateFormat().add_jm().format(parsedTime);
       setState(() {
         timeController.text = formattedTime;
 //  DateFormat.yMMMMd().format(pickTime);
@@ -44,19 +54,37 @@ class _AddTaskPageState extends State<AddTaskPage> {
     }
   }
 
+  // String uidFunction(String uid) {
+  //   // dart unique string generator
+  //   String _randomString = uid.toString() +
+  //       math.Random().nextInt(9999).toString() +
+  //       math.Random().nextInt(9999).toString() +
+  //       math.Random().nextInt(9999).toString();
+  //   return _randomString;
+  // }
+
   void addFunction() async {
     final uid =
         await Provider.of<AuthProvider>(context, listen: false).getCurrentUID();
+    DocumentReference ref =
+        db.collection('users').doc(uid).collection('time-line').doc();
     if (dateController.text.trim().isNotEmpty &&
         timeController.text.trim().isNotEmpty &&
         topicController.text.trim().isNotEmpty) {
-      await db.collection('users').doc(uid).collection('time-line').add(
-          Timeline(
+      await db
+          .collection('users')
+          .doc(uid)
+          .collection('time-line')
+          .add(Timeline(
+                  id: ref.id, // auto generated id
                   date: dateController.text.trim(),
                   time: timeController.text.trim(),
                   topic: topicController.text.trim(),
                   isDone: false)
               .toJson());
+
+      // notifyHelper.displayNotification(
+      //     title: topicController.text.trim(), body: 'Don\'t forget your task!');
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text(

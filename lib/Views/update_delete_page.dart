@@ -1,17 +1,48 @@
-import 'package:animate_do/animate_do.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:todoapp/authentication/auth.provider.dart';
 
 class UDPage extends StatefulWidget {
-  const UDPage({super.key});
+  const UDPage({
+    super.key,
+    required this.documentSnapshot,
+  });
+  final DocumentSnapshot documentSnapshot;
 
   @override
   State<UDPage> createState() => _UDPageState();
 }
 
 class _UDPageState extends State<UDPage> {
-  void doneFunction() {}
+  Future<dynamic> isDoneFunc() async {
+    var uid =
+        await Provider.of<AuthProvider>(context, listen: false).getCurrentUID();
+    final docTL = FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .collection('time-line')
+        .doc(widget.documentSnapshot.id);
+    if (widget.documentSnapshot['isDone'] == false) {
+      docTL.update({'isDone': true});
+    } else {
+      docTL.update({'isDone': false});
+    }
+    Navigator.of(context).pop();
+  }
 
-  void deleteFunction() {}
+  Future<dynamic> deleteFunc() async {
+    var uid =
+        await Provider.of<AuthProvider>(context, listen: false).getCurrentUID();
+    final docTL = FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .collection('time-line')
+        .doc(widget.documentSnapshot.id);
+
+    docTL.delete();
+    Navigator.of(context).pop();
+  }
 
   void cancelFunction() {
     Navigator.of(context).pop();
@@ -36,8 +67,18 @@ class _UDPageState extends State<UDPage> {
           Row(
             children: [
               Expanded(
-                child: btnUD(doneFunction, 'Mark as Done',
-                    Colors.green.shade800, Colors.green.shade800, Colors.white),
+                child: btnUD(
+                    () => isDoneFunc(),
+                    widget.documentSnapshot['isDone']
+                        ? 'Mark as ToDo'
+                        : 'Mark as Done',
+                    widget.documentSnapshot['isDone']
+                        ? Colors.transparent
+                        : Colors.green.shade800,
+                    widget.documentSnapshot['isDone']
+                        ? Colors.black.withOpacity(.5)
+                        : Colors.green.shade800,
+                    Colors.white),
               )
             ],
           ),
@@ -47,7 +88,7 @@ class _UDPageState extends State<UDPage> {
           Row(
             children: [
               Expanded(
-                child: btnUD(deleteFunction, 'Delete timeline',
+                child: btnUD(() => deleteFunc(), 'Delete timeline',
                     Colors.red.shade800, Colors.red.shade800, Colors.white),
               )
             ],

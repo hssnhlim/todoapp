@@ -2,6 +2,7 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:todoapp/Views/widget/todotileFolder.dart';
+import 'package:todoapp/services/notifications_service.dart';
 
 import '../data/localDatabase.dart';
 import '../models/folder.task.model.dart';
@@ -31,6 +32,8 @@ class _HomePageContentState extends State<HomePageContent> {
 
   List foundFolder = [];
 
+  var notifyHelper;
+
   @override
   void initState() {
     //must execute to check foldertask empty or not
@@ -45,6 +48,10 @@ class _HomePageContentState extends State<HomePageContent> {
     foundFolder = db.folderTask;
 
     super.initState();
+
+    // initialize notifications
+    notifyHelper = NotifyHelper();
+    notifyHelper.initializeNotification();
   }
 
   void saveNewFolder() {

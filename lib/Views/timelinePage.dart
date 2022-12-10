@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:animate_do/animate_do.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_picker_timeline/date_picker_timeline.dart';
@@ -10,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:todoapp/Views/add-task-page.dart';
 import 'package:todoapp/Views/update_delete_page.dart';
 import 'package:todoapp/authentication/auth.provider.dart';
+import 'package:todoapp/services/notifications_service.dart';
 
 class TimeLinePage extends StatefulWidget {
   const TimeLinePage({super.key});
@@ -24,19 +23,21 @@ class _TimeLinePageState extends State<TimeLinePage> {
   DocumentReference uidRef = FirebaseFirestore.instance
       .collection('timeline')
       .doc(FirebaseAuth.instance.currentUser!.uid);
-  final CollectionReference _timeline =
-      FirebaseFirestore.instance.collection('timeline');
 
   bool isCompleted = false;
 
-  Future<dynamic> udFunction() {
+  final notifyHelper = NotifyHelper();
+
+  Future<dynamic> udFunction(DocumentSnapshot documentSnapshot) {
     return showModalBottomSheet(
         constraints: BoxConstraints.tight(const Size(double.maxFinite, 240)),
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(10), topRight: Radius.circular(10))),
         context: context,
-        builder: (context) => const UDPage());
+        builder: (context) => UDPage(
+              documentSnapshot: documentSnapshot,
+            ));
   }
 
   @override
@@ -72,10 +73,7 @@ class _TimeLinePageState extends State<TimeLinePage> {
                         height: 100,
                         width: 80,
                         initialSelectedDate: DateTime.now(),
-                        selectionColor: Colors
-                            .primaries[
-                                Random().nextInt(Colors.primaries.length)]
-                            .shade200,
+                        selectionColor: Colors.white,
                         selectedTextColor: Colors.black,
                         dateTextStyle: const TextStyle(
                             fontFamily: 'poppins',
@@ -106,28 +104,40 @@ class _TimeLinePageState extends State<TimeLinePage> {
                 height: 20,
               ),
               StreamBuilder(
-                  stream: getUsersTimelineSnapshots(context),
+                  stream: getUsersTimelineSnapshots(context)
+                      .map((snapshot) => snapshot.docs.toList()),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       return Expanded(
                         child: ListView.builder(
-                            itemCount: snapshot.data!.docs.length,
+                            itemCount: snapshot.data!.length,
                             itemBuilder: (context, index) {
                               final DocumentSnapshot documentSnapshot =
-                                  snapshot.data!.docs[index];
+                                  snapshot.data![index];
+
+                              DateTime date = DateFormat.jm()
+                                  .parse(documentSnapshot['time']);
+                              var myTime = DateFormat('HH:mm').format(date);
+                              var hour =
+                                  int.parse(myTime.toString().split(':')[0]);
+                              var min =
+                                  int.parse(myTime.toString().split(':')[1]);
+
+                              notifyHelper.scheduledNotification(
+                                  hour, min, documentSnapshot);
+
                               return Padding(
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 30, vertical: 5),
                                 child: FadeInUp(
                                   duration: const Duration(milliseconds: 500),
                                   child: ListTile(
-                                    onLongPress: () => udFunction(),
+                                    onTap: () => udFunction(documentSnapshot),
                                     shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(5)),
-                                    tileColor: Colors
-                                        .primaries[Random()
-                                            .nextInt(Colors.primaries.length)]
-                                        .shade200,
+                                    tileColor: documentSnapshot['isDone']
+                                        ? Colors.green.shade300
+                                        : Colors.white,
                                     title: Text(
                                       documentSnapshot['topic'],
                                       style: const TextStyle(
@@ -165,7 +175,7 @@ class _TimeLinePageState extends State<TimeLinePage> {
                             }),
                       );
                     } else if (snapshot.hasError) {
-                      return const Center(child: Text('Error'));
+                      return Center(child: Text('Error: ${snapshot.error}'));
                     } else {
                       return const CircularProgressIndicator();
                     }
@@ -202,45 +212,6 @@ class _TimeLinePageState extends State<TimeLinePage> {
           ),
         ));
   }
-
-  // _widgetDatePicker() {
-  //   return SizedBox(
-  //     child: Padding(
-  //       padding: const EdgeInsets.only(left: 10, top: 20),
-  //       child: FadeInRight(
-  //         duration: const Duration(milliseconds: 600),
-  //         child: DatePicker(
-  //           DateTime.now(),
-  //           height: 100,
-  //           width: 80,
-  //           initialSelectedDate: DateTime.now(),
-  //           selectionColor: Colors.white,
-  //           selectedTextColor: Colors.black,
-  //           dateTextStyle: const TextStyle(
-  //               fontFamily: 'poppins',
-  //               fontWeight: FontWeight.w600,
-  //               fontSize: 20,
-  //               color: Colors.grey),
-  //           dayTextStyle: const TextStyle(
-  //               fontFamily: 'poppins',
-  //               fontWeight: FontWeight.w400,
-  //               fontSize: 11,
-  //               color: Colors.grey),
-  //           monthTextStyle: const TextStyle(
-  //               fontFamily: 'poppins',
-  //               fontWeight: FontWeight.w400,
-  //               fontSize: 11,
-  //               color: Colors.grey),
-  //           onDateChange: (selectedDate) {
-  //             setState(() {
-  //               _selectedDate = selectedDate;
-  //             });
-  //           },
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
 }
 
 Stream<QuerySnapshot> getUsersTimelineSnapshots(BuildContext context) async* {
