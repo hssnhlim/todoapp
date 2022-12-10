@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:animate_do/animate_do.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -27,6 +29,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
 
   final notifyHelper = NotifyHelper();
 
+  TimeOfDay? time;
+  DateTime? date;
   @override
   void initState() {
     super.initState();
@@ -38,16 +42,18 @@ class _AddTaskPageState extends State<AddTaskPage> {
       .doc(FirebaseAuth.instance.currentUser!.uid);
 
   void dateOnTap() async {
+    var now = TimeOfDay.now();
     TimeOfDay? pickTime = await showTimePicker(
         context: context,
         initialEntryMode: TimePickerEntryMode.input,
-        initialTime: TimeOfDay.now());
+        initialTime: TimeOfDay(hour: now.hour, minute: now.minute + 1));
     if (pickTime != null) {
       DateTime parsedTime =
           DateFormat.jm().parse(pickTime.format(context).toString());
       //converting to DateTime so that we can further format on different pattern.
       String formattedTime = DateFormat().add_jm().format(parsedTime);
       setState(() {
+        time = pickTime;
         timeController.text = formattedTime;
 //  DateFormat.yMMMMd().format(pickTime);
       });
@@ -71,19 +77,21 @@ class _AddTaskPageState extends State<AddTaskPage> {
     if (dateController.text.trim().isNotEmpty &&
         timeController.text.trim().isNotEmpty &&
         topicController.text.trim().isNotEmpty) {
+      var timeline = Timeline(
+          id: ref.id, // auto generated id
+          date: dateController.text.trim(),
+          time: timeController.text.trim(),
+          topic: topicController.text.trim(),
+          isDone: false);
       await db
           .collection('users')
           .doc(uid)
           .collection('time-line')
           .doc(ref.id)
-          .set(Timeline(
-                  id: ref.id, // auto generated id
-                  date: dateController.text.trim(),
-                  time: timeController.text.trim(),
-                  topic: topicController.text.trim(),
-                  isDone: false)
-              .toJson());
-
+          .set(timeline.toJson());
+      print(date!.day);
+      print(time!.hour);
+      notifyHelper.scheduledNotification(date!, time!, timeline);
       // notifyHelper.displayNotification(
       //     title: topicController.text.trim(), body: 'Don\'t forget your task!');
     } else {
@@ -102,6 +110,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
 
   @override
   Widget build(BuildContext context) {
+    var now = DateTime.now();
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
       child: Column(
@@ -142,7 +151,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
                 ),
                 textFieldTime(
                     timeController,
-                    DateFormat.jm().format(DateTime.now()),
+                    DateFormat.jm().format(DateTime(now.year, now.month,
+                        now.day, now.hour, now.minute + 1)),
                     const Icon(
                       Icons.calendar_month_outlined,
                       color: Colors.black,
@@ -184,13 +194,16 @@ class _AddTaskPageState extends State<AddTaskPage> {
             fontSize: 15,
             color: Colors.black),
         onTap: (() async {
+          var now = DateTime.now();
           DateTime? pickDate = await showDatePicker(
               context: context,
-              initialDate: DateTime.now(),
+              initialDate: DateTime(
+                  now.year, now.month, now.day, now.hour, now.minute + 1),
               firstDate: DateTime(2000),
               lastDate: DateTime(3000));
           if (pickDate != null) {
             setState(() {
+              date = pickDate;
               controller.text = DateFormat.yMMMMd().format(pickDate);
             });
           }

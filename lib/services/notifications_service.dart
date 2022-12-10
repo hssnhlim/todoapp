@@ -1,5 +1,8 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 import 'package:timezone/timezone.dart' as tz;
@@ -66,12 +69,13 @@ class NotifyHelper {
 
   // scheduled notification
   scheduledNotification(
-      int hour, int minutes, DocumentSnapshot documentSnapshot) async {
+      DateTime date, TimeOfDay time, Timeline timeline) async {
+    var id = Random().nextInt(9999);
     await flutterLocalNotificationsPlugin.zonedSchedule(
-        0,
-        documentSnapshot['topic'],
+        id,
+        timeline.topic,
         'Don\'t forget you have tasks todo!',
-        _convertTime(hour, minutes),
+        _convertTime(date, time),
         // tz.TZDateTime.now(tz.local).add(const Duration(seconds: 5)),
         const NotificationDetails(
             android: AndroidNotificationDetails(
@@ -84,10 +88,11 @@ class NotifyHelper {
         matchDateTimeComponents: DateTimeComponents.time);
   }
 
-  tz.TZDateTime _convertTime(int hour, int minutes) {
+  tz.TZDateTime _convertTime(DateTime date, TimeOfDay time) {
+    final tz.TZDateTime tzDate = tz.TZDateTime.from(date, tz.local);
     final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
-    tz.TZDateTime scheduleDate =
-        tz.TZDateTime(tz.local, now.year, now.month, now.day, hour, minutes);
+    tz.TZDateTime scheduleDate = tz.TZDateTime(tz.local, tzDate.year,
+        tzDate.month, tzDate.day, time.hour, time.minute);
     if (scheduleDate.isBefore(now)) {
       scheduleDate = scheduleDate.add(const Duration(days: 1));
     }

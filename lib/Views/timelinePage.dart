@@ -115,16 +115,13 @@ class _TimeLinePageState extends State<TimeLinePage> {
                               final DocumentSnapshot documentSnapshot =
                                   snapshot.data![index];
 
-                              DateTime date = DateFormat.jm()
-                                  .parse(documentSnapshot['time']);
-                              var myTime = DateFormat('HH:mm').format(date);
-                              var hour =
-                                  int.parse(myTime.toString().split(':')[0]);
-                              var min =
-                                  int.parse(myTime.toString().split(':')[1]);
-
-                              notifyHelper.scheduledNotification(
-                                  hour, min, documentSnapshot);
+                              // DateTime date = DateFormat.jm()
+                              //     .parse(documentSnapshot['time']);
+                              // var myTime = DateFormat('HH:mm').format(date);
+                              // var hour =
+                              //     int.parse(myTime.toString().split(':')[0]);
+                              // var min =
+                              //     int.parse(myTime.toString().split(':')[1]);
 
                               return Padding(
                                 padding: const EdgeInsets.symmetric(
