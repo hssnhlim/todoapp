@@ -39,11 +39,6 @@ class _HomePageContentState extends State<HomePageContent> {
     //must execute to check foldertask empty or not
     db.loadData();
     //if folder exist, this task will be ignore
-    if (db.folderTask.isEmpty) {
-      // if this is the first time opening the app
-      // then create the default data
-      db.createInitialData();
-    }
 
     foundFolder = db.folderTask;
 

@@ -5,11 +5,10 @@ import 'package:hive/hive.dart';
 import 'package:todoapp/authentication/auth.provider.dart';
 
 import '../models/folder.task.model.dart';
-import '../models/task.model.dart';
 
 class ToDoDatabase with ChangeNotifier {
   List<FolderTask> folderTask = [];
-  List<Task> task = [];
+  // List<Task> task = [];
 
   var key = 'FOLDERLIST${AuthProvider().user!.uid}';
   // reference the hive box
@@ -17,7 +16,7 @@ class ToDoDatabase with ChangeNotifier {
 
   // run this method if this is the first time opening the app
   void createInitialData() {
-    task = [];
+    // task = [];
     folderTask = [FolderTask(name: 'Buy groceries stuff', isChecked: false)];
     notifyListeners();
   }
@@ -35,6 +34,8 @@ class ToDoDatabase with ChangeNotifier {
           folderTask.add(data);
         }
       });
+    } else {
+      createInitialData();
     }
     if (kDebugMode) {
       print(folderTask);
