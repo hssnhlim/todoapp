@@ -94,6 +94,7 @@ class _TimeLinePageState extends State<TimeLinePage> {
                           setState(() {
                             currentDate = selectedDate;
                           });
+                          print(currentDate);
                         },
                       ),
                     ),
@@ -122,7 +123,15 @@ class _TimeLinePageState extends State<TimeLinePage> {
                               //     int.parse(myTime.toString().split(':')[0]);
                               // var min =
                               //     int.parse(myTime.toString().split(':')[1]);
-
+                              var date = documentSnapshot['date'].split(' ');
+                              var year = date[2];
+                              var day = date[1].toString().replaceAll(',', '');
+                              var month = getMonth(date[0]);
+                              var acceptString = "$year-$month-$day";
+                              var docDate = DateTime.parse(acceptString);
+                              if (docDate != currentDate) {
+                                return Container();
+                              }
                               return Padding(
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 30, vertical: 5),
@@ -144,7 +153,8 @@ class _TimeLinePageState extends State<TimeLinePage> {
                                           color: Colors.black),
                                     ),
                                     subtitle: Text(
-                                      documentSnapshot['time'],
+                                      documentSnapshot['time'] +
+                                          "\n${documentSnapshot['date']}",
                                       style: TextStyle(
                                           fontFamily: 'poppins',
                                           fontWeight: FontWeight.w400,
@@ -208,6 +218,15 @@ class _TimeLinePageState extends State<TimeLinePage> {
             },
           ),
         ));
+  }
+
+  getMonth(date) {
+    //todo:do for all month
+    if (date == 'December') {
+      return 12;
+    } else if (date == 'January') {
+      return 1;
+    }
   }
 }
 
