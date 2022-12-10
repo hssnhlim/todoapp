@@ -75,7 +75,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
           .collection('users')
           .doc(uid)
           .collection('time-line')
-          .add(Timeline(
+          .doc(ref.id)
+          .set(Timeline(
                   id: ref.id, // auto generated id
                   date: dateController.text.trim(),
                   time: timeController.text.trim(),
