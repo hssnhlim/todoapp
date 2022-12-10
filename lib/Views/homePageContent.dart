@@ -32,7 +32,7 @@ class _HomePageContentState extends State<HomePageContent> {
 
   List foundFolder = [];
 
-  var notifyHelper;
+  dynamic notifyHelper;
 
   @override
   void initState() {

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 import 'package:timezone/timezone.dart' as tz;
@@ -31,9 +32,13 @@ class NotifyHelper {
 
   Future selectNotification(String? payload) async {
     if (payload != null) {
-      print('notification payload: $payload');
+      if (kDebugMode) {
+        print('notification payload: $payload');
+      }
     } else {
-      print("Notification Done");
+      if (kDebugMode) {
+        print("Notification Done");
+      }
     }
     // await Navigator.push(
     //   context,

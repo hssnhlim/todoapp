@@ -19,7 +19,7 @@ Future<void> main() async {
 
   // open the box or database
 
-  var box = await Hive.openBox('ToDoDatabase');
+  await Hive.openBox('ToDoDatabase');
 
   runApp(const MyApp());
 }
