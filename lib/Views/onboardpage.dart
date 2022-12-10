@@ -1,11 +1,24 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todoapp/authentication/register.dart';
 
-class OnboardPage extends StatelessWidget {
+class OnboardPage extends StatefulWidget {
   const OnboardPage({Key? key}) : super(key: key);
+
+  @override
+  State<OnboardPage> createState() => _OnboardPageState();
+}
+
+class _OnboardPageState extends State<OnboardPage> {
+  var box = GetStorage();
+  @override
+  void initState() {
+    setFirstTimeUser();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -99,5 +112,9 @@ class OnboardPage extends StatelessWidget {
             ),
           ),
         ));
+  }
+
+  void setFirstTimeUser() {
+    box.write('firstTime', false);
   }
 }

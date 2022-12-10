@@ -2,6 +2,7 @@ import 'package:animate_do/animate_do.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 import 'package:todoapp/authentication/auth.provider.dart';
@@ -26,6 +27,7 @@ class LoginPageState extends State<LoginPage> {
 
   @override
   void initState() {
+    // GetStorage().remove('firstTime');
     super.initState();
   }
 
