@@ -31,6 +31,9 @@ class _AddTaskPageState extends State<AddTaskPage> {
 
   TimeOfDay? time;
   DateTime? date;
+
+  DateTime currentDate =
+      DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
   @override
   void initState() {
     super.initState();
@@ -51,7 +54,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
       DateTime parsedTime =
           DateFormat.jm().parse(pickTime.format(context).toString());
       //converting to DateTime so that we can further format on different pattern.
-      String formattedTime = DateFormat().add_jm().format(parsedTime);
+      String formattedTime = DateFormat('HH:mm').format(parsedTime);
       setState(() {
         time = pickTime;
         timeController.text = formattedTime;
@@ -74,34 +77,49 @@ class _AddTaskPageState extends State<AddTaskPage> {
         await Provider.of<AuthProvider>(context, listen: false).getCurrentUID();
     DocumentReference ref =
         db.collection('users').doc(uid).collection('time-line').doc();
-    if (dateController.text.trim().isNotEmpty &&
-        timeController.text.trim().isNotEmpty &&
-        topicController.text.trim().isNotEmpty) {
-      var timeline = Timeline(
-          id: ref.id, // auto generated id
-          date: dateController.text.trim(),
-          time: timeController.text.trim(),
-          topic: topicController.text.trim(),
-          isDone: false);
-      await db
-          .collection('users')
-          .doc(uid)
-          .collection('time-line')
-          .doc(ref.id)
-          .set(timeline.toJson());
-      print(date!.day);
-      print(time!.hour);
-      notifyHelper.scheduledNotification(date!, time!, timeline);
-      // notifyHelper.displayNotification(
-      //     title: topicController.text.trim(), body: 'Don\'t forget your task!');
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text(
-        'All fields required!',
-        style: TextStyle(fontFamily: 'poppins', fontWeight: FontWeight.w400),
-      )));
+    if (_formKey.currentState!.validate()) {
+      if (dateController.text.trim().isNotEmpty &&
+          timeController.text.trim().isNotEmpty &&
+          topicController.text.trim().isNotEmpty) {
+        var timeline = Timeline(
+            id: ref.id, // auto generated id
+            date: dateController.text.trim(),
+            time: timeController.text.trim(),
+            topic: topicController.text.trim(),
+            isDone: false);
+        await db
+            .collection('users')
+            .doc(uid)
+            .collection('time-line')
+            .doc(ref.id)
+            .set(timeline.toJson());
+        print('Day today ${date!}');
+        print('Time today ${time!.hour}');
+
+        var currDate = dateController.text.split(' ');
+        var year = currDate[2];
+        var day = currDate[1].toString().replaceAll(',', '');
+        var month = getMonth(currDate[0]);
+        var acceptString = "$year-$month-$day";
+        var docDate = DateTime.parse(acceptString);
+        print('docDate: $docDate');
+        print('CurrentDate: $currentDate');
+
+        print('Date: $date');
+
+        if (date != currentDate) {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text(
+            'We will remind you on $date',
+            style: const TextStyle(
+                fontFamily: 'poppins', fontWeight: FontWeight.w400),
+          )));
+        } else {
+          notifyHelper.scheduledNotification(date!, time!, timeline);
+        }
+        Navigator.of(context).pop();
+      }
     }
-    Navigator.of(context).pop();
   }
 
   void cancelAddFunction() {
@@ -121,21 +139,6 @@ class _AddTaskPageState extends State<AddTaskPage> {
             decoration: BoxDecoration(
                 color: Colors.grey.shade300,
                 borderRadius: BorderRadius.circular(10)),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          const Align(
-            alignment: Alignment.topLeft,
-            child: Text(
-              'Add timeline 🗓️',
-              style: TextStyle(
-                  color: Colors.black,
-                  fontFamily: 'poppins',
-                  fontWeight: FontWeight.w500,
-                  fontSize: 20,
-                  letterSpacing: 1),
-            ),
           ),
           const SizedBox(
             height: 30,
@@ -292,7 +295,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
       duration: const Duration(milliseconds: 700),
       child: TextFormField(
         minLines: 1,
-        maxLines: 3,
+        maxLines: 4,
         cursorColor: Colors.black,
         style: const TextStyle(
             fontFamily: 'poppins',
@@ -389,5 +392,14 @@ class _AddTaskPageState extends State<AddTaskPage> {
             flex: 4, child: btnAddTimeline(addFunction, 'Add New Timeline'))
       ],
     );
+  }
+
+  getMonth(String date) {
+    //todo:do for all month
+    if (date == 'December') {
+      return 12;
+    } else if (date == 'January') {
+      return 1;
+    }
   }
 }
