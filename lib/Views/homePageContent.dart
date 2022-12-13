@@ -26,6 +26,7 @@ class _HomePageContentState extends State<HomePageContent> {
 
   final _controller = TextEditingController();
   final searchController = TextEditingController();
+  final editController = TextEditingController();
 
   bool isIconVisible = false;
 
@@ -55,19 +56,12 @@ class _HomePageContentState extends State<HomePageContent> {
       if (_controller.text.isNotEmpty) {
         var data = FolderTask(name: _controller.text, isChecked: false);
         Provider.of<ToDoDatabase>(context, listen: false).addTask(data);
-        // db.folderTask.add();
         _controller.clear();
       } else {
         () => Navigator.of(context).pop();
       }
     });
     Navigator.of(context).pop();
-  }
-
-  void _deleteFolder(int index) {
-    setState(() {
-      db.folderTask.removeAt(index);
-    });
   }
 
   void createNewFolder() {
@@ -78,12 +72,15 @@ class _HomePageContentState extends State<HomePageContent> {
           return ZoomIn(
             duration: const Duration(milliseconds: 200),
             child: DialogBox(
-                addNewFolderController: _controller,
-                onSave: saveNewFolder,
-                onCancel: () {
-                  Navigator.of(context).pop();
-                  _controller.clear();
-                }),
+              addNewFolderController: _controller,
+              onSave: saveNewFolder,
+              onCancel: () {
+                Navigator.of(context).pop();
+                _controller.clear();
+              },
+              text: 'Add New Task 📂',
+              hintText: 'Task name',
+            ),
           );
         });
   }
@@ -110,8 +107,6 @@ class _HomePageContentState extends State<HomePageContent> {
   // my function for checkbox
   void checkBoxChanged(bool? value, int index) {
     setState(() {
-      // db.folderTask[index] =
-      //     FolderTask(name: db.folderTask[index].name, isChecked: value!);
       Provider.of<ToDoDatabase>(context, listen: false).setValue(value, index);
     });
   }
@@ -124,6 +119,55 @@ class _HomePageContentState extends State<HomePageContent> {
   @override
   Widget build(BuildContext context) {
     return Consumer<ToDoDatabase>(builder: (context, todo, _) {
+      void deleteFolder(int index) {
+        setState(() {
+          todo.folderTask.removeAt(index);
+        });
+      }
+
+      void saveEditFolder(int index) {
+        setState(() {
+          if (editController.text.isNotEmpty) {
+            var data = FolderTask(
+                name: editController.text.trim(),
+                isChecked: todo.folderTask[index].isChecked);
+            Provider.of<ToDoDatabase>(context, listen: false)
+                .editTask(data, index);
+            print('Data: ${data.name}');
+            editController.clear();
+          } else {
+            () => Navigator.of(context).pop();
+          }
+        });
+        Navigator.of(context).pop();
+      }
+
+      void editFolder(int index) {
+        showDialog(
+            barrierDismissible: false,
+            context: context,
+            builder: (context) {
+              return ZoomIn(
+                duration: const Duration(milliseconds: 200),
+                child: DialogBox(
+                  addNewFolderController: editController,
+                  onSave: (() => saveEditFolder(index)),
+                  onCancel: () {
+                    Navigator.of(context).pop();
+                    editController.clear();
+                  },
+                  text: 'Edit Task 📂',
+                  hintText: todo.folderTask[index].name,
+                  onChanged: (value) {
+                    setState(() {
+                      editController.text = value;
+                    });
+                  },
+                ),
+              );
+            });
+      }
+
       return Scaffold(
           extendBodyBehindAppBar: true,
           appBar: AppBar(
@@ -219,32 +263,22 @@ class _HomePageContentState extends State<HomePageContent> {
                                   ? foundFolder.length
                                   : todo.folderTask.length,
                               itemBuilder: (context, index) {
-                                return GestureDetector(
-                                  onTap: () {
-                                    // Navigator.of(context).push(PageTransition(
-                                    //     child: FolderPage(
-                                    //       foldertask: db.folderTask[index],
-                                    //     ),
-                                    //     type: PageTransitionType.rightToLeft,
-                                    //     duration:
-                                    //         const Duration(milliseconds: 300),
-                                    //     curve: Curves.easeInCubic));
-                                  },
-                                  child: ToDoTile(
-                                      folderName:
-                                          searchController.value.text.isNotEmpty
-                                              ? foundFolder[index].name
-                                              : todo.folderTask[index].name!,
-                                      deleteFunction: (context) =>
-                                          _deleteFolder(index),
-                                      isChecked: searchController
-                                              .value.text.isNotEmpty
-                                          ? foundFolder[index].isChecked
-                                          : todo.folderTask[index].isChecked ??
-                                              false,
-                                      onChanged: (value) =>
-                                          checkBoxChanged(value, index)),
-                                );
+                                return ToDoTile(
+                                    folderName:
+                                        searchController.value.text.isNotEmpty
+                                            ? foundFolder[index].name
+                                            : todo.folderTask[index].name!,
+                                    deleteFunction: (context) =>
+                                        deleteFolder(index),
+                                    editFunction: (context) =>
+                                        editFolder(index),
+                                    isChecked: searchController
+                                            .value.text.isNotEmpty
+                                        ? foundFolder[index].isChecked
+                                        : todo.folderTask[index].isChecked ??
+                                            false,
+                                    onChanged: (value) =>
+                                        checkBoxChanged(value, index));
                               })
                           : const Center(
                               child: Text(

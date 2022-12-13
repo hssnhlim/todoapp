@@ -30,7 +30,7 @@ class _TimeLinePageState extends State<TimeLinePage> {
 
   Future<dynamic> udFunction(DocumentSnapshot documentSnapshot) {
     return showModalBottomSheet(
-        constraints: BoxConstraints.tight(const Size(double.maxFinite, 240)),
+        constraints: BoxConstraints.tight(const Size(double.maxFinite, 310)),
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(10), topRight: Radius.circular(10))),
@@ -49,7 +49,7 @@ class _TimeLinePageState extends State<TimeLinePage> {
           scrolledUnderElevation: 0,
           toolbarHeight: 70,
           title: const Text(
-            'Timeline',
+            'My Timeline',
             style: TextStyle(
               fontFamily: 'poppins',
               fontWeight: FontWeight.w600,
@@ -115,19 +115,13 @@ class _TimeLinePageState extends State<TimeLinePage> {
                               final DocumentSnapshot documentSnapshot =
                                   snapshot.data![index];
 
-                              // DateTime date = DateFormat.jm()
-                              //     .parse(documentSnapshot['time']);
-                              // var myTime = DateFormat('HH:mm').format(date);
-                              // var hour =
-                              //     int.parse(myTime.toString().split(':')[0]);
-                              // var min =
-                              //     int.parse(myTime.toString().split(':')[1]);
                               var date = documentSnapshot['date'].split(' ');
                               var year = date[2];
                               var day = date[1].toString().replaceAll(',', '');
                               var month = getMonth(date[0]);
                               var acceptString = "$year-$month-$day";
                               var docDate = DateTime.parse(acceptString);
+                              print(docDate);
 
                               if (docDate != currentDate) {
                                 return Container();
@@ -138,6 +132,7 @@ class _TimeLinePageState extends State<TimeLinePage> {
                                 child: FadeInUp(
                                   duration: const Duration(milliseconds: 500),
                                   child: ListTile(
+                                    minVerticalPadding: 10,
                                     onTap: () => udFunction(documentSnapshot),
                                     shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(5)),
@@ -208,7 +203,6 @@ class _TimeLinePageState extends State<TimeLinePage> {
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
             onPressed: () {
               showModalBottomSheet(
-                  // isScrollControlled: true,
                   shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(10),
@@ -237,5 +231,6 @@ Stream<QuerySnapshot> getUsersTimelineSnapshots(BuildContext context) async* {
       .collection('users')
       .doc(uid)
       .collection('time-line')
+      .orderBy('time', descending: true)
       .snapshots();
 }

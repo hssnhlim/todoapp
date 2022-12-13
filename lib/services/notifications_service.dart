@@ -7,6 +7,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest.dart' as tzl;
+import 'package:todoapp/models/timeline.model.dart';
 // import 'package:timezone/standalone.dart' as tz;
 
 class NotifyHelper {
@@ -75,7 +76,6 @@ class NotifyHelper {
         timeline.topic,
         'Don\'t forget you have tasks todo!',
         _convertTime(date, time),
-        // tz.TZDateTime.now(tz.local).add(const Duration(seconds: 5)),
         const NotificationDetails(
             android: AndroidNotificationDetails(
           'your channel id',

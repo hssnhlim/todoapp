@@ -8,12 +8,14 @@ class ToDoTile extends StatelessWidget {
       {super.key,
       required this.folderName,
       required this.deleteFunction,
+      required this.editFunction,
       required this.isChecked,
       required this.onChanged});
 
   final String folderName;
   final bool isChecked;
   Function(BuildContext?)? deleteFunction;
+  Function(BuildContext?)? editFunction;
   void Function(bool?)? onChanged;
 
   // final FolderTask folderTask;
@@ -23,41 +25,44 @@ class ToDoTile extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 20),
       child: Slidable(
         endActionPane: ActionPane(
-          motion: const BehindMotion(),
+          motion: const StretchMotion(),
           children: [
+            SlidableAction(
+              onPressed: editFunction,
+              icon: Icons.edit,
+              backgroundColor: Colors.blue.shade600,
+              borderRadius: BorderRadius.circular(5),
+            ),
             SlidableAction(
               onPressed: deleteFunction,
               icon: Icons.delete,
-              backgroundColor: Colors.red,
-              borderRadius: BorderRadius.circular(8),
-            )
+              backgroundColor: Colors.red.shade600,
+              borderRadius: BorderRadius.circular(5),
+            ),
           ],
         ),
         child: Container(
-          padding: const EdgeInsets.only(left: 10, right: 20),
-          width: double.maxFinite,
-          height: 79,
-          decoration: BoxDecoration(
-              boxShadow: [
-                BoxShadow(
-                    color: Colors.grey.withOpacity(0.4),
-                    spreadRadius: 1,
-                    blurRadius: 5,
-                    offset: const Offset(5, 5) // changes position of shadow
-                    ),
-              ],
-              color: Colors.primaries[Random().nextInt(Colors.primaries.length)]
-                  .shade200,
-              borderRadius: BorderRadius.circular(8)),
-          child:
-              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-            Checkbox(
-                fillColor:
-                    MaterialStateProperty.all(Colors.black.withOpacity(.8)),
-                value: isChecked,
-                onChanged: onChanged),
-            Expanded(
-              child: Text(
+            width: double.maxFinite,
+            decoration: BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                      color: Colors.grey.withOpacity(0.4),
+                      spreadRadius: 1,
+                      blurRadius: 5,
+                      offset: const Offset(5, 5) // changes position of shadow
+                      ),
+                ],
+                color: Colors
+                    .primaries[Random().nextInt(Colors.primaries.length)]
+                    .shade200,
+                borderRadius: BorderRadius.circular(5)),
+            child: ListTile(
+              leading: Checkbox(
+                  fillColor:
+                      MaterialStateProperty.all(Colors.black.withOpacity(.8)),
+                  value: isChecked,
+                  onChanged: onChanged),
+              title: Text(
                 folderName,
                 overflow: TextOverflow.ellipsis,
                 maxLines: 1,
@@ -69,9 +74,9 @@ class ToDoTile extends StatelessWidget {
                         ? TextDecoration.lineThrough
                         : TextDecoration.none),
               ),
-            ),
-          ]),
-        ),
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+            )),
       ),
     );
   }

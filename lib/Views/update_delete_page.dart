@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:todoapp/Views/edit-timeline.dart';
 import 'package:todoapp/authentication/auth.provider.dart';
 
 class UDPage extends StatefulWidget {
@@ -15,6 +16,21 @@ class UDPage extends StatefulWidget {
 }
 
 class _UDPageState extends State<UDPage> {
+  // edit the task's topic
+  Future<dynamic> editFunc() async {
+    return showModalBottomSheet(
+        // constraints: BoxConstraints.tight(const Size(double.maxFinite, 310)),
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(10), topRight: Radius.circular(10))),
+        context: context,
+        builder: (context) => EditTimeline(
+              documentSnapshot: widget.documentSnapshot,
+            ));
+  }
+
+  // mark the task done for incomplete tasks
+  // and mark the task todo for completed tasks
   Future<dynamic> isDoneFunc() async {
     var uid =
         await Provider.of<AuthProvider>(context, listen: false).getCurrentUID();
@@ -31,6 +47,7 @@ class _UDPageState extends State<UDPage> {
     Navigator.of(context).pop();
   }
 
+  // delete the tasks
   Future<dynamic> deleteFunc() async {
     var uid =
         await Provider.of<AuthProvider>(context, listen: false).getCurrentUID();
@@ -44,6 +61,7 @@ class _UDPageState extends State<UDPage> {
     Navigator.of(context).pop();
   }
 
+  // cancel if user doesn't want to do anything
   void cancelFunction() {
     Navigator.of(context).pop();
   }
@@ -63,6 +81,17 @@ class _UDPageState extends State<UDPage> {
           ),
           const SizedBox(
             height: 20,
+          ),
+          Row(
+            children: [
+              Expanded(
+                child: btnUD(() => editFunc(), 'Edit Timeline',
+                    Colors.transparent, Colors.black, Colors.white),
+              )
+            ],
+          ),
+          const SizedBox(
+            height: 10,
           ),
           Row(
             children: [

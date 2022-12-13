@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 class DialogBox extends StatelessWidget {
   const DialogBox(
       {super.key,
+      this.onChanged,
+      required this.text,
+      required this.hintText,
       required this.addNewFolderController,
       required this.onCancel,
       required this.onSave});
@@ -10,13 +13,16 @@ class DialogBox extends StatelessWidget {
   final addNewFolderController;
   final VoidCallback onSave;
   final VoidCallback onCancel;
+  final text;
+  final hintText;
+  final onChanged;
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text(
-        'Add New Task 📂',
-        style: TextStyle(
+      title: Text(
+        text,
+        style: const TextStyle(
             color: Colors.black,
             fontFamily: 'poppins',
             fontWeight: FontWeight.w500,
@@ -78,23 +84,23 @@ class DialogBox extends StatelessWidget {
             fontSize: 15,
             color: Colors.black),
         // The validator receives the text that the user has entered.
-        decoration: const InputDecoration(
-          prefixIcon: Icon(
+        decoration: InputDecoration(
+          prefixIcon: const Icon(
             Icons.task_outlined,
             color: Colors.black,
           ),
-          hintText: 'Task name',
-          hintStyle: TextStyle(
+          hintText: hintText,
+          hintStyle: const TextStyle(
               fontFamily: 'poppins',
               fontWeight: FontWeight.w400,
               fontSize: 15,
               color: Color(0xff929292)),
-          focusedBorder: UnderlineInputBorder(
+          focusedBorder: const UnderlineInputBorder(
               borderSide: BorderSide(color: Colors.black, width: 1)),
-          enabledBorder: UnderlineInputBorder(
+          enabledBorder: const UnderlineInputBorder(
               borderSide: BorderSide(color: Colors.grey, width: 1)),
         ),
-        controller: addNewFolderController!,
+        controller: addNewFolderController!, onChanged: (value) => onChanged,
       ),
     );
   }

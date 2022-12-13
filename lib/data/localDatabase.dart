@@ -52,21 +52,6 @@ class ToDoDatabase with ChangeNotifier {
     notifyListeners();
   }
 
-  // update task
-  // void updateTask() {
-  //   List updateTask = [];
-
-  //   for (var element in task) {
-  //     updateTask.add(element.toJson());
-  //   }
-
-  //   print(updateTask);
-  //   var data = jsonEncode(updateTask);
-  //   myBox.put(key, data);
-
-  //   notifyListeners();
-  // }
-
   // update the database
   void updateDatabase() {
     List folder = [];
@@ -85,39 +70,7 @@ class ToDoDatabase with ChangeNotifier {
     }
 
     notifyListeners();
-
-    // for (var todoTask in task) {
-    //   folderJson.add({
-    //     "task": [
-    //       todoTask.name,
-    //       todoTask.note,
-    //       todoTask.dueDate,
-    //       todoTask.reminderDate,
-    //       todoTask.reminderTime,
-    //       todoTask.repeat,
-    //       todoTask.isChecked
-    //     ]
-    //   });
-    // }
-
-    // var dataTask = jsonEncode(folderJson);
-    // myBox.put(key, dataTask);
   }
-
-  // void setTask(int index, newTask) {
-  //   // var specificIndex = folderTask
-  //   //     .indexWhere((element) => element.name == folderTask[index].name);
-  //   if (folderTask.isEmpty) {
-  //     createInitialData();
-  //   } else {
-  //     // folderTask[index] =
-  //     //     FolderTask(name: folderTask[index].name, task: [newTask]);
-  //     // folderTask[index] = newTask;
-  //     folderTask[index].task.add(newTask);
-  //   }
-  //   updateDatabase();
-  //   notifyListeners();
-  // }
 
   void removeAt(FolderTask folder, int index) {
     if (folderTask.isEmpty) {
@@ -152,7 +105,7 @@ class ToDoDatabase with ChangeNotifier {
   }
 
   void editTask(FolderTask data, int index) {
-    folderTask[index] == data;
+    folderTask[index] = data;
     notifyListeners();
     updateDatabase();
   }

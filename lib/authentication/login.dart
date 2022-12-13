@@ -9,7 +9,6 @@ import 'package:todoapp/authentication/auth.provider.dart';
 import 'package:todoapp/authentication/register.dart';
 
 import '../Views/forgotpasswordpage.dart';
-import '../Views/homepage.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -96,7 +95,7 @@ class LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: loading
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : CustomScrollView(
               slivers: [
                 SliverFillRemaining(
@@ -131,13 +130,16 @@ class LoginPageState extends State<LoginPage> {
                                       ),
                                     ),
                                     SizedBox(height: 20),
-                                    Text(
-                                      'Sign in now to list all your important tasks',
-                                      style: TextStyle(
-                                        fontFamily: 'poppins',
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 18,
-                                        color: Colors.black,
+                                    Align(
+                                      alignment: Alignment.topLeft,
+                                      child: Text(
+                                        'Sign in now to list all your important tasks',
+                                        style: TextStyle(
+                                          fontFamily: 'poppins',
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 18,
+                                          color: Colors.black,
+                                        ),
                                       ),
                                     ),
                                   ],
