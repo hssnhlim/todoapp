@@ -2,6 +2,7 @@ import 'package:animate_do/animate_do.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:todoapp/authentication/auth.provider.dart';
@@ -206,6 +207,11 @@ class _EditTimelineState extends State<EditTimeline> {
             setState(() {
               date = pickDate;
               controller.text = DateFormat.yMMMMd().format(pickDate);
+            });
+          } else {
+            setState(() {
+              date = widget.documentSnapshot['date'] as DateTime;
+              controller.text = DateFormat.yMMMMd().format(date!);
             });
           }
         }),

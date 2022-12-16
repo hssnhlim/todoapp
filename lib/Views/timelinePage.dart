@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_picker_timeline/date_picker_timeline.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:todoapp/Views/add-task-page.dart';
 import 'package:todoapp/Views/update_delete_page.dart';
@@ -20,10 +21,6 @@ class _TimeLinePageState extends State<TimeLinePage> {
   DateTime currentDate =
       DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
 
-  DocumentReference uidRef = FirebaseFirestore.instance
-      .collection('timeline')
-      .doc(FirebaseAuth.instance.currentUser!.uid);
-
   bool isCompleted = false;
 
   final notifyHelper = NotifyHelper();
@@ -38,6 +35,26 @@ class _TimeLinePageState extends State<TimeLinePage> {
         builder: (context) => UDPage(
               documentSnapshot: documentSnapshot,
             ));
+  }
+
+  Future autoDeleteData() async {
+    String formattedDate = DateFormat("MMMM d, yyyy").format(currentDate);
+    print('formattedDate: $formattedDate');
+
+    var uid =
+        await Provider.of<AuthProvider>(context, listen: false).getCurrentUID();
+
+    final docTL = FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .collection('time-line')
+        .where('date', isLessThan: formattedDate);
+
+    var dataSnap = await docTL.get();
+
+    for (var doc in dataSnap.docs) {
+      await doc.reference.delete();
+    }
   }
 
   @override
@@ -121,7 +138,17 @@ class _TimeLinePageState extends State<TimeLinePage> {
                               var month = getMonth(date[0]);
                               var acceptString = "$year-$month-$day";
                               var docDate = DateTime.parse(acceptString);
-                              print(docDate);
+                              print('docDate: $docDate');
+
+                              // autoDeleteData();
+
+                              // var newFormattedDate =
+                              //     DateTime.parse(formattedDate);
+                              // print('newFormattedDate: $newFormattedDate');
+
+                              // if (docDate.isBefore(newFormattedDate)) {
+                              //   autoDeleteData();
+                              // }
 
                               if (docDate != currentDate) {
                                 return Container();

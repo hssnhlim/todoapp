@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:todoapp/authentication/auth.provider.dart';
 import 'package:todoapp/models/timeline.model.dart';
+import 'package:todoapp/models/user.model.dart';
 import 'package:todoapp/services/notifications_service.dart';
 
 class AddTaskPage extends StatefulWidget {
@@ -73,16 +74,17 @@ class _AddTaskPageState extends State<AddTaskPage> {
   // }
 
   void addFunction() async {
+    final Users users = Users();
     final uid =
         await Provider.of<AuthProvider>(context, listen: false).getCurrentUID();
-    DocumentReference ref =
-        db.collection('users').doc(uid).collection('time-line').doc();
+    // DocumentReference ref =
+    //     db.collection('users').doc(uid).collection('time-line').doc();
     if (_formKey.currentState!.validate()) {
       if (dateController.text.trim().isNotEmpty &&
           timeController.text.trim().isNotEmpty &&
           topicController.text.trim().isNotEmpty) {
         var timeline = Timeline(
-            id: ref.id, // auto generated id
+            id: uid,
             date: dateController.text.trim(),
             time: timeController.text.trim(),
             topic: topicController.text.trim(),
@@ -91,7 +93,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
             .collection('users')
             .doc(uid)
             .collection('time-line')
-            .doc(ref.id)
+            .doc(uid)
             .set(timeline.toJson());
         print('Day today ${date!}');
         print('Time today ${time!.hour}');

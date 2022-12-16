@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:todoapp/Views/about_us_page.dart';
+import 'package:todoapp/Views/detail_user_profile.dart';
 import 'package:todoapp/Views/edit_profile.dart';
 
 import '../authentication/auth.provider.dart';
@@ -43,7 +44,7 @@ class _ProfilePageState extends State<ProfilePage> {
               GestureDetector(
                 onTap: () {
                   Navigator.of(context).push(PageTransition(
-                      child: const EditProfilePage(),
+                      child: const DetailUserProfile(),
                       type: PageTransitionType.rightToLeft,
                       childCurrent: const ProfilePage(),
                       duration: const Duration(milliseconds: 300),

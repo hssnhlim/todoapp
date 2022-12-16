@@ -29,7 +29,6 @@ class ToDoDatabase with ChangeNotifier {
 
   // load the data from local database
   void loadData() {
-    // myBox.delete(key);
     var json = myBox.get(key);
 
     if (json != null) {

@@ -1,11 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:todoapp/models/user.model.dart';
 
 import '../authentication/auth.provider.dart';
 
 class EditProfilePage extends StatefulWidget {
-  const EditProfilePage({super.key});
-
+  const EditProfilePage({super.key, required this.documentSnapshot});
+  final DocumentSnapshot documentSnapshot;
   @override
   State<EditProfilePage> createState() => _EditProfilePageState();
 }
@@ -15,32 +18,36 @@ class _EditProfilePageState extends State<EditProfilePage> {
   final nameController = TextEditingController();
   final emailController = TextEditingController();
   final phoneController = TextEditingController();
-  final passwordController = TextEditingController();
-
-  // bool snackBar = false;
 
   Future<void> saveEditProfile() async {
-    if (nameController.text.isNotEmpty) {
-      setState(() {
-        Provider.of<AuthProvider>(context, listen: false)
-            .updateProfileName(nameController.text.trim());
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text(
-          'Name Updated!',
-          style: TextStyle(fontFamily: 'poppins', fontWeight: FontWeight.w400),
-        )));
-      });
-      Navigator.of(context).pop();
-    } else if (emailController.text.isNotEmpty) {
-      setState(() {
-        Provider.of<AuthProvider>(context, listen: false)
-            .updateProfileEmail(emailController.text.trim());
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text(
-          'Email updated!',
-          style: TextStyle(fontFamily: 'poppins', fontWeight: FontWeight.w400),
-        )));
-      });
+    var uid =
+        await Provider.of<AuthProvider>(context, listen: false).getCurrentUID();
+    final docTL = FirebaseFirestore.instance.collection('users').doc(uid);
+
+    if (nameController.text.trim().isNotEmpty ||
+        emailController.text.trim().isNotEmpty ||
+        phoneController.text.trim().isNotEmpty) {
+      await docTL.set(
+          Users(
+                  id: widget.documentSnapshot.id,
+                  name: nameController.text.trim().isNotEmpty
+                      ? nameController.text.trim()
+                      : widget.documentSnapshot['name'],
+                  email: emailController.text.trim().isNotEmpty
+                      ? emailController.text.trim()
+                      : widget.documentSnapshot['email'],
+                  phone: phoneController.text.trim().isNotEmpty
+                      ? phoneController.text.trim()
+                      : widget.documentSnapshot['phone'])
+              .toJson(),
+          SetOptions(merge: true));
+
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text(
+        'Changes saved!',
+        style: TextStyle(fontFamily: 'poppins', fontWeight: FontWeight.w400),
+      )));
+
       Navigator.of(context).pop();
     } else if (nameController.text.isEmpty || emailController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -147,14 +154,19 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   children: [
                     textField(
                       nameController,
-                      user!.displayName,
+                      'Name',
                       const Icon(Icons.person_outline, color: Colors.black),
                     ),
                     const SizedBox(
                       height: 20,
                     ),
-                    textField(emailController, user.email,
+                    textField(emailController, 'Email',
                         const Icon(Icons.email_outlined, color: Colors.black)),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    textFieldPhone(phoneController, 'Phone Number',
+                        const Icon(Icons.phone_outlined, color: Colors.black)),
                     const SizedBox(
                       height: 20,
                     ),
@@ -173,6 +185,47 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
 Widget textField(controller, hintText, icon) {
   return TextFormField(
+    cursorColor: Colors.black,
+    style: const TextStyle(
+        fontFamily: 'poppins',
+        fontWeight: FontWeight.w400,
+        fontSize: 15,
+        color: Colors.black),
+    // The validator receives the text that the user has entered.
+    decoration: InputDecoration(
+        contentPadding: const EdgeInsets.all(15),
+        prefixIcon: icon,
+        filled: true,
+        fillColor: Colors.white,
+        hintText: hintText,
+        hintStyle: const TextStyle(
+            fontFamily: 'poppins',
+            fontWeight: FontWeight.w400,
+            fontSize: 15,
+            color: Color(0xff929292)),
+        focusedBorder: const OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.black, width: 1)),
+        enabledBorder: const OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.grey, width: 1)),
+        errorBorder: const OutlineInputBorder(
+            borderSide: BorderSide(
+                color: Colors.red, style: BorderStyle.solid, width: 1)),
+        focusedErrorBorder: const OutlineInputBorder(
+            borderSide: BorderSide(
+                color: Colors.red, style: BorderStyle.solid, width: 1))),
+    controller: controller,
+    validator: (value) {
+      if (value == null || value.isEmpty) {
+        return 'Please fill the text field!';
+      }
+      return null;
+    },
+  );
+}
+
+Widget textFieldPhone(controller, hintText, icon) {
+  return TextFormField(
+    keyboardType: TextInputType.phone,
     cursorColor: Colors.black,
     style: const TextStyle(
         fontFamily: 'poppins',
