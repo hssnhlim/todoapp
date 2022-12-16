@@ -7,8 +7,9 @@ import 'package:todoapp/models/user.model.dart';
 import '../authentication/auth.provider.dart';
 
 class EditProfilePage extends StatefulWidget {
-  const EditProfilePage({super.key, required this.documentSnapshot});
-  final DocumentSnapshot documentSnapshot;
+  const EditProfilePage({
+    super.key,
+  });
   @override
   State<EditProfilePage> createState() => _EditProfilePageState();
 }
@@ -24,23 +25,28 @@ class _EditProfilePageState extends State<EditProfilePage> {
         await Provider.of<AuthProvider>(context, listen: false).getCurrentUID();
     final docTL = FirebaseFirestore.instance.collection('users').doc(uid);
 
-    if (nameController.text.trim().isNotEmpty ||
-        emailController.text.trim().isNotEmpty ||
-        phoneController.text.trim().isNotEmpty) {
-      await docTL.set(
-          Users(
-                  id: widget.documentSnapshot.id,
-                  name: nameController.text.trim().isNotEmpty
-                      ? nameController.text.trim()
-                      : widget.documentSnapshot['name'],
-                  email: emailController.text.trim().isNotEmpty
-                      ? emailController.text.trim()
-                      : widget.documentSnapshot['email'],
-                  phone: phoneController.text.trim().isNotEmpty
-                      ? phoneController.text.trim()
-                      : widget.documentSnapshot['phone'])
-              .toJson(),
-          SetOptions(merge: true));
+    if (nameController.text.trim().isNotEmpty) {
+      await docTL.update({'name': nameController.text.trim()});
+
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text(
+        'Changes saved!',
+        style: TextStyle(fontFamily: 'poppins', fontWeight: FontWeight.w400),
+      )));
+
+      Navigator.of(context).pop();
+    } else if (emailController.text.trim().isNotEmpty) {
+      await docTL.update({'email': emailController.text.trim()});
+
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text(
+        'Changes saved!',
+        style: TextStyle(fontFamily: 'poppins', fontWeight: FontWeight.w400),
+      )));
+
+      Navigator.of(context).pop();
+    } else if (phoneController.text.trim().isNotEmpty) {
+      await docTL.update({'phone': phoneController.text.trim()});
 
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text(
