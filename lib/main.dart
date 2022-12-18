@@ -19,7 +19,7 @@ Future<void> main() async {
   await Hive.initFlutter();
 
   // open the box or database
-  // await GetStorage.init();
+  await GetStorage.init();
   await Hive.openBox('ToDoDatabase');
 
   runApp(const MyApp());
