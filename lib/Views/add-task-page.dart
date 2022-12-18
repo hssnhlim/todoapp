@@ -74,17 +74,16 @@ class _AddTaskPageState extends State<AddTaskPage> {
   // }
 
   void addFunction() async {
-    final Users users = Users();
     final uid =
         await Provider.of<AuthProvider>(context, listen: false).getCurrentUID();
-    // DocumentReference ref =
-    //     db.collection('users').doc(uid).collection('time-line').doc();
+    DocumentReference ref =
+        db.collection('users').doc(uid).collection('time-line').doc();
     if (_formKey.currentState!.validate()) {
       if (dateController.text.trim().isNotEmpty &&
           timeController.text.trim().isNotEmpty &&
           topicController.text.trim().isNotEmpty) {
         var timeline = Timeline(
-            id: uid,
+            id: ref.id,
             date: dateController.text.trim(),
             time: timeController.text.trim(),
             topic: topicController.text.trim(),
@@ -93,7 +92,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
             .collection('users')
             .doc(uid)
             .collection('time-line')
-            .doc(uid)
+            .doc(ref.id)
             .set(timeline.toJson());
         print('Day today ${date!}');
         print('Time today ${time!.hour}');

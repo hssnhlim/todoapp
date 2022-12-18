@@ -16,13 +16,12 @@ class ToDoDatabase with ChangeNotifier {
   List<FolderTask> folderTask = [];
   // List<Task> task = [];
 
-  var key = 'FOLDERLIST${AuthProvider().user!.uid}';
+  var key = 'FOLDERLIST${AuthProvider.instance.getCurrentUID()}';
   // reference the hive box
   final myBox = Hive.box('ToDoDatabase');
 
   // run this method if this is the first time opening the app
   void createInitialData() {
-    // task = [];
     folderTask = [FolderTask(name: 'Buy groceries stuff', isChecked: false)];
     notifyListeners();
   }
