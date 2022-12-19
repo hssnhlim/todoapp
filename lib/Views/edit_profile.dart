@@ -30,7 +30,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text(
-        'Changes saved!',
+        'Saved!',
         style: TextStyle(fontFamily: 'poppins', fontWeight: FontWeight.w400),
       )));
 
