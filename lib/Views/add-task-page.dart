@@ -115,6 +115,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
             style: const TextStyle(
                 fontFamily: 'poppins', fontWeight: FontWeight.w400),
           )));
+          notifyHelper.scheduledNotification(date!, time!, timeline);
         } else {
           notifyHelper.scheduledNotification(date!, time!, timeline);
         }
